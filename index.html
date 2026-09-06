@@ -383,6 +383,12 @@
   }
   .meal-marker.veg{border-color:var(--route); background:var(--route);}
   .meal-marker.nonveg{border-color:var(--stamp); background:var(--stamp);}
+  .macro-tag{display:block; font-family:var(--font-type); font-size:0.72rem; color:var(--ink-soft); margin-top:0.4rem;}
+  .totals-label{
+    display:block; font-family:var(--font-type); font-size:0.78rem; letter-spacing:0.04em;
+    text-transform:uppercase; color:var(--stamp); margin:2.2rem 0 0;
+  }
+  .ledger-value.macro{font-size:1.15rem; white-space:normal;}
   .ppl-day{
     background:var(--card-bg-2); border:1px dashed rgba(42,33,24,0.25); padding:0.7rem 0.85rem;
     position:relative; z-index:0; cursor:default;
@@ -972,6 +978,7 @@
           <div class="ppl-day" tabindex="0">
             <span class="ppl-label"><span class="meal-marker veg" aria-hidden="true"></span>Veg</span>
             <span class="ppl-desc">oats with banana and peanut butter</span>
+            <span class="macro-tag">~350 kcal · 12g protein</span>
             <ul class="ppl-list">
               <li>Base: rolled oats, cooked in milk or water</li>
               <li>Add-ins: banana, peanut butter, a spoon of seeds</li>
@@ -981,6 +988,7 @@
           <div class="ppl-day" tabindex="0">
             <span class="ppl-label"><span class="meal-marker nonveg" aria-hidden="true"></span>Non-Veg</span>
             <span class="ppl-desc">scrambled eggs with whole wheat toast</span>
+            <span class="macro-tag">~380 kcal · 24g protein</span>
             <ul class="ppl-list">
               <li>Base: 2–3 eggs, scrambled</li>
               <li>Side: whole wheat toast, sometimes avocado</li>
@@ -998,6 +1006,7 @@
           <div class="ppl-day" tabindex="0">
             <span class="ppl-label"><span class="meal-marker veg" aria-hidden="true"></span>Veg</span>
             <span class="ppl-desc">rice, dal, and a mixed vegetable sabzi</span>
+            <span class="macro-tag">~520 kcal · 18g protein</span>
             <ul class="ppl-list">
               <li>Base: steamed rice or roti</li>
               <li>Protein: dal (lentils)</li>
@@ -1008,6 +1017,7 @@
           <div class="ppl-day" tabindex="0">
             <span class="ppl-label"><span class="meal-marker nonveg" aria-hidden="true"></span>Non-Veg</span>
             <span class="ppl-desc">grilled chicken with rice and salad</span>
+            <span class="macro-tag">~550 kcal · 42g protein</span>
             <ul class="ppl-list">
               <li>Base: steamed rice</li>
               <li>Protein: grilled chicken breast</li>
@@ -1026,6 +1036,7 @@
           <div class="ppl-day" tabindex="0">
             <span class="ppl-label"><span class="meal-marker veg" aria-hidden="true"></span>Veg</span>
             <span class="ppl-desc">paneer curry with roti and salad</span>
+            <span class="macro-tag">~480 kcal · 20g protein</span>
             <ul class="ppl-list">
               <li>Base: 1–2 roti</li>
               <li>Protein: paneer curry, lighter on oil at night</li>
@@ -1036,6 +1047,7 @@
           <div class="ppl-day" tabindex="0">
             <span class="ppl-label"><span class="meal-marker nonveg" aria-hidden="true"></span>Non-Veg</span>
             <span class="ppl-desc">fish curry with rice</span>
+            <span class="macro-tag">~460 kcal · 32g protein</span>
             <ul class="ppl-list">
               <li>Base: a smaller portion of rice</li>
               <li>Protein: fish curry</li>
@@ -1054,6 +1066,7 @@
           <div class="ppl-day" tabindex="0">
             <span class="ppl-label"><span class="meal-marker veg" aria-hidden="true"></span>Veg</span>
             <span class="ppl-desc">greek yogurt with fruit and nuts</span>
+            <span class="macro-tag">~220 kcal · 14g protein</span>
             <ul class="ppl-list">
               <li>Base: plain greek yogurt</li>
               <li>Add-ins: seasonal fruit, a handful of nuts</li>
@@ -1063,6 +1076,7 @@
           <div class="ppl-day" tabindex="0">
             <span class="ppl-label"><span class="meal-marker nonveg" aria-hidden="true"></span>Non-Veg</span>
             <span class="ppl-desc">boiled eggs and a protein shake</span>
+            <span class="macro-tag">~300 kcal · 35g protein</span>
             <ul class="ppl-list">
               <li>Base: 2 boiled eggs</li>
               <li>Add-on: whey protein shake</li>
@@ -1070,6 +1084,18 @@
             </ul>
           </div>
         </div>
+      </div>
+    </div>
+
+    <span class="totals-label">Daily totals</span>
+    <div class="ledger">
+      <div class="ledger-row">
+        <span class="ledger-label">veg day (all four meals)</span>
+        <span class="ledger-value macro">~1,570 kcal · 64g protein</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-label">non-veg day (all four meals)</span>
+        <span class="ledger-value macro">~1,690 kcal · 133g protein</span>
       </div>
     </div>
   </div>
