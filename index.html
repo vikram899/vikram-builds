@@ -398,10 +398,18 @@
     text-transform:uppercase; color:var(--ink-soft);
   }
   .game-frame{
+    position:relative; z-index:10;
     margin-top:2.2rem; background:var(--card-illo-bg); border:1px solid rgba(42,33,24,0.18);
     box-shadow:0 10px 22px -8px var(--shadow); overflow:hidden; line-height:0;
   }
   #runnerGame{display:block; width:100%; height:auto; cursor:pointer; touch-action:manipulation;}
+  .game-legend{
+    display:flex; flex-wrap:wrap; gap:0.4rem 1.2rem; margin-top:0.9rem;
+    font-family:var(--font-type); font-size:0.78rem; color:var(--ink-soft);
+  }
+  .game-legend b{color:var(--ink); font-weight:400;}
+  .game-legend .avoid b{color:var(--stamp);}
+  .game-legend .collect b{color:var(--route);}
   .meal-line{
     display:flex; align-items:baseline; flex-wrap:wrap; gap:0.4rem;
     font-family:var(--font-body); font-size:0.85rem; color:var(--ink); margin-top:0.5rem;
@@ -1086,6 +1094,10 @@
     <div class="game-frame">
       <canvas id="runnerGame" width="800" height="240" aria-label="Endless runner mini-game: jump to dodge Work, Late Night, and Junk Food; collect Protein, Sleep, Water, and Steps"></canvas>
     </div>
+    <div class="game-legend">
+      <span class="avoid">avoid: <b>💼 work</b> · <b>🌙 late night</b> · <b>🍔 junk food</b></span>
+      <span class="collect">collect: <b>🍗 protein</b> · <b>😴 sleep</b> · <b>💧 water</b> · <b>👣 steps</b></span>
+    </div>
     <p class="route-hint">tap the track or press space to jump ↑</p>
   </div>
 </section>
@@ -1547,8 +1559,8 @@
     var running = false, gameOver = false;
     var spawnTimer = 0, nextSpawnIn = 70;
 
-    var OBSTACLES = ['WORK', 'LATE NIGHT', 'JUNK FOOD'];
-    var COLLECTIBLES = ['PROTEIN', 'SLEEP', 'WATER', 'STEPS'];
+    var OBSTACLES = ['💼', '🌙', '🍔'];
+    var COLLECTIBLES = ['🍗', '😴', '💧', '👣'];
 
     var highScore = 0;
     try{ highScore = parseInt(localStorage.getItem('vb-run-highscore') || '0', 10) || 0; }catch(e){}
@@ -1575,8 +1587,8 @@
         x: W + 20,
         type: isObstacle ? 'obstacle' : 'collectible',
         label: label,
-        width: isObstacle ? (24 + label.length * 7.2) : 64,
-        height: 30
+        width: 38,
+        height: 38
       });
     }
 
@@ -1660,34 +1672,24 @@
       ctx.globalAlpha = 1;
 
       items.forEach(function(it){
-        var iy = groundY - it.height;
-        if(it.type === 'obstacle'){
-          ctx.strokeStyle = stamp;
-          ctx.setLineDash([4, 3]);
-          ctx.lineWidth = 2;
-          ctx.strokeRect(it.x - it.width / 2, iy, it.width, it.height);
-          ctx.setLineDash([]);
-          ctx.fillStyle = stamp;
-          ctx.font = 'bold 12px "Special Elite", monospace';
-          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillText(it.label, it.x, groundY - it.height / 2);
-        } else {
-          ctx.globalAlpha = 0.16;
-          ctx.fillStyle = route;
-          ctx.beginPath();
-          ctx.ellipse(it.x, groundY - it.height / 2, it.width / 2, it.height / 2, 0, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 1;
-          ctx.strokeStyle = route;
-          ctx.lineWidth = 1.6;
-          ctx.beginPath();
-          ctx.ellipse(it.x, groundY - it.height / 2, it.width / 2, it.height / 2, 0, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.fillStyle = route;
-          ctx.font = 'bold 11px "Special Elite", monospace';
-          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillText(it.label, it.x, groundY - it.height / 2);
-        }
+        var cx = it.x, cy = groundY - it.height / 2;
+        var accent = it.type === 'obstacle' ? stamp : route;
+        ctx.globalAlpha = 0.92;
+        ctx.fillStyle = cardBg;
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, it.width / 2, it.height / 2, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = accent;
+        ctx.lineWidth = 2.2;
+        if(it.type === 'obstacle') ctx.setLineDash([4, 3]);
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, it.width / 2, it.height / 2, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.font = '22px sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(it.label, cx, cy + 1);
       });
 
       drawPlayer();
