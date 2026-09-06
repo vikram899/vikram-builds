@@ -163,6 +163,13 @@
   .sun-trigger:hover circle, .sun-trigger:hover line,
   .sun-trigger:focus-visible circle, .sun-trigger:focus-visible line{filter:brightness(1.25);}
   .sun-trigger:focus-visible{outline:none;}
+  .sun-icon, .moon-icon{transition:opacity 320ms ease;}
+  .moon-icon{opacity:0;}
+  :root[data-mode="night"] .sun-icon{opacity:0;}
+  :root[data-mode="night"] .moon-icon{opacity:1;}
+  @media (prefers-reduced-motion: reduce){
+    .sun-icon, .moon-icon{transition:none;}
+  }
   @media (prefers-reduced-motion: reduce){
     .parallax-slow, .parallax-mid, .parallax-fast{transform:none !important;}
   }
@@ -368,12 +375,11 @@
     <div class="hero-illo-wrap">
       <svg class="hero-illo" viewBox="0 0 900 260" preserveAspectRatio="xMidYMax meet" role="img" aria-label="Line illustration of a runner cresting a ridge at sunrise over a mountain range">
         <defs>
-          <clipPath id="ridgeClip"><use href="#ridgeShape"/></clipPath>
-          <linearGradient id="sweepGradient" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="var(--stamp)" stop-opacity="0"/>
-            <stop offset="50%" stop-color="var(--stamp)" stop-opacity="0.6"/>
-            <stop offset="100%" stop-color="var(--stamp)" stop-opacity="0"/>
-          </linearGradient>
+          <mask id="moonMask" maskUnits="userSpaceOnUse" x="660" y="10" width="110" height="110">
+            <rect x="660" y="10" width="110" height="110" fill="black"/>
+            <circle cx="710" cy="60" r="22" fill="white"/>
+            <circle cx="721" cy="51" r="18" fill="black"/>
+          </mask>
         </defs>
 
         <g class="parallax-slow">
@@ -385,16 +391,23 @@
         <g class="parallax-mid">
           <path id="ridgeShape" d="M0,220 L120,120 L210,190 L330,70 L430,140 L520,150 L620,60 L720,150 L820,110 L900,150 L900,260 L0,260 Z" fill="var(--paper-3)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>
           <path d="M330,70 L370,95 L300,110 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
-          <rect id="sunriseSweep" x="-220" y="0" width="220" height="260" fill="url(#sweepGradient)" opacity="0" clip-path="url(#ridgeClip)" pointer-events="none"/>
         </g>
 
         <g class="parallax-fast">
-          <g class="sun-trigger" role="button" tabindex="0" aria-label="Trigger a sunrise sweep across the ridge">
-            <circle cx="710" cy="60" r="26" fill="none" stroke="var(--stamp)" stroke-width="2.5"/>
-            <g stroke="var(--stamp)" stroke-width="2.5" stroke-linecap="round">
-              <line x1="710" y1="18" x2="710" y2="6"/><line x1="752" y1="60" x2="764" y2="60"/>
-              <line x1="739" y1="31" x2="748" y2="22"/><line x1="681" y1="31" x2="672" y2="22"/>
-              <line x1="739" y1="89" x2="748" y2="98"/><line x1="681" y1="89" x2="672" y2="98"/>
+          <g class="sun-trigger" role="switch" tabindex="0" aria-checked="false" aria-label="Toggle night trail-run mode">
+            <g class="sun-icon">
+              <circle cx="710" cy="60" r="26" fill="none" stroke="var(--stamp)" stroke-width="2.5"/>
+              <g stroke="var(--stamp)" stroke-width="2.5" stroke-linecap="round">
+                <line x1="710" y1="18" x2="710" y2="6"/><line x1="752" y1="60" x2="764" y2="60"/>
+                <line x1="739" y1="31" x2="748" y2="22"/><line x1="681" y1="31" x2="672" y2="22"/>
+                <line x1="739" y1="89" x2="748" y2="98"/><line x1="681" y1="89" x2="672" y2="98"/>
+              </g>
+            </g>
+            <g class="moon-icon">
+              <circle cx="710" cy="60" r="22" fill="var(--stamp)" mask="url(#moonMask)"/>
+              <circle cx="758" cy="32" r="1.7" fill="var(--stamp)" opacity="0.8"/>
+              <circle cx="773" cy="58" r="1.3" fill="var(--stamp)" opacity="0.6"/>
+              <circle cx="744" cy="18" r="1.1" fill="var(--stamp)" opacity="0.5"/>
             </g>
             <circle cx="710" cy="60" r="40" fill="transparent"/>
           </g>
@@ -643,23 +656,32 @@
   (function(){
     var root = document.documentElement;
     var toggle = document.getElementById('headlampToggle');
+    var sunTrigger = document.querySelector('.sun-trigger');
+
+    function applyMode(isNight){
+      if(isNight){ root.setAttribute('data-mode', 'night'); }
+      else { root.removeAttribute('data-mode'); }
+      toggle.setAttribute('aria-pressed', String(isNight));
+      if(sunTrigger) sunTrigger.setAttribute('aria-checked', String(isNight));
+    }
+    function toggleMode(){
+      var isNight = root.getAttribute('data-mode') === 'night';
+      applyMode(!isNight);
+      try{ localStorage.setItem('vb-mode', isNight ? 'day' : 'night'); }catch(e){}
+    }
+
     var stored;
     try{ stored = localStorage.getItem('vb-mode'); }catch(e){}
-    if(stored === 'night'){
-      root.setAttribute('data-mode', 'night');
-      toggle.setAttribute('aria-pressed', 'true');
+    if(stored === 'night'){ applyMode(true); }
+
+    toggle.addEventListener('click', toggleMode);
+    if(sunTrigger){
+      sunTrigger.addEventListener('click', toggleMode);
+      sunTrigger.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleMode(); }
+      });
     }
-    toggle.addEventListener('click', function(){
-      var isNight = root.getAttribute('data-mode') === 'night';
-      if(isNight){
-        root.removeAttribute('data-mode');
-        toggle.setAttribute('aria-pressed', 'false');
-      } else {
-        root.setAttribute('data-mode', 'night');
-        toggle.setAttribute('aria-pressed', 'true');
-      }
-      try{ localStorage.setItem('vb-mode', isNight ? 'day' : 'night'); }catch(e){}
-    });
+
     window.addEventListener('mousemove', function(e){
       root.style.setProperty('--mx', e.clientX + 'px');
       root.style.setProperty('--my', e.clientY + 'px');
@@ -754,38 +776,6 @@
       updateParallax();
     }
 
-    /* sunrise sweep easter egg */
-    var sun = document.querySelector('.sun-trigger');
-    var sweep = document.getElementById('sunriseSweep');
-    if(sun && sweep){
-      var sweeping = false;
-      var runSweep = function(){
-        if(sweeping) return;
-        sweeping = true;
-        if(reduceMotion){
-          sweep.setAttribute('opacity', '0.6');
-          setTimeout(function(){ sweep.setAttribute('opacity', '0'); sweeping = false; }, 280);
-          return;
-        }
-        var start = performance.now();
-        var duration = 1600;
-        (function tick(now){
-          var p = Math.min(1, (now - start) / duration);
-          sweep.setAttribute('x', -220 + p * 1120);
-          sweep.setAttribute('opacity', (Math.sin(p * Math.PI) * 0.6).toFixed(2));
-          if(p < 1){
-            requestAnimationFrame(tick);
-          } else {
-            sweep.setAttribute('opacity', '0');
-            sweeping = false;
-          }
-        })(start);
-      };
-      sun.addEventListener('click', runSweep);
-      sun.addEventListener('keydown', function(e){
-        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); runSweep(); }
-      });
-    }
   })();
 
   (function(){
