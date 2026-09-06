@@ -397,6 +397,11 @@
     font-family:var(--font-type); font-size:0.65rem; letter-spacing:0.05em;
     text-transform:uppercase; color:var(--ink-soft);
   }
+  .game-frame{
+    margin-top:2.2rem; background:var(--card-illo-bg); border:1px solid rgba(42,33,24,0.18);
+    box-shadow:0 10px 22px -8px var(--shadow); overflow:hidden; line-height:0;
+  }
+  #runnerGame{display:block; width:100%; height:auto; cursor:pointer; touch-action:manipulation;}
   .meal-line{
     display:flex; align-items:baseline; flex-wrap:wrap; gap:0.4rem;
     font-family:var(--font-body); font-size:0.85rem; color:var(--ink); margin-top:0.5rem;
@@ -1073,9 +1078,21 @@
   </div>
 </section>
 
+<section id="game">
+  <div class="wrap">
+    <span class="stamp">CHECKPOINT<b>08</b>THE GAME</span>
+    <h2>Vikram's Run.</h2>
+    <p class="lede">Dodge the things that derail a training block. Grab the things that don't. Score is just distance — like everything else here.</p>
+    <div class="game-frame">
+      <canvas id="runnerGame" width="800" height="240" aria-label="Endless runner mini-game: jump to dodge Work, Late Night, and Junk Food; collect Protein, Sleep, Water, and Steps"></canvas>
+    </div>
+    <p class="route-hint">tap the track or press space to jump ↑</p>
+  </div>
+</section>
+
 <section id="cp05" class="next-race">
   <div class="wrap">
-    <span class="stamp">CHECKPOINT<b>08</b>NEXT RACE</span>
+    <span class="stamp">CHECKPOINT<b>09</b>NEXT RACE</span>
     <h2>The next mile is public.</h2>
     <div class="ticket">
       <div class="ticket-info">
@@ -1493,6 +1510,219 @@
       }, {threshold:0.3});
       finishIo.observe(footerEl);
     }
+  })();
+
+  (function(){
+    var canvas = document.getElementById('runnerGame');
+    if(!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+    var groundY = H - 34;
+
+    var ink, stamp, route, cardBg;
+    function readColors(){
+      var cs = getComputedStyle(document.documentElement);
+      ink = cs.getPropertyValue('--ink').trim() || '#2a2118';
+      stamp = cs.getPropertyValue('--stamp').trim() || '#a3372a';
+      route = cs.getPropertyValue('--route').trim() || '#4a5d3a';
+      cardBg = cs.getPropertyValue('--card-illo-bg').trim() || '#f1e9d3';
+    }
+
+    var GRAVITY = 0.7, JUMP_V = -12.5, BASE_SPEED = 4.4;
+    var player = { x: 90, y: groundY, vy: 0, legPhase: 0 };
+    var items = [];
+    var speed = BASE_SPEED;
+    var distance = 0;
+    var running = false, gameOver = false;
+    var spawnTimer = 0, nextSpawnIn = 70;
+
+    var OBSTACLES = ['WORK', 'LATE NIGHT', 'JUNK FOOD'];
+    var COLLECTIBLES = ['PROTEIN', 'SLEEP', 'WATER', 'STEPS'];
+
+    var highScore = 0;
+    try{ highScore = parseInt(localStorage.getItem('vb-run-highscore') || '0', 10) || 0; }catch(e){}
+
+    function reset(){
+      player.y = groundY; player.vy = 0; player.legPhase = 0;
+      items = []; speed = BASE_SPEED; distance = 0; spawnTimer = 0; nextSpawnIn = 70;
+      gameOver = false;
+    }
+
+    function start(){ reset(); running = true; }
+
+    function jump(){
+      if(!running && !gameOver){ start(); return; }
+      if(gameOver){ start(); return; }
+      if(player.y >= groundY - 0.5){ player.vy = JUMP_V; }
+    }
+
+    function spawnItem(){
+      var isObstacle = Math.random() < 0.55;
+      var pool = isObstacle ? OBSTACLES : COLLECTIBLES;
+      var label = pool[Math.floor(Math.random() * pool.length)];
+      items.push({
+        x: W + 20,
+        type: isObstacle ? 'obstacle' : 'collectible',
+        label: label,
+        width: isObstacle ? (22 + label.length * 6.5) : 58,
+        height: isObstacle ? 28 : 28
+      });
+    }
+
+    function endGame(){
+      gameOver = true; running = false;
+      var scoreInt = Math.floor(distance);
+      if(scoreInt > highScore){
+        highScore = scoreInt;
+        try{ localStorage.setItem('vb-run-highscore', String(highScore)); }catch(e){}
+      }
+      VB_AUDIO.playWhoosh(false);
+    }
+
+    function update(){
+      if(!running || gameOver) return;
+      distance += speed * 0.1;
+      speed += 0.0025;
+      player.vy += GRAVITY;
+      player.y += player.vy;
+      if(player.y > groundY){ player.y = groundY; player.vy = 0; }
+      if(player.y >= groundY - 0.5){ player.legPhase += 0.35; }
+
+      spawnTimer++;
+      if(spawnTimer > nextSpawnIn){
+        spawnItem();
+        spawnTimer = 0;
+        nextSpawnIn = Math.max(38, 70 - speed * 2 + Math.random() * 30);
+      }
+
+      var pw = 16, ph = 22;
+      var px = player.x - pw / 2, py = player.y - ph;
+
+      for(var i = items.length - 1; i >= 0; i--){
+        var it = items[i];
+        it.x -= speed;
+        var ix = it.x - it.width / 2, iy = groundY - it.height, iw = it.width, ih = it.height;
+        var overlap = px < ix + iw && px + pw > ix && py < iy + ih && py + ph > iy;
+        if(overlap){
+          if(it.type === 'obstacle'){
+            endGame();
+          } else {
+            VB_AUDIO.playStamp();
+            items.splice(i, 1);
+            continue;
+          }
+        }
+        if(it.x < -100) items.splice(i, 1);
+      }
+    }
+
+    function drawPlayer(){
+      var px = player.x, py = player.y;
+      var swing = Math.sin(player.legPhase) * 8;
+      ctx.strokeStyle = ink;
+      ctx.lineWidth = 2.4;
+      ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.arc(px, py - 26, 6, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(px, py - 20); ctx.lineTo(px, py - 8); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(px, py - 8); ctx.lineTo(px - 6 + swing * 0.5, py);
+      ctx.moveTo(px, py - 8); ctx.lineTo(px + 6 - swing * 0.5, py);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(px, py - 16); ctx.lineTo(px - 8 - swing * 0.3, py - 10);
+      ctx.moveTo(px, py - 16); ctx.lineTo(px + 8 + swing * 0.3, py - 10);
+      ctx.stroke();
+    }
+
+    function draw(){
+      readColors();
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = cardBg;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.strokeStyle = ink;
+      ctx.globalAlpha = 0.45;
+      ctx.beginPath();
+      ctx.moveTo(0, groundY + 2);
+      ctx.lineTo(W, groundY + 2);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      items.forEach(function(it){
+        var iy = groundY - it.height;
+        if(it.type === 'obstacle'){
+          ctx.strokeStyle = stamp;
+          ctx.setLineDash([4, 3]);
+          ctx.lineWidth = 2;
+          ctx.strokeRect(it.x - it.width / 2, iy, it.width, it.height);
+          ctx.setLineDash([]);
+          ctx.fillStyle = stamp;
+          ctx.font = '10px "Special Elite", monospace';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(it.label, it.x, groundY - it.height / 2);
+        } else {
+          ctx.globalAlpha = 0.16;
+          ctx.fillStyle = route;
+          ctx.beginPath();
+          ctx.ellipse(it.x, groundY - it.height / 2, it.width / 2, it.height / 2, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+          ctx.strokeStyle = route;
+          ctx.lineWidth = 1.6;
+          ctx.beginPath();
+          ctx.ellipse(it.x, groundY - it.height / 2, it.width / 2, it.height / 2, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.fillStyle = route;
+          ctx.font = '9px "Special Elite", monospace';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(it.label, it.x, groundY - it.height / 2);
+        }
+      });
+
+      drawPlayer();
+
+      ctx.fillStyle = ink;
+      ctx.font = '13px "Special Elite", monospace';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+      ctx.fillText('DIST ' + Math.floor(distance) + 'm', 14, 24);
+      ctx.textAlign = 'right';
+      ctx.fillText('BEST ' + highScore + 'm', W - 14, 24);
+
+      if(!running && !gameOver){
+        ctx.textAlign = 'center';
+        ctx.fillStyle = ink;
+        ctx.font = '16px "Staatliches", sans-serif';
+        ctx.fillText('TAP OR PRESS SPACE TO START', W / 2, H / 2);
+      } else if(gameOver){
+        ctx.textAlign = 'center';
+        ctx.fillStyle = stamp;
+        ctx.font = '18px "Staatliches", sans-serif';
+        ctx.fillText('GAME OVER — ' + Math.floor(distance) + 'm', W / 2, H / 2 - 10);
+        ctx.fillStyle = ink;
+        ctx.font = '12px "Special Elite", monospace';
+        ctx.fillText('tap or press space to try again', W / 2, H / 2 + 16);
+      }
+    }
+
+    function loop(){
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    canvas.addEventListener('click', jump);
+    canvas.addEventListener('touchstart', function(e){ e.preventDefault(); jump(); }, {passive:false});
+    window.addEventListener('keydown', function(e){
+      if(e.code === 'Space'){
+        var tag = document.activeElement ? document.activeElement.tagName : '';
+        if(tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON') return;
+        e.preventDefault();
+        jump();
+      }
+    });
+
+    draw();
+    requestAnimationFrame(loop);
   })();
 </script>
 </body>
