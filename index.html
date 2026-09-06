@@ -742,22 +742,44 @@
         .finally(function(){ scratchLoading = false; });
     }
 
-    var lastScratch = 0;
+    var scratchSource = null, scratchGain = null, scratchStopTimer = null;
+
+    function startScratchLoop(c){
+      if(scratchSource) return;
+      var offset = Math.random() * Math.max(0, scratchBuffer.duration - 2);
+      scratchSource = c.createBufferSource();
+      scratchSource.buffer = scratchBuffer;
+      scratchSource.loop = true;
+      scratchSource.playbackRate.value = 0.95 + Math.random() * 0.1;
+      scratchGain = c.createGain();
+      scratchGain.gain.setValueAtTime(0.0001, c.currentTime);
+      scratchGain.gain.exponentialRampToValueAtTime(0.4, c.currentTime + 0.05);
+      scratchSource.connect(scratchGain).connect(masterGain);
+      scratchSource.start(c.currentTime, offset);
+    }
+
+    function stopScratchLoop(){
+      if(!scratchSource || !ctx) return;
+      var now = ctx.currentTime;
+      scratchGain.gain.cancelScheduledValues(now);
+      scratchGain.gain.setValueAtTime(Math.max(scratchGain.gain.value, 0.0001), now);
+      scratchGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+      var toStop = scratchSource;
+      scratchSource = null;
+      setTimeout(function(){ try{ toStop.stop(); }catch(e){} }, 160);
+    }
+
     function playScratch(){
       if(!soundOn) return;
       var c = ensureCtx(); if(!c) return;
       if(!scratchBuffer){ loadScratchBuffer(c); return; }
-      var now = performance.now();
-      if(now - lastScratch < 260) return;
-      lastScratch = now;
 
-      var source = c.createBufferSource();
-      source.buffer = scratchBuffer;
-      source.playbackRate.value = 0.92 + Math.random() * 0.22;
-      var gain = c.createGain();
-      gain.gain.value = 0.5;
-      source.connect(gain).connect(masterGain);
-      source.start(c.currentTime);
+      startScratchLoop(c);
+      if(scratchStopTimer) clearTimeout(scratchStopTimer);
+      scratchStopTimer = setTimeout(function(){
+        stopScratchLoop();
+        scratchStopTimer = null;
+      }, 150);
     }
 
     var fadeTimer = null;
