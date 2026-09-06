@@ -384,11 +384,19 @@
   .meal-marker.veg{border-color:var(--route); background:var(--route);}
   .meal-marker.nonveg{border-color:var(--stamp); background:var(--stamp);}
   .macro-tag{display:block; font-family:var(--font-type); font-size:0.72rem; color:var(--ink-soft); margin-top:0.4rem;}
-  .totals-label{
-    display:block; font-family:var(--font-type); font-size:0.78rem; letter-spacing:0.04em;
-    text-transform:uppercase; color:var(--stamp); margin:2.2rem 0 0;
+  .meal-card-header{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap;
   }
-  .totals-label--top{margin-top:1.6rem;}
+  .meal-card-heading{display:flex; flex-direction:column;}
+  .meal-card-heading svg{margin-bottom:0.9rem;}
+  .meal-card-heading h3{margin:0;}
+  .meal-totals{display:flex; gap:1.4rem;}
+  .meal-total{display:flex; flex-direction:column; align-items:flex-end; text-align:right;}
+  .meal-total-value{font-size:1.35rem; white-space:nowrap;}
+  .meal-total-label{
+    font-family:var(--font-type); font-size:0.65rem; letter-spacing:0.05em;
+    text-transform:uppercase; color:var(--ink-soft);
+  }
   .meal-line{
     display:flex; align-items:baseline; flex-wrap:wrap; gap:0.4rem;
     font-family:var(--font-body); font-size:0.85rem; color:var(--ink); margin-top:0.5rem;
@@ -975,22 +983,24 @@
     <h2>Fuel, not a diet.</h2>
     <p class="lede">Veg most days, non-veg when the training block calls for it. Hover a plate for the detail.</p>
 
-    <span class="totals-label totals-label--top">Daily totals</span>
-    <div class="ledger">
-      <div class="ledger-row">
-        <span class="ledger-label">Total calories</span>
-        <span class="ledger-value num" data-count="1650" data-suffix=" kcal">0</span>
-      </div>
-      <div class="ledger-row">
-        <span class="ledger-label">Total protein</span>
-        <span class="ledger-value num" data-count="95" data-suffix="g">0</span>
-      </div>
-    </div>
-
     <div class="workouts">
       <div class="workout-card workout-card--wide">
-        <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><circle cx="19" cy="19" r="15" stroke="var(--ink)" stroke-width="2.4"/><path d="M19 11v8l6 4" stroke="var(--stamp)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <h3>Meals</h3>
+        <div class="meal-card-header">
+          <div class="meal-card-heading">
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><circle cx="19" cy="19" r="15" stroke="var(--ink)" stroke-width="2.4"/><path d="M19 11v8l6 4" stroke="var(--stamp)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h3>Meals</h3>
+          </div>
+          <div class="meal-totals">
+            <div class="meal-total">
+              <span class="ledger-value meal-total-value num" data-count="1650" data-suffix=" kcal">0</span>
+              <span class="meal-total-label">calories</span>
+            </div>
+            <div class="meal-total">
+              <span class="ledger-value meal-total-value num" data-count="95" data-suffix="g">0</span>
+              <span class="meal-total-label">protein</span>
+            </div>
+          </div>
+        </div>
         <p>Veg most days, non-veg when the training block calls for it.</p>
         <div class="ppl-split cardio-split meal-compact">
           <div class="ppl-day" tabindex="0">
