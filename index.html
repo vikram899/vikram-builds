@@ -404,12 +404,14 @@
   .ppl-list li:last-child{border-bottom:none;}
 
   .alt-split-toggle{
-    font-family:var(--font-type); font-size:0.72rem; letter-spacing:0.04em; text-transform:uppercase;
-    color:var(--ink-soft); background:none; border:1px dashed var(--ink-soft); padding:0.45rem 0.85rem;
-    cursor:pointer; margin-top:1rem; display:inline-flex; align-items:center; gap:0.4rem;
-    transition:color 140ms ease, border-color 140ms ease;
+    font-family:var(--font-type); font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;
+    color:var(--paper); background:var(--stamp); border:1.5px solid var(--stamp); border-radius:2px;
+    padding:0.55rem 1rem; cursor:pointer; margin:1rem 0 0 auto;
+    display:flex; align-items:center; gap:0.4rem;
+    box-shadow:0 4px 10px -4px var(--shadow);
+    transition:transform 140ms ease, filter 140ms ease;
   }
-  .alt-split-toggle:hover, .alt-split-toggle:focus-visible{color:var(--ink); border-color:var(--ink);}
+  .alt-split-toggle:hover, .alt-split-toggle:focus-visible{transform:translateY(-1px); filter:brightness(1.1);}
   .toggle-arrow{display:inline-block; transition:transform 200ms ease;}
   .alt-split-toggle[aria-expanded="true"] .toggle-arrow{transform:rotate(180deg);}
   .alt-splits{margin-top:1rem; display:flex; flex-direction:column; gap:0.7rem;}
