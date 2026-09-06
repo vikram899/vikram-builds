@@ -129,23 +129,11 @@
     border:2px dashed var(--stamp); color:var(--stamp);
     font-family:var(--font-type); font-size:0.62rem; letter-spacing:0.05em; text-transform:uppercase;
     transform:rotate(-8deg); position:absolute; top:-18px; right:clamp(0.5rem,3vw,1.5rem);
-    background:var(--badge-bg); cursor:pointer;
-  }
-  .stamp:focus{outline:none;}
-  .stamp:focus-visible{outline:2px dashed var(--route); outline-offset:4px;}
-  .stamp.pressed{animation:stampPress 260ms ease-out;}
-  @keyframes stampPress{
-    0%{transform:rotate(-8deg) scale(1);}
-    30%{transform:rotate(-8deg) scale(0.8);}
-    60%{transform:rotate(-8deg) scale(1.1);}
-    100%{transform:rotate(-8deg) scale(1);}
+    background:var(--badge-bg);
   }
   .stamp b{font-size:1.05rem; margin:0.15rem 0; font-family:var(--font-display); letter-spacing:0.04em;}
   .stamp::before{
     content:''; position:absolute; inset:6px; border:1px solid var(--stamp); border-radius:50%; opacity:0.6;
-  }
-  @media (prefers-reduced-motion: reduce){
-    .stamp.pressed{animation:none;}
   }
 
   h2{
@@ -363,16 +351,6 @@
   }
   .stub:hover{transform:translateY(-2px); background:var(--tape-2);}
   .stub::before{content:'\2022'; color:var(--stamp);}
-  .stub{transform-origin:left center;}
-  .stub.tearing{animation:stubTear 380ms ease-in forwards; pointer-events:none;}
-  @keyframes stubTear{
-    0%{transform:translateY(-2px) scale(1) skewX(0deg); opacity:1;}
-    40%{transform:translateY(-2px) scale(1.04) skewX(-4deg); opacity:1;}
-    100%{transform:translateY(2px) scale(0.88) skewX(7deg); opacity:0;}
-  }
-  @media (prefers-reduced-motion: reduce){
-    .stub.tearing{animation:none;}
-  }
 
   footer{
     padding:2rem clamp(1.1rem,5vw,3rem); text-align:center;
@@ -429,31 +407,6 @@
   .postmark svg{position:absolute; inset:0; animation:spin 40s linear infinite;}
   .postmark b{font-family:var(--font-type); font-size:0.72rem; color:var(--ink); position:relative; z-index:1;}
   @keyframes spin{to{transform:rotate(360deg);}}
-
-  .print-btn{
-    font-family:var(--font-type); font-size:0.72rem; letter-spacing:0.04em; text-transform:uppercase;
-    color:var(--ink-soft); background:none; border:1px dashed var(--ink-soft); padding:0.4rem 0.8rem;
-    cursor:pointer; margin-top:0.3rem; transition:color 140ms ease, border-color 140ms ease;
-  }
-  .print-btn:hover, .print-btn:focus-visible{color:var(--ink); border-color:var(--ink);}
-
-  @media print{
-    :root{
-      --paper:#fff; --ink:#111; --ink-soft:#333; --stamp:#111; --route:#444;
-      --card-bg:#fff; --card-bg-2:#fff; --card-illo-bg:#fff;
-      --badge-bg:transparent; --badge-bg-strong:transparent; --divider:#999; --shadow:transparent;
-    }
-    body{background:#fff !important; background-image:none !important;}
-    *{animation:none !important; transition:none !important; box-shadow:none !important; text-shadow:none !important;}
-    .corner-controls, .postmark, .grain, .headlamp-glow, .cta-row, .print-btn,
-    .btn-outline, .pencil-canvas{display:none !important;}
-    a[href]::after{content:' (' attr(href) ')'; font-size:0.75em;}
-    a[href^="#"]::after{content:'';}
-    section, header.hero{page-break-inside:avoid;}
-    .photo-card, .postcard, .report, .ledger, .ticket, .split-card, .waypoint .tip{
-      box-shadow:none !important; border-color:#999 !important;
-    }
-  }
 </style>
 </head>
 <body>
@@ -799,7 +752,6 @@
     <div class="scrap-burst" id="scrapBurst" aria-hidden="true"></div>
   </div>
   vikram.builds — logged one mile at a time, since 2026
-  <button type="button" class="print-btn" id="printBtn">print this log</button>
 </footer>
 
 <audio id="bgMusic" src="assets/audio/meditation-music-no-copyright.mp3" loop preload="none"></audio>
@@ -1101,77 +1053,15 @@
   })();
 
   (function(){
-    var waypoints = Array.prototype.slice.call(document.querySelectorAll('.waypoint'));
-    var chart = document.querySelector('.route-chart');
-    var lastActive = document.querySelector('.waypoint.active') || null;
-
-    function setActiveWaypoint(wp){
-      if(!wp || wp === lastActive) return;
-      waypoints.forEach(function(w){ w.classList.remove('active'); });
-      wp.classList.add('active');
-      VB_AUDIO.playStamp();
-      lastActive = wp;
-    }
-
+    var waypoints = document.querySelectorAll('.waypoint');
     waypoints.forEach(function(wp){
-      wp.addEventListener('click', function(){ setActiveWaypoint(wp); });
-    });
-
-    if(chart && window.PointerEvent){
-      var dragging = false;
-      function nearestTo(clientX){
-        var nearest = null, minDist = Infinity;
-        waypoints.forEach(function(wp){
-          var r = wp.getBoundingClientRect();
-          var d = Math.abs(clientX - (r.left + r.width / 2));
-          if(d < minDist){ minDist = d; nearest = wp; }
-        });
-        return nearest;
-      }
-      chart.addEventListener('pointerdown', function(e){
-        dragging = true;
-        try{ chart.setPointerCapture(e.pointerId); }catch(err){}
-        setActiveWaypoint(nearestTo(e.clientX));
-      });
-      chart.addEventListener('pointermove', function(e){
-        if(!dragging) return;
-        setActiveWaypoint(nearestTo(e.clientX));
-      });
-      chart.addEventListener('pointerup', function(){ dragging = false; });
-      chart.addEventListener('pointercancel', function(){ dragging = false; });
-    }
-
-    document.querySelectorAll('.stamp').forEach(function(stamp){
-      stamp.setAttribute('role', 'button');
-      stamp.setAttribute('tabindex', '0');
-      stamp.addEventListener('click', function(){
-        stamp.classList.remove('pressed');
-        void stamp.offsetWidth;
-        stamp.classList.add('pressed');
+      wp.addEventListener('click', function(){
+        var wasActive = wp.classList.contains('active');
+        waypoints.forEach(function(w){ w.classList.remove('active'); });
+        if(!wasActive) wp.classList.add('active');
         VB_AUDIO.playStamp();
       });
-      stamp.addEventListener('keydown', function(e){
-        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); stamp.click(); }
-      });
     });
-
-    document.querySelectorAll('.stub').forEach(function(stub){
-      stub.addEventListener('click', function(e){
-        e.preventDefault();
-        if(stub.classList.contains('tearing')) return;
-        stub.classList.add('tearing');
-        var href = stub.getAttribute('href');
-        setTimeout(function(){
-          stub.classList.remove('tearing');
-          if(href && href !== '#'){ window.open(href, '_blank', 'noopener'); }
-        }, 380);
-      });
-    });
-
-    var printBtn = document.getElementById('printBtn');
-    if(printBtn){
-      printBtn.addEventListener('click', function(){ window.print(); });
-    }
 
     var start = Date.now();
     var clock = document.getElementById('onPageClock');
