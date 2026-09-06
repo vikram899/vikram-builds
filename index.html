@@ -76,25 +76,34 @@
   img{max-width:100%;}
   .num{font-variant-numeric:tabular-nums;}
 
-  /* ---------- headlamp toggle + glow ---------- */
-  .headlamp-toggle{
+  /* ---------- corner controls: sound + headlamp toggle + glow ---------- */
+  .corner-controls{
     position:fixed; top:16px; right:16px; z-index:45;
+    display:flex; align-items:center; gap:0.5rem;
+  }
+  .sound-toggle, .headlamp-toggle{
     display:flex; align-items:center; gap:0.5rem;
     background:var(--badge-bg-strong); border:2px dashed var(--ink); color:var(--ink);
     padding:0.42rem 0.85rem 0.42rem 0.55rem; border-radius:999px; cursor:pointer;
     font-family:var(--font-type); font-size:0.66rem; letter-spacing:0.04em; text-transform:uppercase;
     transition:background 220ms ease, color 220ms ease, border-color 220ms ease;
   }
-  .headlamp-toggle:focus-visible{outline:2px solid var(--route); outline-offset:2px;}
-  .headlamp-toggle svg{flex:none; color:inherit;}
+  .sound-toggle:focus-visible, .headlamp-toggle:focus-visible{outline:2px solid var(--route); outline-offset:2px;}
+  .sound-toggle svg, .headlamp-toggle svg{flex:none; color:inherit;}
   .headlamp-toggle .beam-lines{opacity:0.4; transition:opacity 220ms ease;}
-  :root[data-mode="night"] .headlamp-toggle{
+  :root[data-mode="night"] .sound-toggle, :root[data-mode="night"] .headlamp-toggle{
     border-color:var(--stamp); color:var(--stamp);
   }
   :root[data-mode="night"] .headlamp-toggle .beam-lines{
     opacity:1; filter:drop-shadow(0 0 3px var(--stamp));
   }
-  @media (max-width:600px){ .headlamp-toggle .headlamp-label{display:none;} }
+  .sound-toggle .sound-waves{opacity:0.35; transition:opacity 220ms ease;}
+  .sound-toggle .sound-muted{opacity:1;}
+  .sound-toggle[aria-pressed="true"] .sound-waves{opacity:1;}
+  .sound-toggle[aria-pressed="true"] .sound-muted{opacity:0;}
+  @media (max-width:600px){
+    .headlamp-toggle .headlamp-label, .sound-toggle .sound-label{display:none;}
+  }
 
   .headlamp-glow{
     position:fixed; inset:0; z-index:6; pointer-events:none;
@@ -351,19 +360,35 @@
 <div class="grain" aria-hidden="true"></div>
 <div class="headlamp-glow" aria-hidden="true"></div>
 
-<button id="headlampToggle" class="headlamp-toggle" type="button" aria-pressed="false" aria-label="Toggle night trail-run mode">
-  <svg viewBox="0 0 40 40" width="22" height="22" aria-hidden="true" fill="none">
-    <circle cx="20" cy="20" r="9" stroke="currentColor" stroke-width="2.4"/>
-    <g class="beam-lines" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-      <line x1="20" y1="4" x2="20" y2="9"/>
-      <line x1="33" y1="20" x2="28" y2="20"/>
-      <line x1="7" y1="20" x2="12" y2="20"/>
-      <line x1="29.5" y1="10.5" x2="26" y2="14"/>
-      <line x1="10.5" y1="10.5" x2="14" y2="14"/>
-    </g>
-  </svg>
-  <span class="headlamp-label">night mode</span>
-</button>
+<div class="corner-controls">
+  <button id="soundToggle" class="sound-toggle" type="button" aria-pressed="false" aria-label="Toggle trail ambience and sound effects">
+    <svg viewBox="0 0 40 40" width="20" height="20" aria-hidden="true" fill="none">
+      <path d="M7 15h6l9-8v26l-9-8H7z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      <g class="sound-waves" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none">
+        <path d="M27 13c3 3 3 11 0 14"/>
+        <path d="M31.5 8c5.5 4.5 5.5 19 0 24"/>
+      </g>
+      <g class="sound-muted" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <line x1="26" y1="12" x2="34" y2="28"/>
+        <line x1="34" y1="12" x2="26" y2="28"/>
+      </g>
+    </svg>
+    <span class="sound-label">sound</span>
+  </button>
+  <button id="headlampToggle" class="headlamp-toggle" type="button" aria-pressed="false" aria-label="Toggle night trail-run mode">
+    <svg viewBox="0 0 40 40" width="22" height="22" aria-hidden="true" fill="none">
+      <circle cx="20" cy="20" r="9" stroke="currentColor" stroke-width="2.4"/>
+      <g class="beam-lines" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <line x1="20" y1="4" x2="20" y2="9"/>
+        <line x1="33" y1="20" x2="28" y2="20"/>
+        <line x1="7" y1="20" x2="12" y2="20"/>
+        <line x1="29.5" y1="10.5" x2="26" y2="14"/>
+        <line x1="10.5" y1="10.5" x2="14" y2="14"/>
+      </g>
+    </svg>
+    <span class="headlamp-label">night mode</span>
+  </button>
+</div>
 
 <header class="hero">
   <div class="wrap">
@@ -653,6 +678,140 @@
 </div>
 
 <script>
+  var VB_AUDIO = (function(){
+    var ctx = null, masterGain = null;
+    var soundOn = false;
+    var ambient = null;
+
+    function ensureCtx(){
+      if(!ctx){
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if(!AC) return null;
+        ctx = new AC();
+        masterGain = ctx.createGain();
+        masterGain.gain.value = 0.5;
+        masterGain.connect(ctx.destination);
+      }
+      if(ctx.state === 'suspended') ctx.resume();
+      return ctx;
+    }
+
+    function playStamp(){
+      if(!soundOn) return;
+      var c = ensureCtx(); if(!c) return;
+      var now = c.currentTime;
+      var osc = c.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(170, now);
+      osc.frequency.exponentialRampToValueAtTime(55, now + 0.13);
+      var gain = c.createGain();
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.55, now + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.17);
+      osc.connect(gain).connect(masterGain);
+      osc.start(now); osc.stop(now + 0.2);
+    }
+
+    function playWhoosh(toNight){
+      if(!soundOn) return;
+      var c = ensureCtx(); if(!c) return;
+      var now = c.currentTime;
+      var osc = c.createOscillator();
+      osc.type = 'sine';
+      var f0 = toNight ? 850 : 200, f1 = toNight ? 200 : 850;
+      osc.frequency.setValueAtTime(f0, now);
+      osc.frequency.exponentialRampToValueAtTime(f1, now + 0.38);
+      var gain = c.createGain();
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.3, now + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
+      osc.connect(gain).connect(masterGain);
+      osc.start(now); osc.stop(now + 0.45);
+    }
+
+    var lastScratch = 0;
+    function playScratch(){
+      if(!soundOn) return;
+      var now = performance.now();
+      if(now - lastScratch < 140) return;
+      lastScratch = now;
+      var c = ensureCtx(); if(!c) return;
+      var dur = 0.05;
+      var buffer = c.createBuffer(1, c.sampleRate * dur, c.sampleRate);
+      var data = buffer.getChannelData(0);
+      for(var i = 0; i < data.length; i++){ data[i] = (Math.random() * 2 - 1) * (1 - i / data.length); }
+      var noise = c.createBufferSource();
+      noise.buffer = buffer;
+      var filter = c.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.value = 2000 + Math.random() * 900;
+      filter.Q.value = 3.5;
+      var gain = c.createGain();
+      gain.gain.value = 0.14;
+      noise.connect(filter).connect(gain).connect(masterGain);
+      noise.start(c.currentTime);
+    }
+
+    function startAmbient(){
+      var c = ensureCtx(); if(!c || ambient) return;
+      var bufferSize = 2 * c.sampleRate;
+      var buffer = c.createBuffer(1, bufferSize, c.sampleRate);
+      var data = buffer.getChannelData(0);
+      var last = 0;
+      for(var i = 0; i < bufferSize; i++){
+        var white = Math.random() * 2 - 1;
+        last = (last + 0.02 * white) / 1.02;
+        data[i] = last * 3.5;
+      }
+      var source = c.createBufferSource();
+      source.buffer = buffer;
+      source.loop = true;
+
+      var filter = c.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 500;
+
+      var lfo = c.createOscillator();
+      lfo.frequency.value = 0.07;
+      var lfoGain = c.createGain();
+      lfoGain.gain.value = 240;
+      lfo.connect(lfoGain).connect(filter.frequency);
+      lfo.start();
+
+      var gain = c.createGain();
+      gain.gain.setValueAtTime(0.0001, c.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.1, c.currentTime + 1.4);
+
+      source.connect(filter).connect(gain).connect(masterGain);
+      source.start();
+      ambient = {source: source, lfo: lfo, gain: gain};
+    }
+
+    function stopAmbient(){
+      if(!ambient || !ctx) return;
+      var now = ctx.currentTime;
+      ambient.gain.gain.cancelScheduledValues(now);
+      ambient.gain.gain.setValueAtTime(Math.max(ambient.gain.gain.value, 0.0001), now);
+      ambient.gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+      var toStop = ambient;
+      ambient = null;
+      setTimeout(function(){ try{ toStop.source.stop(); toStop.lfo.stop(); }catch(e){} }, 700);
+    }
+
+    var btn = document.getElementById('soundToggle');
+    if(btn){
+      btn.addEventListener('click', function(){
+        soundOn = !soundOn;
+        btn.setAttribute('aria-pressed', String(soundOn));
+        var c = ensureCtx();
+        if(!c) return;
+        if(soundOn) startAmbient(); else stopAmbient();
+      });
+    }
+
+    return { playStamp: playStamp, playWhoosh: playWhoosh, playScratch: playScratch };
+  })();
+
   (function(){
     var root = document.documentElement;
     var toggle = document.getElementById('headlampToggle');
@@ -667,6 +826,7 @@
     function toggleMode(){
       var isNight = root.getAttribute('data-mode') === 'night';
       applyMode(!isNight);
+      VB_AUDIO.playWhoosh(!isNight);
       try{ localStorage.setItem('vb-mode', isNight ? 'day' : 'night'); }catch(e){}
     }
 
@@ -754,7 +914,7 @@
         raf = points.length ? requestAnimationFrame(drawTrail) : null;
       }
 
-      wrap.addEventListener('mousemove', function(e){ addPoint(e.clientX, e.clientY); });
+      wrap.addEventListener('mousemove', function(e){ addPoint(e.clientX, e.clientY); VB_AUDIO.playScratch(); });
     }
 
     /* parallax depth on scroll */
@@ -785,6 +945,7 @@
         var wasActive = wp.classList.contains('active');
         waypoints.forEach(function(w){ w.classList.remove('active'); });
         if(!wasActive) wp.classList.add('active');
+        VB_AUDIO.playStamp();
       });
     });
 
