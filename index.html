@@ -363,15 +363,12 @@
   }
   .stub:hover{transform:translateY(-2px); background:var(--tape-2);}
   .stub::before{content:'\2022'; color:var(--stamp);}
-  .stub.tearing{animation:stubTear 650ms cubic-bezier(.4,0,.6,1) forwards; pointer-events:none;}
+  .stub{transform-origin:left center;}
+  .stub.tearing{animation:stubTear 380ms ease-in forwards; pointer-events:none;}
   @keyframes stubTear{
-    0%{transform:translate(0,0) rotate(0deg) scale(1); opacity:1;}
-    12%{transform:translate(-5px,0) rotate(-3deg) scale(1); opacity:1;}
-    24%{transform:translate(5px,0) rotate(3deg) scale(1); opacity:1;}
-    36%{transform:translate(-4px,0) rotate(-2deg) scale(1.03); opacity:1;}
-    48%{transform:translate(4px,0) rotate(2deg) scale(1.03); opacity:1;}
-    65%{transform:translate(10px,8px) rotate(10deg) scale(0.92); opacity:0.9;}
-    100%{transform:translate(30px,26px) rotate(24deg) scale(0.6); opacity:0;}
+    0%{transform:translateY(-2px) scale(1) skewX(0deg); opacity:1;}
+    40%{transform:translateY(-2px) scale(1.04) skewX(-4deg); opacity:1;}
+    100%{transform:translateY(2px) scale(0.88) skewX(7deg); opacity:0;}
   }
   @media (prefers-reduced-motion: reduce){
     .stub.tearing{animation:none;}
@@ -1167,7 +1164,7 @@
         setTimeout(function(){
           stub.classList.remove('tearing');
           if(href && href !== '#'){ window.open(href, '_blank', 'noopener'); }
-        }, 650);
+        }, 380);
       });
     });
 
