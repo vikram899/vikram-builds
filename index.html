@@ -397,19 +397,6 @@
     font-family:var(--font-type); font-size:0.65rem; letter-spacing:0.05em;
     text-transform:uppercase; color:var(--ink-soft);
   }
-  .game-frame{
-    position:relative; z-index:10;
-    margin-top:2.2rem; background:var(--card-illo-bg); border:1px solid rgba(42,33,24,0.18);
-    box-shadow:0 10px 22px -8px var(--shadow); overflow:hidden; line-height:0;
-  }
-  #runnerGame{display:block; width:100%; height:auto; cursor:pointer; touch-action:manipulation;}
-  .game-legend{
-    display:flex; flex-wrap:wrap; gap:0.4rem 1.2rem; margin-top:0.9rem;
-    font-family:var(--font-type); font-size:0.78rem; color:var(--ink-soft);
-  }
-  .game-legend b{color:var(--ink); font-weight:400;}
-  .game-legend .avoid b{color:var(--stamp);}
-  .game-legend .collect b{color:var(--route);}
   .meal-line{
     display:flex; align-items:baseline; flex-wrap:wrap; gap:0.4rem;
     font-family:var(--font-body); font-size:0.85rem; color:var(--ink); margin-top:0.5rem;
@@ -547,6 +534,129 @@
   .postmark svg{position:absolute; inset:0; animation:spin 40s linear infinite;}
   .postmark b{font-family:var(--font-type); font-size:0.72rem; color:var(--ink); position:relative; z-index:1;}
   @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* ---------- Vikram: The Grind (game) ---------- */
+  .grind-game{
+    --gg-bg:#0c0f0d; --gg-panel:#151a1b; --gg-panel-2:#1b2122;
+    --gg-ink:#eef2ef; --gg-ink-soft:#8b9a93; --gg-accent:#34d399;
+    --gg-danger:#ef5b4e; --gg-border:rgba(255,255,255,0.09); --gg-track:rgba(255,255,255,0.07);
+    margin-top:2.4rem; background:var(--gg-bg); border-radius:4px; border:1px solid var(--gg-border);
+    padding:clamp(1.4rem,4vw,2.4rem); color:var(--gg-ink); position:relative;
+    box-shadow:0 20px 40px -20px rgba(0,0,0,0.6);
+  }
+  .gg-screen[hidden]{display:none;}
+  .gg-btn{
+    font-family:var(--font-type); font-size:0.8rem; letter-spacing:0.05em; text-transform:uppercase;
+    padding:0.85rem 1.5rem; border-radius:3px; cursor:pointer; border:1.5px solid var(--gg-accent);
+    transition:transform 140ms ease, filter 140ms ease, color 140ms ease, border-color 140ms ease;
+  }
+  .gg-btn:focus-visible{outline:2px solid var(--gg-accent); outline-offset:2px;}
+  .gg-btn-primary{background:var(--gg-accent); color:#06110c; font-weight:600;}
+  .gg-btn-primary:hover{transform:translateY(-1px); filter:brightness(1.1);}
+  .gg-btn-ghost{background:transparent; color:var(--gg-ink-soft); border-color:var(--gg-border);}
+  .gg-btn-ghost:hover{color:var(--gg-ink); border-color:var(--gg-ink-soft);}
+
+  #ggStart{display:flex; flex-direction:column; align-items:center; text-align:center; padding:0.6rem 0;}
+  .gg-eyebrow{
+    font-family:var(--font-display); font-size:clamp(1.5rem,4vw,2rem); letter-spacing:0.05em;
+    color:var(--gg-accent); text-align:center; margin:0 0 1rem; text-transform:uppercase;
+  }
+  .gg-intro{
+    font-family:var(--font-body); font-size:1.02rem; line-height:1.75; color:var(--gg-ink-soft);
+    text-align:center; max-width:44ch; margin:0 auto 1.8rem;
+  }
+
+  .gg-topbar{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:var(--font-type); font-size:0.85rem; color:var(--gg-ink-soft); margin-bottom:1.2rem;
+  }
+  .gg-day b{color:var(--gg-ink); font-family:var(--font-display); font-size:1.15rem; font-weight:400;}
+  .gg-weight{color:var(--gg-accent);}
+
+  .gg-stats{display:flex; flex-direction:column; gap:0.55rem; margin-bottom:1.1rem;}
+  .gg-stat-row{display:grid; grid-template-columns:108px 1fr 32px; align-items:center; gap:0.6rem;}
+  .gg-stat-label{
+    font-family:var(--font-type); font-size:0.7rem; letter-spacing:0.02em;
+    color:var(--gg-ink-soft); text-transform:uppercase; white-space:nowrap;
+  }
+  .gg-stat-track{height:8px; background:var(--gg-track); border-radius:6px; overflow:hidden;}
+  .gg-stat-fill{height:100%; border-radius:6px; background:var(--gg-accent); transition:width 320ms ease;}
+  .gg-stat-fill.gg-low{background:var(--gg-danger);}
+  .gg-stat-value{font-family:var(--font-type); font-size:0.74rem; color:var(--gg-ink-soft); text-align:right;}
+
+  .gg-warning{
+    background:rgba(239,91,78,0.12); border:1px dashed var(--gg-danger); color:var(--gg-danger);
+    font-family:var(--font-type); font-size:0.76rem; padding:0.6rem 0.8rem; border-radius:3px; margin-bottom:1rem;
+  }
+
+  .gg-prompt{
+    font-family:var(--font-display); font-size:1.05rem; letter-spacing:0.02em;
+    text-transform:uppercase; color:var(--gg-ink); margin:0 0 0.8rem; font-weight:400;
+  }
+  .gg-actions{display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:0.65rem; margin-bottom:1.1rem;}
+  .gg-action{
+    background:var(--gg-panel); border:1px solid var(--gg-border); border-radius:4px;
+    padding:0.75rem 0.7rem; text-align:left; cursor:pointer; color:var(--gg-ink);
+    font-family:var(--font-type); font-size:0.72rem; line-height:1.5;
+    transition:border-color 140ms ease, transform 140ms ease, background 140ms ease;
+    display:flex; flex-direction:column; gap:0.25rem;
+  }
+  .gg-action:hover:not(:disabled){border-color:var(--gg-accent); transform:translateY(-2px); background:var(--gg-panel-2);}
+  .gg-action:focus-visible{outline:2px solid var(--gg-accent); outline-offset:2px;}
+  .gg-action:disabled{opacity:0.35; cursor:not-allowed;}
+  .gg-action-icon{font-size:1.25rem;}
+  .gg-action-name{font-family:var(--font-display); font-size:0.98rem; letter-spacing:0.02em; text-transform:uppercase; font-weight:400;}
+  .gg-action-meta{font-size:0.66rem; color:var(--gg-ink-soft);}
+
+  .gg-timebar{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.6rem;
+    font-family:var(--font-type); font-size:0.8rem; color:var(--gg-ink-soft);
+    padding-top:0.8rem; border-top:1px dashed var(--gg-border);
+  }
+  .gg-timebar b{color:var(--gg-accent);}
+  .gg-feed{
+    font-family:var(--font-body); font-style:italic; color:var(--gg-ink-soft);
+    font-size:0.9rem; margin:1rem 0 0; min-height:1.3em;
+  }
+
+  #ggEvent{text-align:center;}
+  .gg-event-title{
+    font-family:var(--font-display); font-size:1.5rem; text-transform:uppercase;
+    color:var(--gg-accent); margin:0 0 0.7rem; font-weight:400;
+  }
+  .gg-event-body{
+    font-family:var(--font-body); font-size:1rem; color:var(--gg-ink-soft);
+    margin:0 auto 1.3rem; max-width:48ch;
+  }
+  #ggEventChoices{grid-template-columns:1fr; max-width:420px; margin:0 auto;}
+
+  #ggEnd{text-align:center;}
+  .gg-ending-emoji{font-size:2.4rem; margin-bottom:0.3rem;}
+  .gg-ending-title{
+    font-family:var(--font-display); font-size:clamp(1.5rem,4vw,2rem); text-transform:uppercase;
+    letter-spacing:0.03em; margin:0 0 0.3rem; font-weight:400;
+  }
+  .gg-sub{color:var(--gg-ink-soft); font-family:var(--font-type); font-size:0.82rem; margin:0.2rem 0 1.2rem;}
+  .gg-score{font-family:var(--font-display); font-size:clamp(2.8rem,9vw,4rem); color:var(--gg-accent); line-height:1;}
+  .gg-score-label{
+    font-family:var(--font-type); font-size:0.7rem; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--gg-ink-soft); margin:0 0 1.3rem;
+  }
+  .gg-weight-final{font-family:var(--font-type); font-size:0.92rem; color:var(--gg-ink); margin:0.8rem 0;}
+  .gg-quote{
+    font-family:var(--font-body); font-style:italic; font-size:1.02rem; color:var(--gg-ink);
+    max-width:42ch; margin:1rem auto 1.5rem; line-height:1.65;
+  }
+  .gg-best{font-family:var(--font-type); font-size:0.76rem; color:var(--gg-accent); margin-bottom:1rem;}
+  .gg-end-actions{display:flex; gap:0.7rem; justify-content:center; flex-wrap:wrap;}
+
+  @media (max-width:420px){
+    .gg-stat-row{grid-template-columns:82px 1fr 28px; gap:0.4rem;}
+    .gg-action{padding:0.65rem 0.55rem;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .gg-btn, .gg-action{transition:none;}
+  }
 </style>
 </head>
 <body>
@@ -1089,16 +1199,65 @@
 <section id="game">
   <div class="wrap">
     <span class="stamp">CHECKPOINT<b>08</b>THE GAME</span>
-    <h2>Vikram's Run.</h2>
-    <p class="lede">Dodge the things that derail a training block. Grab the things that don't. Score is just distance — like everything else here.</p>
-    <div class="game-frame">
-      <canvas id="runnerGame" width="800" height="240" aria-label="Endless runner mini-game: jump to dodge Work, Late Night, and Junk Food; collect Protein, Sleep, Water, and Steps"></canvas>
+    <h2>Vikram: The Grind.</h2>
+    <p class="lede">Corporate job, a triathlon, and a following to build — all in the same 24 hours. Seven days. Your call.</p>
+
+    <div class="grind-game" id="grindGame">
+
+      <div class="gg-screen" id="ggStart">
+        <p class="gg-eyebrow">VIKRAM: THE GRIND</p>
+        <p class="gg-intro">
+          83&nbsp;KG. Full-time job. Triathlon ahead. Content to create.<br>
+          24 hours in a day. How much can you actually balance?
+        </p>
+        <button type="button" class="gg-btn gg-btn-primary" id="ggStartBtn">Start the grind</button>
+      </div>
+
+      <div class="gg-screen" id="ggMain" hidden>
+        <div class="gg-topbar">
+          <span class="gg-day">DAY <b id="ggDayNum">1</b> / 7</span>
+          <span class="gg-weight" id="ggWeight">83.0 KG</span>
+        </div>
+
+        <div class="gg-stats" id="ggStats"></div>
+
+        <p class="gg-warning" id="ggWarning" hidden></p>
+
+        <p class="gg-prompt">What do you do?</p>
+        <div class="gg-actions" id="ggActions"></div>
+
+        <div class="gg-timebar">
+          <span>Time left: <b id="ggTimeLeft">24</b>h</span>
+          <button type="button" class="gg-btn gg-btn-ghost" id="ggEndDay">End day →</button>
+        </div>
+
+        <p class="gg-feed" id="ggFeed" aria-live="polite"></p>
+      </div>
+
+      <div class="gg-screen" id="ggEvent" hidden>
+        <p class="gg-eyebrow" id="ggEventTime">EVENT</p>
+        <h3 class="gg-event-title" id="ggEventTitle"></h3>
+        <p class="gg-event-body" id="ggEventBody"></p>
+        <div class="gg-actions" id="ggEventChoices"></div>
+      </div>
+
+      <div class="gg-screen" id="ggEnd" hidden>
+        <p class="gg-ending-emoji" id="ggEndingEmoji">👑</p>
+        <h3 class="gg-ending-title" id="ggEndingTitle">BALANCED BUILDER</h3>
+        <p class="gg-sub">7 days complete</p>
+        <div class="gg-score" id="ggScore">87</div>
+        <p class="gg-score-label">your vikram score</p>
+        <div class="gg-stats" id="ggFinalStats"></div>
+        <p class="gg-weight-final" id="ggFinalWeight">73.8 KG</p>
+        <p class="gg-quote" id="ggEndingQuote">"You didn't become perfect. You became consistent."</p>
+        <p class="gg-best" id="ggBest" hidden></p>
+        <div class="gg-end-actions">
+          <button type="button" class="gg-btn gg-btn-primary" id="ggReplayBtn">Play again</button>
+          <button type="button" class="gg-btn gg-btn-ghost" id="ggBackBtn">Back to portfolio</button>
+        </div>
+      </div>
+
     </div>
-    <div class="game-legend">
-      <span class="avoid">avoid: <b>💼 work</b> · <b>🌙 late night</b> · <b>🍔 junk food</b></span>
-      <span class="collect">collect: <b>🍗 protein</b> · <b>😴 sleep</b> · <b>💧 water</b> · <b>👣 steps</b></span>
-    </div>
-    <p class="route-hint">tap the track or press space to jump ↑</p>
   </div>
 </section>
 
@@ -1525,224 +1684,369 @@
   })();
 
   (function(){
-    var canvas = document.getElementById('runnerGame');
-    if(!canvas) return;
-    var ctx = canvas.getContext('2d');
-    var dpr = window.devicePixelRatio || 1;
-    var W = 800, H = 240, groundY = H - 34;
+    var root = document.getElementById('grindGame');
+    if(!root) return;
 
-    function resizeCanvas(){
-      var rect = canvas.getBoundingClientRect();
-      var displayWidth = rect.width || 800;
-      var displayHeight = displayWidth * (240 / 800);
-      W = displayWidth; H = displayHeight; groundY = H - 34;
-      canvas.width = Math.round(displayWidth * dpr);
-      canvas.height = Math.round(displayHeight * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      if(player) player.y = Math.min(player.y, groundY);
-    }
+    /* ================= DATA ================= */
+    var ACTIONS = {
+      run:      {icon:'🏃', name:'Run',           time:1,  effects:{fitness:8,  energy:-15, health:2,  weight:-0.8}},
+      cycle:    {icon:'🚴', name:'Cycle',         time:2,  effects:{fitness:10, energy:-18, weight:-1.0}},
+      swim:     {icon:'🏊', name:'Swim',          time:1,  effects:{fitness:7,  energy:-12, weight:-0.7}},
+      strength: {icon:'💪', name:'Strength',      time:1,  effects:{fitness:7,  health:3,  energy:-12, weight:-0.5}},
+      cook:     {icon:'🍳', name:'Cook Healthy',  time:1,  effects:{health:8,  energy:-5,  weight:-1.5}},
+      work:     {icon:'💻', name:'Work',          time:8,  effects:{career:8,  energy:-20}},
+      overtime: {icon:'💻', name:'Overtime',      time:10, effects:{career:14, energy:-30, health:-3, weight:0.5}},
+      create:   {icon:'🎥', name:'Create Reel',   time:2,  effects:{creator:8, energy:-12}, viral:true},
+      sleep:    {icon:'😴', name:'Sleep',         time:8,  effects:{energy:30, health:5}, oncePerDay:true},
+      junk:     {icon:'🍔', name:'Junk Food',     time:0.5, effects:{health:-5, energy:5, weight:2.0}}
+    };
+    var ACTION_ORDER = ['run','cycle','swim','strength','cook','work','overtime','create','sleep','junk'];
 
-    var ink, stamp, route, cardBg;
-    function readColors(){
-      var cs = getComputedStyle(document.documentElement);
-      ink = cs.getPropertyValue('--ink').trim() || '#2a2118';
-      stamp = cs.getPropertyValue('--stamp').trim() || '#a3372a';
-      route = cs.getPropertyValue('--route').trim() || '#4a5d3a';
-      cardBg = cs.getPropertyValue('--card-illo-bg').trim() || '#f1e9d3';
-    }
+    var FLAVOR = {
+      run: ['Legs remember how to do this.', 'Logged the miles before the excuses woke up.'],
+      cycle: ['Two hours in the saddle. Worth it, probably.'],
+      swim: ['Chlorine and quiet. Not the worst way to spend an hour.'],
+      strength: ['The bar felt heavy but it moved.'],
+      cook: ['Meal prepped like an adult, for once.'],
+      work: ['Another eight hours, another Slack thread.'],
+      overtime: ['Stayed late. The inbox says thank you. Nothing else does.'],
+      sleep: ['Actually slept. Revolutionary.'],
+      junk: ['Worth it. Mostly.']
+    };
 
-    var GRAVITY = 0.55, JUMP_V = -11.5, BASE_SPEED = 2.6, MAX_SPEED = 6;
-    var player = { x: 90, y: groundY, vy: 0, legPhase: 0 };
-    var items = [];
-    var speed = BASE_SPEED;
-    var distance = 0;
-    var running = false, gameOver = false;
-    var spawnTimer = 0, nextSpawnIn = 110;
-
-    var OBSTACLES = ['💼', '🌙', '🍔'];
-    var COLLECTIBLES = ['🍗', '😴', '💧', '👣'];
-
-    var highScore = 0;
-    try{ highScore = parseInt(localStorage.getItem('vb-run-highscore') || '0', 10) || 0; }catch(e){}
-
-    function reset(){
-      player.y = groundY; player.vy = 0; player.legPhase = 0;
-      items = []; speed = BASE_SPEED; distance = 0; spawnTimer = 0; nextSpawnIn = 110;
-      gameOver = false;
-    }
-
-    function start(){ reset(); running = true; }
-
-    function jump(){
-      if(!running && !gameOver){ start(); return; }
-      if(gameOver){ start(); return; }
-      if(player.y >= groundY - 0.5){ player.vy = JUMP_V; }
-    }
-
-    function spawnItem(){
-      var isObstacle = Math.random() < 0.55;
-      var pool = isObstacle ? OBSTACLES : COLLECTIBLES;
-      var label = pool[Math.floor(Math.random() * pool.length)];
-      items.push({
-        x: W + 20,
-        type: isObstacle ? 'obstacle' : 'collectible',
-        label: label,
-        width: 38,
-        height: 38
-      });
-    }
-
-    function endGame(){
-      gameOver = true; running = false;
-      var scoreInt = Math.floor(distance);
-      if(scoreInt > highScore){
-        highScore = scoreInt;
-        try{ localStorage.setItem('vb-run-highscore', String(highScore)); }catch(e){}
+    var EVENTS = [
+      { id:'boss-call', time:'9:47 PM', title:'Boss Call',
+        body:'"Can you jump on a quick call?"',
+        choices:[
+          {label:'Take the call', effects:{career:10, energy:-10}},
+          {label:'Go for your run instead', effects:{fitness:8, career:-3}},
+          {label:'Somehow do both', effects:{career:5, fitness:5, energy:-20}}
+        ]
+      },
+      { id:'legs-dead', time:'6:12 AM', title:'Legs Are Dead',
+        body:'You wake up and your legs have officially resigned.',
+        choices:[
+          {label:'Train anyway', effects:{fitness:4, energy:-15, health:-3}},
+          {label:'Take a recovery day', effects:{energy:15, health:5}}
+        ]
+      },
+      { id:'birthday', time:'7:30 PM', title:'Birthday Party',
+        body:'🎂 A friend invited you to a party tonight.',
+        choices:[
+          {label:'Go and enjoy it', effects:{health:-3}},
+          {label:'Meal prep instead', effects:{health:5}}
+        ]
+      },
+      { id:'free-evening', time:'5:00 PM', title:'Free Evening',
+        body:"Somehow, you finished everything early. There's time left tonight.",
+        choices:[ {label:'Nice — use it', effects:{}, bonusTime:3} ]
+      },
+      { id:'tri-countdown', time:'', title:'Triathlon Countdown',
+        body:'🏊🚴🏃 Race day is getting closer. Every session counts more from here.',
+        choices:[ {label:'Noted.', effects:{}, fitnessBoost:true} ],
+        minDay:5
       }
-      VB_AUDIO.playWhoosh(false);
+    ];
+
+    var STAT_KEYS = ['fitness','career','creator','health','energy'];
+    var STAT_LABELS = {fitness:'💪 Fitness', career:'💼 Career', creator:'🎥 Creator', health:'❤️ Health', energy:'⚡ Energy'};
+
+    /* ================= STATE / LOGIC ================= */
+    var state, timeLeft, dayActionsUsed, dayEventDone, daysWithoutSleep, fitnessPenaltyDays, fitnessBoost, usedEventIds, hardPushUsed;
+
+    function newGame(){
+      state = {day:1, weight:83.0, fitness:25, career:35, creator:15, health:55, energy:100};
+      timeLeft = 24;
+      dayActionsUsed = {};
+      dayEventDone = false;
+      daysWithoutSleep = 0;
+      fitnessPenaltyDays = 0;
+      fitnessBoost = false;
+      usedEventIds = [];
+      hardPushUsed = false;
     }
 
-    function update(){
-      if(!running || gameOver) return;
-      distance += speed * 0.1;
-      speed = Math.min(MAX_SPEED, speed + 0.0007);
-      player.vy += GRAVITY;
-      player.y += player.vy;
-      if(player.y > groundY){ player.y = groundY; player.vy = 0; }
-      if(player.y >= groundY - 0.5){ player.legPhase += 0.35; }
+    function clamp100(v){ return Math.max(0, Math.min(100, v)); }
+    function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
 
-      spawnTimer++;
-      if(spawnTimer > nextSpawnIn){
-        spawnItem();
-        spawnTimer = 0;
-        nextSpawnIn = Math.max(65, 115 - speed * 4 + Math.random() * 40);
-      }
-
-      var pw = 16, ph = 22;
-      var px = player.x - pw / 2, py = player.y - ph;
-
-      for(var i = items.length - 1; i >= 0; i--){
-        var it = items[i];
-        it.x -= speed;
-        var ix = it.x - it.width / 2, iy = groundY - it.height, iw = it.width, ih = it.height;
-        var overlap = px < ix + iw && px + pw > ix && py < iy + ih && py + ph > iy;
-        if(overlap){
-          if(it.type === 'obstacle'){
-            endGame();
-          } else {
-            VB_AUDIO.playStamp();
-            items.splice(i, 1);
-            continue;
-          }
+    function applyEffects(effects, mult){
+      mult = mult || 1;
+      STAT_KEYS.forEach(function(k){
+        if(effects[k] != null){
+          var v = effects[k];
+          if(v > 0) v *= mult;
+          state[k] = clamp100(state[k] + v);
         }
-        if(it.x < -100) items.splice(i, 1);
-      }
-    }
-
-    function drawPlayer(){
-      var px = player.x, py = player.y;
-      var swing = Math.sin(player.legPhase) * 8;
-      ctx.strokeStyle = ink;
-      ctx.lineWidth = 2.4;
-      ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.arc(px, py - 26, 6, 0, Math.PI * 2); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(px, py - 20); ctx.lineTo(px, py - 8); ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(px, py - 8); ctx.lineTo(px - 6 + swing * 0.5, py);
-      ctx.moveTo(px, py - 8); ctx.lineTo(px + 6 - swing * 0.5, py);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(px, py - 16); ctx.lineTo(px - 8 - swing * 0.3, py - 10);
-      ctx.moveTo(px, py - 16); ctx.lineTo(px + 8 + swing * 0.3, py - 10);
-      ctx.stroke();
-    }
-
-    function draw(){
-      readColors();
-      ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = cardBg;
-      ctx.fillRect(0, 0, W, H);
-
-      ctx.strokeStyle = ink;
-      ctx.globalAlpha = 0.45;
-      ctx.beginPath();
-      ctx.moveTo(0, groundY + 2);
-      ctx.lineTo(W, groundY + 2);
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-
-      items.forEach(function(it){
-        var cx = it.x, cy = groundY - it.height / 2;
-        var accent = it.type === 'obstacle' ? stamp : route;
-        ctx.globalAlpha = 0.92;
-        ctx.fillStyle = cardBg;
-        ctx.beginPath();
-        ctx.ellipse(cx, cy, it.width / 2, it.height / 2, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 1;
-        ctx.strokeStyle = accent;
-        ctx.lineWidth = 2.2;
-        if(it.type === 'obstacle') ctx.setLineDash([4, 3]);
-        ctx.beginPath();
-        ctx.ellipse(cx, cy, it.width / 2, it.height / 2, 0, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.font = '22px sans-serif';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText(it.label, cx, cy + 1);
       });
-
-      drawPlayer();
-
-      ctx.fillStyle = ink;
-      ctx.font = '13px "Special Elite", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
-      ctx.fillText('DIST ' + Math.floor(distance) + 'm', 14, 24);
-      ctx.textAlign = 'right';
-      ctx.fillText('BEST ' + highScore + 'm', W - 14, 24);
-
-      if(!running && !gameOver){
-        ctx.textAlign = 'center';
-        ctx.fillStyle = ink;
-        ctx.font = '16px "Staatliches", sans-serif';
-        ctx.fillText('TAP OR PRESS SPACE TO START', W / 2, H / 2);
-      } else if(gameOver){
-        ctx.textAlign = 'center';
-        ctx.fillStyle = stamp;
-        ctx.font = '18px "Staatliches", sans-serif';
-        ctx.fillText('GAME OVER — ' + Math.floor(distance) + 'm', W / 2, H / 2 - 10);
-        ctx.fillStyle = ink;
-        ctx.font = '12px "Special Elite", monospace';
-        ctx.fillText('tap or press space to try again', W / 2, H / 2 + 16);
+      if(effects.weight != null){
+        state.weight = Math.max(45, +(state.weight + effects.weight).toFixed(1));
       }
     }
 
-    function loop(){
-      update();
-      draw();
-      requestAnimationFrame(loop);
+    function effectMultiplier(){
+      return state.energy < 20 ? 0.6 : 1;
     }
 
-    canvas.addEventListener('click', jump);
-    canvas.addEventListener('touchstart', function(e){ e.preventDefault(); jump(); }, {passive:false});
-    window.addEventListener('keydown', function(e){
-      if(e.code === 'Space'){
-        var tag = document.activeElement ? document.activeElement.tagName : '';
-        if(tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON') return;
-        e.preventDefault();
-        jump();
+    function doAction(id){
+      var a = ACTIONS[id];
+      if(!a) return;
+      if(a.oncePerDay && dayActionsUsed[id]) return;
+      if(timeLeft < a.time) return;
+
+      timeLeft -= a.time;
+      dayActionsUsed[id] = true;
+      var mult = effectMultiplier();
+      var flavor = '';
+
+      if(id === 'create'){
+        var roll = Math.random();
+        if(roll < 0.05){
+          applyEffects({creator:50, energy:a.effects.energy});
+          flavor = '🚀 THIS ONE BLEW UP.';
+        } else if(roll < 0.15){
+          applyEffects({creator:25, energy:a.effects.energy});
+          flavor = '🔥 Viral reel. Now there are comments to answer.';
+        } else {
+          applyEffects(a.effects, mult);
+          flavor = 'Posted a reel. The algorithm giveth, sometimes.';
+        }
+      } else {
+        if(id === 'run' || id === 'cycle' || id === 'swim' || id === 'strength'){
+          if(fitnessPenaltyDays > 0) mult *= 0.6;
+          if(fitnessBoost) mult *= 1.15;
+        }
+        applyEffects(a.effects, mult);
+        flavor = FLAVOR[id] ? pick(FLAVOR[id]) : '';
       }
+
+      if(id === 'sleep'){ daysWithoutSleep = 0; fitnessPenaltyDays = 0; }
+
+      els.feed.textContent = flavor;
+      renderMain();
+    }
+
+    function pickEvent(){
+      var pool = EVENTS.filter(function(e){ return !e.minDay || state.day >= e.minDay; });
+      var avail = pool.filter(function(e){ return usedEventIds.indexOf(e.id) === -1; });
+      if(avail.length === 0){ usedEventIds = []; avail = pool; }
+      var ev = avail[Math.floor(Math.random() * avail.length)];
+      usedEventIds.push(ev.id);
+      return ev;
+    }
+
+    function endDay(){
+      if(!dayEventDone){
+        dayEventDone = true;
+        showEvent(pickEvent());
+        return;
+      }
+      advanceDay();
+    }
+
+    function resolveEventChoice(choice){
+      if(choice.effects) applyEffects(choice.effects);
+      if(choice.bonusTime) timeLeft += choice.bonusTime;
+      if(choice.fitnessBoost) fitnessBoost = true;
+
+      if(choice.bonusTime){
+        screens.event.hidden = true;
+        screens.main.hidden = false;
+        renderMain();
+      } else {
+        advanceDay();
+      }
+    }
+
+    function advanceDay(){
+      if(!dayActionsUsed.sleep) daysWithoutSleep++;
+
+      if(daysWithoutSleep >= 4 && !hardPushUsed){
+        hardPushUsed = true;
+        applyEffects({fitness:-10, energy:-15});
+        fitnessPenaltyDays = 2;
+        daysWithoutSleep = 2;
+      } else if(daysWithoutSleep >= 2){
+        fitnessPenaltyDays = Math.max(fitnessPenaltyDays, 1);
+      }
+
+      if(state.day >= 7){ showEnding(); return; }
+
+      state.day++;
+      timeLeft = 24;
+      dayActionsUsed = {};
+      dayEventDone = false;
+      screens.event.hidden = true;
+      screens.main.hidden = false;
+      els.feed.textContent = '';
+      renderMain();
+    }
+
+    function computeEnding(){
+      var f = state.fitness, c = state.career, cr = state.creator, h = state.health, e = state.energy;
+      var avg3 = (f + c + cr) / 3;
+      if(f >= 55 && c >= 55 && cr >= 45 && h >= 55 && e >= 40){
+        return {emoji:'👑', title:'The Balanced Builder', quote:"You didn't choose between your goals. You learned how to build them together."};
+      }
+      if(c >= 70 && f <= 45 && cr <= 45){
+        return {emoji:'💻', title:'Corporate Machine', quote:'Congratulations. You got the promotion. You also forgot what sunlight looks like.'};
+      }
+      if(f >= 70 && c <= 45){
+        return {emoji:'🏃', title:'Fitness Freak', quote:'Triathlon ready. Career... not so much. At least your VO2 max is looking good.'};
+      }
+      if(cr >= 65 && c <= 50){
+        return {emoji:'🎥', title:'Creator Mode', quote:'Your reel blew up. Your boss did not.'};
+      }
+      if(avg3 <= 32 && e <= 45){
+        return {emoji:'🛋️', title:'Professional Procrastinator', quote:'You planned to start tomorrow. Tomorrow never came.'};
+      }
+      return {emoji:'🌱', title:"Still Figuring It Out", quote:'Not a triumph. Not a disaster. Just Tuesday, seven times in a row.'};
+    }
+
+    function computeScore(){
+      return Math.round((state.fitness + state.career + state.creator + state.health + state.energy) / 5);
+    }
+
+    /* ================= UI ================= */
+    function el(id){ return document.getElementById(id); }
+    var screens = { start: el('ggStart'), main: el('ggMain'), event: el('ggEvent'), end: el('ggEnd') };
+    var els = {
+      startBtn: el('ggStartBtn'),
+      dayNum: el('ggDayNum'),
+      weight: el('ggWeight'),
+      stats: el('ggStats'),
+      warning: el('ggWarning'),
+      actions: el('ggActions'),
+      timeLeft: el('ggTimeLeft'),
+      endDayBtn: el('ggEndDay'),
+      feed: el('ggFeed'),
+      eventTime: el('ggEventTime'),
+      eventTitle: el('ggEventTitle'),
+      eventBody: el('ggEventBody'),
+      eventChoices: el('ggEventChoices'),
+      endingEmoji: el('ggEndingEmoji'),
+      endingTitle: el('ggEndingTitle'),
+      score: el('ggScore'),
+      finalStats: el('ggFinalStats'),
+      finalWeight: el('ggFinalWeight'),
+      endingQuote: el('ggEndingQuote'),
+      best: el('ggBest'),
+      replayBtn: el('ggReplayBtn'),
+      backBtn: el('ggBackBtn')
+    };
+
+    function renderStats(container, statsObj){
+      container.innerHTML = '';
+      STAT_KEYS.forEach(function(k){
+        var val = Math.round(statsObj[k]);
+        var row = document.createElement('div');
+        row.className = 'gg-stat-row';
+        var label = document.createElement('span');
+        label.className = 'gg-stat-label';
+        label.textContent = STAT_LABELS[k];
+        var track = document.createElement('div');
+        track.className = 'gg-stat-track';
+        var fill = document.createElement('div');
+        fill.className = 'gg-stat-fill' + (k === 'energy' && val < 20 ? ' gg-low' : '');
+        fill.style.width = val + '%';
+        track.appendChild(fill);
+        var value = document.createElement('span');
+        value.className = 'gg-stat-value';
+        value.textContent = val;
+        row.appendChild(label); row.appendChild(track); row.appendChild(value);
+        container.appendChild(row);
+      });
+    }
+
+    function renderMain(){
+      els.dayNum.textContent = state.day;
+      els.weight.textContent = state.weight.toFixed(1) + ' KG';
+      renderStats(els.stats, state);
+      els.timeLeft.textContent = (Math.round(timeLeft * 10) / 10);
+
+      if(daysWithoutSleep >= 2){
+        els.warning.hidden = false;
+        els.warning.textContent = '⚠️ RECOVERY LOW — fitness gains reduced until you rest.';
+      } else {
+        els.warning.hidden = true;
+      }
+
+      els.actions.innerHTML = '';
+      ACTION_ORDER.forEach(function(id){
+        var a = ACTIONS[id];
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'gg-action';
+        var disabled = timeLeft < a.time || (a.oncePerDay && dayActionsUsed[id]);
+        if(disabled) btn.disabled = true;
+        btn.innerHTML = '<span class="gg-action-icon">' + a.icon + '</span>' +
+          '<span class="gg-action-name">' + a.name + '</span>' +
+          '<span class="gg-action-meta">' + a.time + 'h</span>';
+        btn.addEventListener('click', function(){ doAction(id); });
+        els.actions.appendChild(btn);
+      });
+    }
+
+    function showEvent(ev){
+      screens.main.hidden = true;
+      screens.event.hidden = false;
+      els.eventTime.textContent = ev.time ? ev.time.toUpperCase() : 'EVENT';
+      els.eventTitle.textContent = ev.title;
+      els.eventBody.textContent = ev.body;
+      els.eventChoices.innerHTML = '';
+      ev.choices.forEach(function(choice){
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'gg-action';
+        btn.innerHTML = '<span class="gg-action-name">' + choice.label + '</span>';
+        btn.addEventListener('click', function(){ resolveEventChoice(choice); });
+        els.eventChoices.appendChild(btn);
+      });
+    }
+
+    function showEnding(){
+      screens.main.hidden = true;
+      screens.event.hidden = true;
+      screens.end.hidden = false;
+      var ending = computeEnding();
+      var score = computeScore();
+      els.endingEmoji.textContent = ending.emoji;
+      els.endingTitle.textContent = ending.title;
+      els.score.textContent = score;
+      renderStats(els.finalStats, state);
+      els.finalWeight.textContent = state.weight.toFixed(1) + ' KG';
+      els.endingQuote.textContent = '"' + ending.quote + '"';
+
+      var best = 0;
+      try{ best = parseInt(localStorage.getItem('vb-grind-best') || '0', 10) || 0; }catch(e){}
+      if(score > best){
+        try{ localStorage.setItem('vb-grind-best', String(score)); }catch(e){}
+        els.best.hidden = true;
+      } else {
+        els.best.hidden = false;
+        els.best.textContent = 'Best score so far: ' + best;
+      }
+    }
+
+    /* ================= CONTROLLERS ================= */
+    els.startBtn.addEventListener('click', function(){
+      screens.start.hidden = true;
+      screens.main.hidden = false;
+      renderMain();
+    });
+    els.endDayBtn.addEventListener('click', endDay);
+    els.replayBtn.addEventListener('click', function(){
+      newGame();
+      screens.end.hidden = true;
+      screens.main.hidden = false;
+      els.feed.textContent = '';
+      renderMain();
+    });
+    els.backBtn.addEventListener('click', function(){
+      var hero = document.querySelector('.hero');
+      if(hero) hero.scrollIntoView({behavior: 'smooth'});
     });
 
-    var resizeTimer = null;
-    window.addEventListener('resize', function(){
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(resizeCanvas, 150);
-    });
-
-    resizeCanvas();
-    draw();
-    requestAnimationFrame(loop);
+    newGame();
   })();
 </script>
 </body>
