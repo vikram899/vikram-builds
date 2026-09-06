@@ -353,6 +353,21 @@
     text-transform:uppercase; border:1px dashed var(--ink-soft); padding:0.2rem 0.5rem; color:var(--ink-soft);
   }
   .workout-card--wide{grid-column:1 / -1;}
+  .week-strip{display:grid; grid-template-columns:repeat(7, 1fr); gap:0.4rem; margin:1.2rem 0;}
+  .week-day{
+    background:var(--card-bg-2); border:1px solid rgba(42,33,24,0.18); border-top:3px solid transparent;
+    padding:0.5rem 0.25rem; text-align:center; display:flex; flex-direction:column; align-items:center; gap:0.25rem;
+  }
+  .week-day.push{border-top-color:var(--stamp);}
+  .week-day.pull{border-top-color:var(--route);}
+  .week-day.legs{border-top-color:var(--ink);}
+  .week-day.rest{opacity:0.6;}
+  .day-letter{font-family:var(--font-display); font-weight:400; font-size:1.1rem; text-transform:uppercase; color:var(--ink);}
+  .day-type{font-family:var(--font-type); font-size:0.58rem; letter-spacing:0.02em; text-transform:uppercase; color:var(--ink-soft);}
+  @media (max-width:480px){
+    .day-type{display:none;}
+    .week-day{padding:0.6rem 0.2rem;}
+  }
   .ppl-split{display:grid; grid-template-columns:repeat(3, 1fr); gap:1rem; margin:1rem 0;}
   @media (max-width:700px){ .ppl-split{grid-template-columns:1fr;} }
   .ppl-day{
@@ -811,6 +826,15 @@
         <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><rect x="4" y="16" width="6" height="6" rx="1" stroke="var(--ink)" stroke-width="2.2"/><rect x="28" y="16" width="6" height="6" rx="1" stroke="var(--ink)" stroke-width="2.2"/><line x1="10" y1="19" x2="28" y2="19" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/></svg>
         <h3>Strength Training</h3>
         <p>The unglamorous work that keeps the rest of it possible — split push / pull / legs.</p>
+        <div class="week-strip" role="list" aria-label="Weekly training schedule">
+          <div class="week-day push" role="listitem"><span class="day-letter" aria-hidden="true">M</span><span class="day-type">Push</span></div>
+          <div class="week-day pull" role="listitem"><span class="day-letter" aria-hidden="true">T</span><span class="day-type">Pull</span></div>
+          <div class="week-day legs" role="listitem"><span class="day-letter" aria-hidden="true">W</span><span class="day-type">Legs</span></div>
+          <div class="week-day push" role="listitem"><span class="day-letter" aria-hidden="true">T</span><span class="day-type">Push</span></div>
+          <div class="week-day pull" role="listitem"><span class="day-letter" aria-hidden="true">F</span><span class="day-type">Pull</span></div>
+          <div class="week-day legs" role="listitem"><span class="day-letter" aria-hidden="true">S</span><span class="day-type">Legs</span></div>
+          <div class="week-day rest" role="listitem"><span class="day-letter" aria-hidden="true">S</span><span class="day-type">Rest</span></div>
+        </div>
         <div class="ppl-split">
           <div class="ppl-day" tabindex="0">
             <span class="ppl-label">Push</span>
