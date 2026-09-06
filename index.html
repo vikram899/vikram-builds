@@ -338,21 +338,11 @@
   .workouts{display:grid; grid-template-columns:repeat(3, 1fr); gap:1.3rem; margin-top:2.6rem;}
   @media (max-width:820px){ .workouts{grid-template-columns:1fr 1fr;} }
   @media (max-width:560px){ .workouts{grid-template-columns:1fr;} }
-  .workout-card{perspective:1200px; cursor:pointer;}
-  .workout-card:focus{outline:none;}
-  .workout-card:focus-visible{outline:2px dashed var(--route); outline-offset:4px;}
-  .card-inner{
-    display:grid; transition:transform 480ms cubic-bezier(.4,.2,.2,1);
-    transform-style:preserve-3d;
-  }
-  .workout-card.flipped .card-inner{transform:rotateY(180deg);}
-  .card-front, .card-back{
-    grid-area:1 / 1; backface-visibility:hidden;
+  .workout-card{
     background:var(--card-bg); border:1px solid rgba(42,33,24,0.18);
     padding:1.4rem 1.3rem; box-shadow:0 8px 18px -8px var(--shadow);
   }
-  .card-back{transform:rotateY(180deg); display:flex; flex-direction:column; justify-content:center;}
-  .card-front svg{display:block; margin-bottom:0.9rem;}
+  .workout-card svg{display:block; margin-bottom:0.9rem;}
   .workout-card h3{
     font-family:var(--font-display); font-weight:400; text-transform:uppercase;
     font-size:1.3rem; margin:0 0 0.4rem; letter-spacing:0.02em;
@@ -362,15 +352,7 @@
     display:inline-block; font-family:var(--font-type); font-size:0.68rem; letter-spacing:0.04em;
     text-transform:uppercase; border:1px dashed var(--ink-soft); padding:0.2rem 0.5rem; color:var(--ink-soft);
   }
-  .session-label{
-    font-family:var(--font-type); font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase;
-    color:var(--stamp); margin-bottom:0.5rem; display:block;
-  }
-  .session-text{margin:0; font-family:var(--font-hand); font-size:1.15rem; color:var(--ink); line-height:1.35;}
   .workout-card--wide{grid-column:1 / -1;}
-  @media (prefers-reduced-motion: reduce){
-    .card-inner{transition:none;}
-  }
   .ppl-split{display:grid; grid-template-columns:repeat(3, 1fr); gap:1rem; margin:1rem 0;}
   @media (max-width:700px){ .ppl-split{grid-template-columns:1fr;} }
   .ppl-day{background:var(--card-bg-2); border:1px dashed rgba(42,33,24,0.25); padding:0.7rem 0.85rem;}
@@ -750,105 +732,56 @@
     <span class="stamp">CHECKPOINT<b>05</b>THE SESSIONS</span>
     <h2>What a training week actually looks like.</h2>
     <p class="lede">Not a plan pinned to a fridge — the rotation that actually happens, most weeks.</p>
-    <p class="route-hint">tap a card to see a sample session ↑</p>
     <div class="workouts">
-      <div class="workout-card" tabindex="0" role="button" aria-label="Easy Run, tap for a sample session">
-        <div class="card-inner">
-          <div class="card-front">
-            <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><path d="M4 22c4 0 4-6 8-6s4 6 8 6 4-6 8-6 4 6 6 6" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <h3>Easy Run</h3>
-            <p>Conversational pace. No watch-checking, no ego.</p>
-            <span class="workout-tag">3x / week</span>
-          </div>
-          <div class="card-back">
-            <span class="session-label">Sample session</span>
-            <p class="session-text">6km, zone 2 heart rate. Full sentences, no gasping — that's the whole test.</p>
-          </div>
-        </div>
+      <div class="workout-card">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><path d="M4 22c4 0 4-6 8-6s4 6 8 6 4-6 8-6 4 6 6 6" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Easy Run</h3>
+        <p>Conversational pace. No watch-checking, no ego.</p>
+        <span class="workout-tag">3x / week</span>
       </div>
-      <div class="workout-card" tabindex="0" role="button" aria-label="Tempo Run, tap for a sample session">
-        <div class="card-inner">
-          <div class="card-front">
-            <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><path d="M6 30 18 14l6 8 8-14" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M28 8h6v6" stroke="var(--stamp)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <h3>Tempo Run</h3>
-            <p>Comfortably uncomfortable — the one that actually hurts a little.</p>
-            <span class="workout-tag">1x / week</span>
-          </div>
-          <div class="card-back">
-            <span class="session-label">Sample session</span>
-            <p class="session-text">2mi warm-up → 3x1600m @ threshold, 2min jog between → 1mi cool-down.</p>
-          </div>
-        </div>
+      <div class="workout-card">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><path d="M6 30 18 14l6 8 8-14" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M28 8h6v6" stroke="var(--stamp)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Tempo Run</h3>
+        <p>Comfortably uncomfortable — the one that actually hurts a little.</p>
+        <span class="workout-tag">1x / week</span>
       </div>
-      <div class="workout-card" tabindex="0" role="button" aria-label="Long Run, tap for a sample session">
-        <div class="card-inner">
-          <div class="card-front">
-            <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><path d="M2 28c8-14 26-14 34 0" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/><circle cx="19" cy="15" r="2" fill="var(--stamp)"/></svg>
-            <h3>Long Run</h3>
-            <p>The weekend one that builds the base everything else stands on.</p>
-            <span class="workout-tag">1x / week</span>
-          </div>
-          <div class="card-back">
-            <span class="session-label">Sample session</span>
-            <p class="session-text">18–22km, easy-to-moderate. Negative split if it's a good day, survival pace if it's not.</p>
-          </div>
-        </div>
+      <div class="workout-card">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><path d="M2 28c8-14 26-14 34 0" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/><circle cx="19" cy="15" r="2" fill="var(--stamp)"/></svg>
+        <h3>Long Run</h3>
+        <p>The weekend one that builds the base everything else stands on.</p>
+        <span class="workout-tag">1x / week</span>
       </div>
-      <div class="workout-card" tabindex="0" role="button" aria-label="Hill Repeats, tap for a sample session">
-        <div class="card-inner">
-          <div class="card-front">
-            <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><path d="M4 30 12 14 20 30 28 14 34 30" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <h3>Hill Repeats</h3>
-            <p>Trail-specific. Mostly swearing on the way up.</p>
-            <span class="workout-tag">1x / week</span>
-          </div>
-          <div class="card-back">
-            <span class="session-label">Sample session</span>
-            <p class="session-text">6x400m uphill, hard effort. Walk/jog the descent. Repeat until the legs start negotiating.</p>
-          </div>
-        </div>
+      <div class="workout-card">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><path d="M4 30 12 14 20 30 28 14 34 30" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Hill Repeats</h3>
+        <p>Trail-specific. Mostly swearing on the way up.</p>
+        <span class="workout-tag">1x / week</span>
       </div>
-      <div class="workout-card" tabindex="0" role="button" aria-label="Rest Day, tap for a sample session">
-        <div class="card-inner">
-          <div class="card-front">
-            <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><path d="M4 26c0-8 6-14 14-14s14 6 14 14" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/><line x1="4" y1="26" x2="34" y2="26" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/></svg>
-            <h3>Rest Day</h3>
-            <p>Scheduled, not earned. Recovery isn't optional.</p>
-            <span class="workout-tag">1–2x / week</span>
-          </div>
-          <div class="card-back">
-            <span class="session-label">Sample session</span>
-            <p class="session-text">Sleep in, foam roll for ten minutes, actually stretch instead of just meaning to.</p>
-          </div>
-        </div>
+      <div class="workout-card">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><path d="M4 26c0-8 6-14 14-14s14 6 14 14" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/><line x1="4" y1="26" x2="34" y2="26" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <h3>Rest Day</h3>
+        <p>Scheduled, not earned. Recovery isn't optional.</p>
+        <span class="workout-tag">1–2x / week</span>
       </div>
-      <div class="workout-card workout-card--wide" tabindex="0" role="button" aria-label="Strength Training, tap for a sample push day">
-        <div class="card-inner">
-          <div class="card-front">
-            <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><rect x="4" y="16" width="6" height="6" rx="1" stroke="var(--ink)" stroke-width="2.2"/><rect x="28" y="16" width="6" height="6" rx="1" stroke="var(--ink)" stroke-width="2.2"/><line x1="10" y1="19" x2="28" y2="19" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/></svg>
-            <h3>Strength Training</h3>
-            <p>The unglamorous work that keeps the rest of it possible — split push / pull / legs.</p>
-            <div class="ppl-split">
-              <div class="ppl-day">
-                <span class="ppl-label">Push</span>
-                <span class="ppl-desc">chest, shoulders, triceps — bench, overhead press, dips</span>
-              </div>
-              <div class="ppl-day">
-                <span class="ppl-label">Pull</span>
-                <span class="ppl-desc">back, biceps, rear delts — rows, pull-ups, deadlift variations</span>
-              </div>
-              <div class="ppl-day">
-                <span class="ppl-label">Legs</span>
-                <span class="ppl-desc">quads, hamstrings, glutes, calves — the ones that make stairs a problem the next day</span>
-              </div>
-            </div>
-            <span class="workout-tag">3x / week</span>
+      <div class="workout-card workout-card--wide">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><rect x="4" y="16" width="6" height="6" rx="1" stroke="var(--ink)" stroke-width="2.2"/><rect x="28" y="16" width="6" height="6" rx="1" stroke="var(--ink)" stroke-width="2.2"/><line x1="10" y1="19" x2="28" y2="19" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <h3>Strength Training</h3>
+        <p>The unglamorous work that keeps the rest of it possible — split push / pull / legs.</p>
+        <div class="ppl-split">
+          <div class="ppl-day">
+            <span class="ppl-label">Push</span>
+            <span class="ppl-desc">chest, shoulders, triceps — bench, overhead press, dips</span>
           </div>
-          <div class="card-back">
-            <span class="session-label">Sample session — push day</span>
-            <p class="session-text">Bench 4x8, overhead press 3x10, dips 3x max reps. Done in under 45 minutes, most days.</p>
+          <div class="ppl-day">
+            <span class="ppl-label">Pull</span>
+            <span class="ppl-desc">back, biceps, rear delts — rows, pull-ups, deadlift variations</span>
+          </div>
+          <div class="ppl-day">
+            <span class="ppl-label">Legs</span>
+            <span class="ppl-desc">quads, hamstrings, glutes, calves — the ones that make stairs a problem the next day</span>
           </div>
         </div>
+        <span class="workout-tag">3x / week</span>
       </div>
     </div>
   </div>
@@ -1203,16 +1136,6 @@
         card.style.setProperty('--tilt-x', '0deg');
         card.style.setProperty('--tilt-y', '0deg');
         card.style.setProperty('--tilt-scale', '1');
-      });
-    });
-  })();
-
-  (function(){
-    document.querySelectorAll('.workout-card').forEach(function(card){
-      function toggleFlip(){ card.classList.toggle('flipped'); }
-      card.addEventListener('click', toggleFlip);
-      card.addEventListener('keydown', function(e){
-        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleFlip(); }
       });
     });
   })();
