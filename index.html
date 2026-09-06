@@ -352,6 +352,15 @@
     display:inline-block; font-family:var(--font-type); font-size:0.68rem; letter-spacing:0.04em;
     text-transform:uppercase; border:1px dashed var(--ink-soft); padding:0.2rem 0.5rem; color:var(--ink-soft);
   }
+  .workout-card--wide{grid-column:1 / -1;}
+  .ppl-split{display:grid; grid-template-columns:repeat(3, 1fr); gap:1rem; margin:1rem 0;}
+  @media (max-width:700px){ .ppl-split{grid-template-columns:1fr;} }
+  .ppl-day{background:var(--card-bg-2); border:1px dashed rgba(42,33,24,0.25); padding:0.7rem 0.85rem;}
+  .ppl-label{
+    display:block; font-family:var(--font-type); font-size:0.72rem; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--stamp); margin-bottom:0.35rem;
+  }
+  .ppl-desc{display:block; font-family:var(--font-body); font-size:0.85rem; color:var(--ink-soft); font-style:italic; line-height:1.4;}
 
   /* ---------- CP06 tickets ---------- */
   .next-race{border-top:2px solid var(--divider);}
@@ -749,16 +758,30 @@
         <span class="workout-tag">1x / week</span>
       </div>
       <div class="workout-card">
-        <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><rect x="4" y="16" width="6" height="6" rx="1" stroke="var(--ink)" stroke-width="2.2"/><rect x="28" y="16" width="6" height="6" rx="1" stroke="var(--ink)" stroke-width="2.2"/><line x1="10" y1="19" x2="28" y2="19" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/></svg>
-        <h3>Strength &amp; Mobility</h3>
-        <p>The unglamorous work that keeps the rest of it possible.</p>
-        <span class="workout-tag">2x / week</span>
-      </div>
-      <div class="workout-card">
         <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><path d="M4 26c0-8 6-14 14-14s14 6 14 14" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/><line x1="4" y1="26" x2="34" y2="26" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/></svg>
         <h3>Rest Day</h3>
         <p>Scheduled, not earned. Recovery isn't optional.</p>
         <span class="workout-tag">1–2x / week</span>
+      </div>
+      <div class="workout-card workout-card--wide">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><rect x="4" y="16" width="6" height="6" rx="1" stroke="var(--ink)" stroke-width="2.2"/><rect x="28" y="16" width="6" height="6" rx="1" stroke="var(--ink)" stroke-width="2.2"/><line x1="10" y1="19" x2="28" y2="19" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <h3>Strength Training</h3>
+        <p>The unglamorous work that keeps the rest of it possible — split push / pull / legs.</p>
+        <div class="ppl-split">
+          <div class="ppl-day">
+            <span class="ppl-label">Push</span>
+            <span class="ppl-desc">chest, shoulders, triceps — bench, overhead press, dips</span>
+          </div>
+          <div class="ppl-day">
+            <span class="ppl-label">Pull</span>
+            <span class="ppl-desc">back, biceps, rear delts — rows, pull-ups, deadlift variations</span>
+          </div>
+          <div class="ppl-day">
+            <span class="ppl-label">Legs</span>
+            <span class="ppl-desc">quads, hamstrings, glutes, calves — the ones that make stairs a problem the next day</span>
+          </div>
+        </div>
+        <span class="workout-tag">3x / week</span>
       </div>
     </div>
   </div>
