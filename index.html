@@ -388,7 +388,7 @@
     display:block; font-family:var(--font-type); font-size:0.78rem; letter-spacing:0.04em;
     text-transform:uppercase; color:var(--stamp); margin:2.2rem 0 0;
   }
-  .ledger-value.macro{font-size:1.15rem; white-space:normal;}
+  .totals-label--top{margin-top:1.6rem;}
   .ppl-day{
     background:var(--card-bg-2); border:1px dashed rgba(42,33,24,0.25); padding:0.7rem 0.85rem;
     position:relative; z-index:0; cursor:default;
@@ -969,6 +969,27 @@
     <span class="stamp">CHECKPOINT<b>06</b>WHAT I EAT</span>
     <h2>Fuel, not a diet.</h2>
     <p class="lede">Veg most days, non-veg when the training block calls for it. Hover a plate for the detail.</p>
+
+    <span class="totals-label totals-label--top">Daily totals</span>
+    <div class="ledger">
+      <div class="ledger-row">
+        <span class="ledger-label">veg day — total calories</span>
+        <span class="ledger-value num" data-count="1570" data-suffix=" kcal">0</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-label">veg day — total protein</span>
+        <span class="ledger-value num" data-count="64" data-suffix="g">0</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-label">non-veg day — total calories</span>
+        <span class="ledger-value num" data-count="1690" data-suffix=" kcal">0</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-label">non-veg day — total protein</span>
+        <span class="ledger-value num" data-count="133" data-suffix="g">0</span>
+      </div>
+    </div>
+
     <div class="workouts">
       <div class="workout-card workout-card--wide">
         <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><path d="M4 26c0-8 6-14 14-14s14 6 14 14" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/><line x1="2" y1="26" x2="36" y2="26" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/><line x1="18" y1="6" x2="18" y2="2" stroke="var(--stamp)" stroke-width="2.2" stroke-linecap="round"/></svg>
@@ -1084,18 +1105,6 @@
             </ul>
           </div>
         </div>
-      </div>
-    </div>
-
-    <span class="totals-label">Daily totals</span>
-    <div class="ledger">
-      <div class="ledger-row">
-        <span class="ledger-label">veg day (all four meals)</span>
-        <span class="ledger-value macro">~1,570 kcal · 64g protein</span>
-      </div>
-      <div class="ledger-row">
-        <span class="ledger-label">non-veg day (all four meals)</span>
-        <span class="ledger-value macro">~1,690 kcal · 133g protein</span>
       </div>
     </div>
   </div>
