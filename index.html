@@ -386,6 +386,26 @@
   }
   .ppl-list li:last-child{border-bottom:none;}
 
+  .alt-split-toggle{
+    font-family:var(--font-type); font-size:0.72rem; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--ink-soft); background:none; border:1px dashed var(--ink-soft); padding:0.45rem 0.85rem;
+    cursor:pointer; margin-top:1rem; display:inline-flex; align-items:center; gap:0.4rem;
+    transition:color 140ms ease, border-color 140ms ease;
+  }
+  .alt-split-toggle:hover, .alt-split-toggle:focus-visible{color:var(--ink); border-color:var(--ink);}
+  .toggle-arrow{display:inline-block; transition:transform 200ms ease;}
+  .alt-split-toggle[aria-expanded="true"] .toggle-arrow{transform:rotate(180deg);}
+  .alt-splits{margin-top:1rem; display:flex; flex-direction:column; gap:0.7rem;}
+  .alt-split-row{
+    background:var(--card-bg-2); border:1px dashed rgba(42,33,24,0.25); padding:0.7rem 0.9rem;
+    display:flex; flex-direction:column; gap:0.25rem;
+  }
+  .alt-split-name{
+    font-family:var(--font-display); font-weight:400; text-transform:uppercase;
+    font-size:1.05rem; letter-spacing:0.02em; color:var(--ink);
+  }
+  .alt-split-desc{font-family:var(--font-body); font-size:0.9rem; color:var(--ink-soft); font-style:italic; line-height:1.4;}
+
   /* ---------- CP06 tickets ---------- */
   .next-race{border-top:2px solid var(--divider);}
   .ticket{
@@ -827,6 +847,24 @@
           </div>
         </div>
         <span class="workout-tag">3x / week</span>
+
+        <button type="button" class="alt-split-toggle" id="altSplitToggle" aria-expanded="false" aria-controls="altSplits">
+          other splits I rotate through <span class="toggle-arrow">↓</span>
+        </button>
+        <div class="alt-splits" id="altSplits" hidden>
+          <div class="alt-split-row">
+            <span class="alt-split-name">Push / Pull / Legs</span>
+            <span class="alt-split-desc">3–6 day rotation by movement pattern — what's shown above, and the default most months.</span>
+          </div>
+          <div class="alt-split-row">
+            <span class="alt-split-name">Upper / Lower</span>
+            <span class="alt-split-desc">4-day split: two upper body days, two lower body days a week. Comes out during race-heavy blocks when recovery matters more than volume.</span>
+          </div>
+          <div class="alt-split-row">
+            <span class="alt-split-name">PPL + Upper/Lower</span>
+            <span class="alt-split-desc">5–6 day hybrid — PPL early in the week, upper/lower to close it out. The one that shows up when motivation is unreasonably high.</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1183,6 +1221,18 @@
         card.style.setProperty('--tilt-scale', '1');
       });
     });
+  })();
+
+  (function(){
+    var toggle = document.getElementById('altSplitToggle');
+    var panel = document.getElementById('altSplits');
+    if(toggle && panel){
+      toggle.addEventListener('click', function(){
+        var expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        panel.hidden = expanded;
+      });
+    }
   })();
 
   (function(){
