@@ -155,7 +155,17 @@
     font-family:var(--font-type); font-size:0.72rem; color:var(--ink-soft);
     border:1px solid var(--ink-soft); padding:0.35rem 0.6rem; transform:rotate(2deg);
   }
-  .hero-illo{width:100%; height:auto; display:block; margin:0 auto 1.6rem;}
+  .hero-illo-wrap{position:relative; margin:0 auto 1.6rem;}
+  .hero-illo{width:100%; height:auto; display:block;}
+  .pencil-canvas{position:absolute; inset:0; width:100%; height:100%; pointer-events:none;}
+  .sun-trigger{cursor:pointer;}
+  .sun-trigger circle, .sun-trigger line{transition:filter 160ms ease;}
+  .sun-trigger:hover circle, .sun-trigger:hover line,
+  .sun-trigger:focus-visible circle, .sun-trigger:focus-visible line{filter:brightness(1.25);}
+  .sun-trigger:focus-visible{outline:none;}
+  @media (prefers-reduced-motion: reduce){
+    .parallax-slow, .parallax-mid, .parallax-fast{transform:none !important;}
+  }
   .hero h1{
     font-family:var(--font-display); font-weight:400; text-transform:uppercase;
     font-size:clamp(3rem, 8.6vw, 6.4rem); line-height:0.88; letter-spacing:0.005em;
@@ -355,27 +365,51 @@
       <div class="bib-tag">BIB NO. 1187</div>
     </div>
 
-    <svg class="hero-illo" viewBox="0 0 900 260" preserveAspectRatio="xMidYMax meet" role="img" aria-label="Line illustration of a runner cresting a ridge at sunrise over a mountain range">
-      <path d="M0,150 Q100,130 200,150 T400,150 T600,150 T800,150 T900,150" fill="none" stroke="var(--route)" stroke-width="1.4" opacity="0.35"/>
-      <path d="M0,175 Q100,158 200,175 T400,175 T600,175 T800,175 T900,175" fill="none" stroke="var(--route)" stroke-width="1.4" opacity="0.3"/>
-      <path d="M0,200 Q100,185 200,200 T400,200 T600,200 T800,200 T900,200" fill="none" stroke="var(--route)" stroke-width="1.4" opacity="0.25"/>
-      <circle cx="710" cy="60" r="26" fill="none" stroke="var(--stamp)" stroke-width="2.5"/>
-      <g stroke="var(--stamp)" stroke-width="2.5" stroke-linecap="round">
-        <line x1="710" y1="18" x2="710" y2="6"/><line x1="752" y1="60" x2="764" y2="60"/>
-        <line x1="739" y1="31" x2="748" y2="22"/><line x1="681" y1="31" x2="672" y2="22"/>
-        <line x1="739" y1="89" x2="748" y2="98"/><line x1="681" y1="89" x2="672" y2="98"/>
-      </g>
-      <path d="M0,220 L120,120 L210,190 L330,70 L430,140 L520,150 L620,60 L720,150 L820,110 L900,150 L900,260 L0,260 Z" fill="var(--paper-3)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M330,70 L370,95 L300,110 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
-      <g stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="470" cy="122" r="8" fill="var(--paper)"/>
-        <path d="M470,130 L462,155 L474,160 M462,155 L482,150 M474,160 L468,182 M474,160 L486,178"/>
-        <path d="M462,155 L448,140"/>
-      </g>
-      <g font-family="var(--font-hand)" fill="var(--route)" font-size="22" transform="rotate(-3 90 235)">
-        <text x="30" y="235">started here ↑</text>
-      </g>
-    </svg>
+    <div class="hero-illo-wrap">
+      <svg class="hero-illo" viewBox="0 0 900 260" preserveAspectRatio="xMidYMax meet" role="img" aria-label="Line illustration of a runner cresting a ridge at sunrise over a mountain range">
+        <defs>
+          <clipPath id="ridgeClip"><use href="#ridgeShape"/></clipPath>
+          <linearGradient id="sweepGradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="var(--stamp)" stop-opacity="0"/>
+            <stop offset="50%" stop-color="var(--stamp)" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="var(--stamp)" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+
+        <g class="parallax-slow">
+          <path d="M0,150 Q100,130 200,150 T400,150 T600,150 T800,150 T900,150" fill="none" stroke="var(--route)" stroke-width="1.4" opacity="0.35"/>
+          <path d="M0,175 Q100,158 200,175 T400,175 T600,175 T800,175 T900,175" fill="none" stroke="var(--route)" stroke-width="1.4" opacity="0.3"/>
+          <path d="M0,200 Q100,185 200,200 T400,200 T600,200 T800,200 T900,200" fill="none" stroke="var(--route)" stroke-width="1.4" opacity="0.25"/>
+        </g>
+
+        <g class="parallax-mid">
+          <path id="ridgeShape" d="M0,220 L120,120 L210,190 L330,70 L430,140 L520,150 L620,60 L720,150 L820,110 L900,150 L900,260 L0,260 Z" fill="var(--paper-3)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M330,70 L370,95 L300,110 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+          <rect id="sunriseSweep" x="-220" y="0" width="220" height="260" fill="url(#sweepGradient)" opacity="0" clip-path="url(#ridgeClip)" pointer-events="none"/>
+        </g>
+
+        <g class="parallax-fast">
+          <g class="sun-trigger" role="button" tabindex="0" aria-label="Trigger a sunrise sweep across the ridge">
+            <circle cx="710" cy="60" r="26" fill="none" stroke="var(--stamp)" stroke-width="2.5"/>
+            <g stroke="var(--stamp)" stroke-width="2.5" stroke-linecap="round">
+              <line x1="710" y1="18" x2="710" y2="6"/><line x1="752" y1="60" x2="764" y2="60"/>
+              <line x1="739" y1="31" x2="748" y2="22"/><line x1="681" y1="31" x2="672" y2="22"/>
+              <line x1="739" y1="89" x2="748" y2="98"/><line x1="681" y1="89" x2="672" y2="98"/>
+            </g>
+            <circle cx="710" cy="60" r="40" fill="transparent"/>
+          </g>
+          <g stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="470" cy="122" r="8" fill="var(--paper)"/>
+            <path d="M470,130 L462,155 L474,160 M462,155 L482,150 M474,160 L468,182 M474,160 L486,178"/>
+            <path d="M462,155 L448,140"/>
+          </g>
+          <g font-family="var(--font-hand)" fill="var(--route)" font-size="22" transform="rotate(-3 90 235)">
+            <text x="30" y="235">started here ↑</text>
+          </g>
+        </g>
+      </svg>
+      <canvas class="pencil-canvas" aria-hidden="true"></canvas>
+    </div>
 
     <p class="scrawl">field notes from four years of showing up —</p>
     <h1>3:47&nbsp;am.<br>still dark.<br><em>still going.</em></h1>
@@ -630,6 +664,128 @@
       root.style.setProperty('--mx', e.clientX + 'px');
       root.style.setProperty('--my', e.clientY + 'px');
     }, {passive:true});
+  })();
+
+  (function(){
+    var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* pencil-trail cursor over the hero illustration */
+    var wrap = document.querySelector('.hero-illo-wrap');
+    var canvas = document.querySelector('.pencil-canvas');
+    if(wrap && canvas && !reduceMotion){
+      var ctx = canvas.getContext('2d');
+      var points = [];
+      var raf = null;
+
+      function resizeCanvas(){
+        var r = wrap.getBoundingClientRect();
+        var dpr = window.devicePixelRatio || 1;
+        canvas.width = r.width * dpr;
+        canvas.height = r.height * dpr;
+        canvas.style.width = r.width + 'px';
+        canvas.style.height = r.height + 'px';
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      function hexToRgb(hex){
+        hex = (hex || '#2a2118').trim().replace('#', '');
+        if(hex.length === 3){ hex = hex.split('').map(function(c){ return c + c; }).join(''); }
+        var num = parseInt(hex, 16);
+        return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
+      }
+
+      function addPoint(clientX, clientY){
+        var r = wrap.getBoundingClientRect();
+        var dpr = window.devicePixelRatio || 1;
+        var ink = getComputedStyle(document.documentElement).getPropertyValue('--ink');
+        points.push({
+          x: (clientX - r.left) * dpr,
+          y: (clientY - r.top) * dpr,
+          t: performance.now(),
+          rgb: hexToRgb(ink)
+        });
+        if(!raf) raf = requestAnimationFrame(drawTrail);
+      }
+
+      function drawTrail(){
+        var dpr = window.devicePixelRatio || 1;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var now = performance.now();
+        var life = 650;
+        points = points.filter(function(p){ return now - p.t < life; });
+        ctx.lineCap = 'round';
+        for(var i = 1; i < points.length; i++){
+          var a = points[i - 1], b = points[i];
+          if(b.t - a.t > 120) continue;
+          var age = (now - b.t) / life;
+          var alpha = Math.max(0, 1 - age) * 0.55;
+          if(alpha <= 0) continue;
+          ctx.beginPath();
+          ctx.setLineDash([3 * dpr, 5 * dpr]);
+          ctx.strokeStyle = 'rgba(' + b.rgb.join(',') + ',' + alpha.toFixed(2) + ')';
+          ctx.lineWidth = 1.6 * dpr;
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+        raf = points.length ? requestAnimationFrame(drawTrail) : null;
+      }
+
+      wrap.addEventListener('mousemove', function(e){ addPoint(e.clientX, e.clientY); });
+    }
+
+    /* parallax depth on scroll */
+    var pSlow = document.querySelector('.parallax-slow');
+    var pMid = document.querySelector('.parallax-mid');
+    var pFast = document.querySelector('.parallax-fast');
+    if(pSlow && pMid && pFast && !reduceMotion){
+      var ticking = false;
+      function updateParallax(){
+        var y = Math.min(window.scrollY, 700);
+        pSlow.style.transform = 'translateY(' + (y * 0.02) + 'px)';
+        pMid.style.transform = 'translateY(' + (y * 0.05) + 'px)';
+        pFast.style.transform = 'translateY(' + (y * 0.09) + 'px)';
+        ticking = false;
+      }
+      window.addEventListener('scroll', function(){
+        if(!ticking){ requestAnimationFrame(updateParallax); ticking = true; }
+      }, {passive:true});
+      updateParallax();
+    }
+
+    /* sunrise sweep easter egg */
+    var sun = document.querySelector('.sun-trigger');
+    var sweep = document.getElementById('sunriseSweep');
+    if(sun && sweep){
+      var sweeping = false;
+      var runSweep = function(){
+        if(sweeping) return;
+        sweeping = true;
+        if(reduceMotion){
+          sweep.setAttribute('opacity', '0.6');
+          setTimeout(function(){ sweep.setAttribute('opacity', '0'); sweeping = false; }, 280);
+          return;
+        }
+        var start = performance.now();
+        var duration = 1600;
+        (function tick(now){
+          var p = Math.min(1, (now - start) / duration);
+          sweep.setAttribute('x', -220 + p * 1120);
+          sweep.setAttribute('opacity', (Math.sin(p * Math.PI) * 0.6).toFixed(2));
+          if(p < 1){
+            requestAnimationFrame(tick);
+          } else {
+            sweep.setAttribute('opacity', '0');
+            sweeping = false;
+          }
+        })(start);
+      };
+      sun.addEventListener('click', runSweep);
+      sun.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); runSweep(); }
+      });
+    }
   })();
 
   (function(){
