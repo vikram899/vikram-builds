@@ -361,6 +361,8 @@
   .week-day.push{border-top-color:var(--stamp);}
   .week-day.pull{border-top-color:var(--route);}
   .week-day.legs{border-top-color:var(--ink);}
+  .week-day.upper{border-top-color:var(--stamp);}
+  .week-day.lower{border-top-color:var(--route);}
   .week-day.rest{opacity:0.6;}
   .day-letter{font-family:var(--font-display); font-weight:400; font-size:1.1rem; text-transform:uppercase; color:var(--ink);}
   .day-type{font-family:var(--font-type); font-size:0.58rem; letter-spacing:0.02em; text-transform:uppercase; color:var(--ink-soft);}
@@ -884,10 +886,28 @@
           <div class="alt-split-row">
             <span class="alt-split-name">Upper / Lower</span>
             <span class="alt-split-desc">4-day split: two upper body days, two lower body days a week. Comes out during race-heavy blocks when recovery matters more than volume.</span>
+            <div class="week-strip" role="list" aria-label="Upper/Lower weekly schedule">
+              <div class="week-day upper" role="listitem"><span class="day-letter" aria-hidden="true">M</span><span class="day-type">Upper</span></div>
+              <div class="week-day lower" role="listitem"><span class="day-letter" aria-hidden="true">T</span><span class="day-type">Lower</span></div>
+              <div class="week-day rest" role="listitem"><span class="day-letter" aria-hidden="true">W</span><span class="day-type">Rest</span></div>
+              <div class="week-day upper" role="listitem"><span class="day-letter" aria-hidden="true">T</span><span class="day-type">Upper</span></div>
+              <div class="week-day lower" role="listitem"><span class="day-letter" aria-hidden="true">F</span><span class="day-type">Lower</span></div>
+              <div class="week-day rest" role="listitem"><span class="day-letter" aria-hidden="true">S</span><span class="day-type">Rest</span></div>
+              <div class="week-day rest" role="listitem"><span class="day-letter" aria-hidden="true">S</span><span class="day-type">Rest</span></div>
+            </div>
           </div>
           <div class="alt-split-row">
             <span class="alt-split-name">PPL + Upper/Lower</span>
             <span class="alt-split-desc">5–6 day hybrid — PPL early in the week, upper/lower to close it out. The one that shows up when motivation is unreasonably high.</span>
+            <div class="week-strip" role="list" aria-label="PPL plus Upper/Lower weekly schedule">
+              <div class="week-day push" role="listitem"><span class="day-letter" aria-hidden="true">M</span><span class="day-type">Push</span></div>
+              <div class="week-day pull" role="listitem"><span class="day-letter" aria-hidden="true">T</span><span class="day-type">Pull</span></div>
+              <div class="week-day legs" role="listitem"><span class="day-letter" aria-hidden="true">W</span><span class="day-type">Legs</span></div>
+              <div class="week-day upper" role="listitem"><span class="day-letter" aria-hidden="true">T</span><span class="day-type">Upper</span></div>
+              <div class="week-day lower" role="listitem"><span class="day-letter" aria-hidden="true">F</span><span class="day-type">Lower</span></div>
+              <div class="week-day rest" role="listitem"><span class="day-letter" aria-hidden="true">S</span><span class="day-type">Rest</span></div>
+              <div class="week-day rest" role="listitem"><span class="day-letter" aria-hidden="true">S</span><span class="day-type">Rest</span></div>
+            </div>
           </div>
         </div>
       </div>
