@@ -730,44 +730,34 @@
       osc.start(now); osc.stop(now + 0.45);
     }
 
+    var scratchBuffer = null, scratchLoading = false;
+    function loadScratchBuffer(c){
+      if(scratchBuffer || scratchLoading) return;
+      scratchLoading = true;
+      fetch('assets/audio/pencil-scratch.mp3')
+        .then(function(r){ return r.arrayBuffer(); })
+        .then(function(ab){ return c.decodeAudioData(ab); })
+        .then(function(decoded){ scratchBuffer = decoded; })
+        .catch(function(){ /* scratch sound just won't play if this fails */ })
+        .finally(function(){ scratchLoading = false; });
+    }
+
     var lastScratch = 0;
     function playScratch(){
       if(!soundOn) return;
-      var now = performance.now();
-      if(now - lastScratch < 130) return;
-      lastScratch = now;
       var c = ensureCtx(); if(!c) return;
+      if(!scratchBuffer){ loadScratchBuffer(c); return; }
+      var now = performance.now();
+      if(now - lastScratch < 260) return;
+      lastScratch = now;
 
-      var dur = 0.045 + Math.random() * 0.02;
-      var sampleCount = Math.floor(c.sampleRate * dur);
-      var buffer = c.createBuffer(1, sampleCount, c.sampleRate);
-      var data = buffer.getChannelData(0);
-
-      var grains = 6 + Math.floor(Math.random() * 4);
-      var grainLen = Math.floor(sampleCount / grains);
-      for(var g = 0; g < grains; g++){
-        var grainAmp = 0.35 + Math.random() * 0.65;
-        var start = g * grainLen;
-        var end = Math.min(sampleCount, start + grainLen);
-        for(var i = start; i < end; i++){
-          var local = (i - start) / (end - start || 1);
-          var edgeFade = Math.sin(local * Math.PI);
-          data[i] = (Math.random() * 2 - 1) * grainAmp * edgeFade;
-        }
-      }
-
-      var noise = c.createBufferSource();
-      noise.buffer = buffer;
-      var hp = c.createBiquadFilter();
-      hp.type = 'highpass';
-      hp.frequency.value = 1600 + Math.random() * 1200;
-      var lp = c.createBiquadFilter();
-      lp.type = 'lowpass';
-      lp.frequency.value = 6500 + Math.random() * 2500;
+      var source = c.createBufferSource();
+      source.buffer = scratchBuffer;
+      source.playbackRate.value = 0.92 + Math.random() * 0.22;
       var gain = c.createGain();
-      gain.gain.value = 0.17;
-      noise.connect(hp).connect(lp).connect(gain).connect(masterGain);
-      noise.start(c.currentTime);
+      gain.gain.value = 0.5;
+      source.connect(gain).connect(masterGain);
+      source.start(c.currentTime);
     }
 
     var fadeTimer = null;
