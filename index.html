@@ -1551,13 +1551,13 @@
       cardBg = cs.getPropertyValue('--card-illo-bg').trim() || '#f1e9d3';
     }
 
-    var GRAVITY = 0.7, JUMP_V = -12.5, BASE_SPEED = 4.4;
+    var GRAVITY = 0.55, JUMP_V = -11.5, BASE_SPEED = 2.6, MAX_SPEED = 6;
     var player = { x: 90, y: groundY, vy: 0, legPhase: 0 };
     var items = [];
     var speed = BASE_SPEED;
     var distance = 0;
     var running = false, gameOver = false;
-    var spawnTimer = 0, nextSpawnIn = 70;
+    var spawnTimer = 0, nextSpawnIn = 110;
 
     var OBSTACLES = ['💼', '🌙', '🍔'];
     var COLLECTIBLES = ['🍗', '😴', '💧', '👣'];
@@ -1567,7 +1567,7 @@
 
     function reset(){
       player.y = groundY; player.vy = 0; player.legPhase = 0;
-      items = []; speed = BASE_SPEED; distance = 0; spawnTimer = 0; nextSpawnIn = 70;
+      items = []; speed = BASE_SPEED; distance = 0; spawnTimer = 0; nextSpawnIn = 110;
       gameOver = false;
     }
 
@@ -1605,7 +1605,7 @@
     function update(){
       if(!running || gameOver) return;
       distance += speed * 0.1;
-      speed += 0.0025;
+      speed = Math.min(MAX_SPEED, speed + 0.0007);
       player.vy += GRAVITY;
       player.y += player.vy;
       if(player.y > groundY){ player.y = groundY; player.vy = 0; }
@@ -1615,7 +1615,7 @@
       if(spawnTimer > nextSpawnIn){
         spawnItem();
         spawnTimer = 0;
-        nextSpawnIn = Math.max(38, 70 - speed * 2 + Math.random() * 30);
+        nextSpawnIn = Math.max(65, 115 - speed * 4 + Math.random() * 40);
       }
 
       var pw = 16, ph = 22;
