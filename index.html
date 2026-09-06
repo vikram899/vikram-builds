@@ -734,22 +734,39 @@
     function playScratch(){
       if(!soundOn) return;
       var now = performance.now();
-      if(now - lastScratch < 140) return;
+      if(now - lastScratch < 130) return;
       lastScratch = now;
       var c = ensureCtx(); if(!c) return;
-      var dur = 0.05;
-      var buffer = c.createBuffer(1, c.sampleRate * dur, c.sampleRate);
+
+      var dur = 0.045 + Math.random() * 0.02;
+      var sampleCount = Math.floor(c.sampleRate * dur);
+      var buffer = c.createBuffer(1, sampleCount, c.sampleRate);
       var data = buffer.getChannelData(0);
-      for(var i = 0; i < data.length; i++){ data[i] = (Math.random() * 2 - 1) * (1 - i / data.length); }
+
+      var grains = 6 + Math.floor(Math.random() * 4);
+      var grainLen = Math.floor(sampleCount / grains);
+      for(var g = 0; g < grains; g++){
+        var grainAmp = 0.35 + Math.random() * 0.65;
+        var start = g * grainLen;
+        var end = Math.min(sampleCount, start + grainLen);
+        for(var i = start; i < end; i++){
+          var local = (i - start) / (end - start || 1);
+          var edgeFade = Math.sin(local * Math.PI);
+          data[i] = (Math.random() * 2 - 1) * grainAmp * edgeFade;
+        }
+      }
+
       var noise = c.createBufferSource();
       noise.buffer = buffer;
-      var filter = c.createBiquadFilter();
-      filter.type = 'bandpass';
-      filter.frequency.value = 2000 + Math.random() * 900;
-      filter.Q.value = 3.5;
+      var hp = c.createBiquadFilter();
+      hp.type = 'highpass';
+      hp.frequency.value = 1600 + Math.random() * 1200;
+      var lp = c.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.value = 6500 + Math.random() * 2500;
       var gain = c.createGain();
-      gain.gain.value = 0.14;
-      noise.connect(filter).connect(gain).connect(masterGain);
+      gain.gain.value = 0.17;
+      noise.connect(hp).connect(lp).connect(gain).connect(masterGain);
       noise.start(c.currentTime);
     }
 
