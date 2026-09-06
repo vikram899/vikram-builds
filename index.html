@@ -356,6 +356,7 @@
     padding:2rem clamp(1.1rem,5vw,3rem); text-align:center;
     font-family:var(--font-hand); font-size:1.2rem; color:var(--ink-soft);
     display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+    overflow:hidden;
   }
   .finish-wrap{position:relative; width:150px; height:150px;}
   .finish-stamp{
@@ -1107,7 +1108,7 @@
         var scrap = document.createElement('div');
         scrap.className = 'scrap';
         scrap.style.background = scrapColors[i % scrapColors.length];
-        scrap.style.setProperty('--dx', Math.round((Math.random() - 0.5) * 200) + 'px');
+        scrap.style.setProperty('--dx', Math.round((Math.random() - 0.5) * 110) + 'px');
         scrap.style.setProperty('--rot', Math.round((Math.random() - 0.5) * 620) + 'deg');
         scrap.style.animationDelay = (Math.random() * 220) + 'ms';
         scrapBurst.appendChild(scrap);
