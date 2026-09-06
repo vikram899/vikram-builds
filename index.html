@@ -1516,8 +1516,19 @@
     var canvas = document.getElementById('runnerGame');
     if(!canvas) return;
     var ctx = canvas.getContext('2d');
-    var W = canvas.width, H = canvas.height;
-    var groundY = H - 34;
+    var dpr = window.devicePixelRatio || 1;
+    var W = 800, H = 240, groundY = H - 34;
+
+    function resizeCanvas(){
+      var rect = canvas.getBoundingClientRect();
+      var displayWidth = rect.width || 800;
+      var displayHeight = displayWidth * (240 / 800);
+      W = displayWidth; H = displayHeight; groundY = H - 34;
+      canvas.width = Math.round(displayWidth * dpr);
+      canvas.height = Math.round(displayHeight * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if(player) player.y = Math.min(player.y, groundY);
+    }
 
     var ink, stamp, route, cardBg;
     function readColors(){
@@ -1564,8 +1575,8 @@
         x: W + 20,
         type: isObstacle ? 'obstacle' : 'collectible',
         label: label,
-        width: isObstacle ? (22 + label.length * 6.5) : 58,
-        height: isObstacle ? 28 : 28
+        width: isObstacle ? (24 + label.length * 7.2) : 64,
+        height: 30
       });
     }
 
@@ -1657,7 +1668,7 @@
           ctx.strokeRect(it.x - it.width / 2, iy, it.width, it.height);
           ctx.setLineDash([]);
           ctx.fillStyle = stamp;
-          ctx.font = '10px "Special Elite", monospace';
+          ctx.font = 'bold 12px "Special Elite", monospace';
           ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillText(it.label, it.x, groundY - it.height / 2);
         } else {
@@ -1673,7 +1684,7 @@
           ctx.ellipse(it.x, groundY - it.height / 2, it.width / 2, it.height / 2, 0, 0, Math.PI * 2);
           ctx.stroke();
           ctx.fillStyle = route;
-          ctx.font = '9px "Special Elite", monospace';
+          ctx.font = 'bold 11px "Special Elite", monospace';
           ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillText(it.label, it.x, groundY - it.height / 2);
         }
@@ -1721,6 +1732,13 @@
       }
     });
 
+    var resizeTimer = null;
+    window.addEventListener('resize', function(){
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resizeCanvas, 150);
+    });
+
+    resizeCanvas();
     draw();
     requestAnimationFrame(loop);
   })();
