@@ -138,7 +138,55 @@
   .photo-card.before .photo-tab{color:var(--stamp);}
   .photo-card.after .photo-tab{color:var(--route);}
 
-  /* ---------- CP02 field report ---------- */
+  /* ---------- CP02 route profile (hover ridge) ---------- */
+  .route-chart{
+    position:relative; margin-top:3rem; aspect-ratio:900/320; width:100%;
+    background:#f1e9d3; border:1px solid rgba(42,33,24,0.18); box-shadow:0 10px 22px -8px var(--shadow);
+  }
+  .route-chart svg{position:absolute; inset:0; width:100%; height:100%; display:block;}
+  .waypoint{
+    appearance:none; -webkit-appearance:none; font:inherit;
+    position:absolute; width:18px; height:18px; margin:-9px 0 0 -9px;
+    border-radius:50%; background:var(--paper); border:2.5px solid var(--route);
+    cursor:pointer; z-index:3; padding:0; -webkit-tap-highlight-color:transparent;
+    transition:background 140ms ease, border-color 140ms ease, transform 140ms ease;
+  }
+  .waypoint:hover, .waypoint:focus-visible, .waypoint.active{
+    background:var(--stamp); border-color:var(--stamp); transform:scale(1.25); outline:none;
+  }
+  .waypoint .tip{
+    position:absolute; bottom:calc(100% + 12px); left:50%; transform:translate(-50%,4px);
+    width:206px; background:#efe6cd; border:1px solid rgba(42,33,24,0.2);
+    box-shadow:0 12px 24px -8px var(--shadow); padding:0.75rem 0.85rem;
+    opacity:0; visibility:hidden; transition:opacity 150ms ease, transform 150ms ease;
+    pointer-events:none; text-align:left; z-index:10; cursor:default;
+  }
+  .waypoint.align-start .tip{left:0; transform:translate(0,4px);}
+  .waypoint.align-end .tip{left:auto; right:0; transform:translate(0,4px);}
+  .waypoint:hover .tip, .waypoint:focus-visible .tip, .waypoint.active .tip{
+    opacity:1; visibility:visible; transform:translate(-50%,0);
+  }
+  .waypoint.align-start:hover .tip, .waypoint.align-start:focus-visible .tip, .waypoint.align-start.active .tip{transform:translate(0,0);}
+  .waypoint.align-end:hover .tip, .waypoint.align-end:focus-visible .tip, .waypoint.align-end.active .tip{transform:translate(0,0);}
+  .tip-date{
+    font-family:var(--font-type); font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--stamp); display:block; margin-bottom:0.4rem;
+  }
+  .tip-stats{font-family:var(--font-type); font-size:0.8rem; color:var(--ink); line-height:1.7;}
+  .tip-race{
+    display:inline-block; margin-top:0.35rem; font-family:var(--font-type); font-size:0.68rem;
+    border:1px dashed var(--ink-soft); padding:0.15rem 0.45rem; color:var(--ink-soft);
+  }
+  .tip-note{font-family:var(--font-hand); font-size:1.05rem; color:var(--ink-soft); margin-top:0.4rem; line-height:1.25;}
+  .route-hint{
+    font-family:var(--font-hand); font-size:1.1rem; color:var(--route); margin-top:0.9rem; text-align:right;
+  }
+  @media (max-width:600px){
+    .route-chart{aspect-ratio:600/420;}
+    .waypoint .tip{width:172px;}
+  }
+
+  /* ---------- CP03 field report ---------- */
   .report{
     background:#efe6cd; border:1px solid rgba(42,33,24,0.18);
     padding:clamp(1.8rem,4vw,3rem); margin-top:2.6rem; transform:rotate(-0.6deg);
@@ -149,7 +197,7 @@
   .report p + p{margin-top:1.3rem;}
   .report .entry-tag{font-size:0.78rem; color:var(--stamp); margin-bottom:1rem; display:block;}
 
-  /* ---------- CP03 logbook ledger ---------- */
+  /* ---------- CP04 logbook ledger ---------- */
   .ledger{
     margin-top:2.6rem; background:#e9dfc4; border:1px solid rgba(42,33,24,0.18);
     box-shadow:0 10px 22px -8px var(--shadow); padding:clamp(1.2rem,3vw,1.8rem) clamp(1.2rem,3vw,2.2rem);
@@ -163,7 +211,7 @@
   .ledger-label{color:var(--ink-soft); font-size:0.92rem;}
   .ledger-value{font-size:1.6rem; color:var(--stamp); white-space:nowrap;}
 
-  /* ---------- CP04 postcards ---------- */
+  /* ---------- CP05 postcards ---------- */
   .postcards{display:flex; flex-wrap:wrap; gap:2.2rem; margin-top:3rem; justify-content:flex-start;}
   .postcard{
     background:#efe6cd; border:1px solid rgba(42,33,24,0.18); width:250px;
@@ -176,7 +224,7 @@
   .postcard h3{font-family:var(--font-display); font-weight:400; text-transform:uppercase; font-size:1.5rem; margin:0 0 0.5rem; letter-spacing:0.02em;}
   .postcard p{margin:0; color:var(--ink-soft); font-size:0.92rem; font-family:var(--font-body); font-style:italic;}
 
-  /* ---------- CP05 tickets ---------- */
+  /* ---------- CP06 tickets ---------- */
   .next-race{border-top:2px solid rgba(42,33,24,0.15);}
   .ticket{
     display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1.5rem;
@@ -307,9 +355,99 @@
   </div>
 </section>
 
+<section id="route">
+  <div class="wrap">
+    <span class="stamp">CHECKPOINT<b>02</b>THE ROUTE</span>
+    <h2>Hover the ridge to read the log.</h2>
+    <p class="lede">Nine months, drawn like an elevation profile — the stretches that felt like climbing were, literally, the ones where the numbers moved.</p>
+
+    <div class="route-chart">
+      <svg viewBox="0 0 900 320" preserveAspectRatio="none" role="img" aria-label="Elevation-style chart of monthly training progress from January to September">
+        <path d="M0,150 Q225,130 450,150 T900,150" fill="none" stroke="var(--route)" stroke-width="1.2" opacity="0.15"/>
+        <path d="M0,190 Q225,172 450,190 T900,190" fill="none" stroke="var(--route)" stroke-width="1.2" opacity="0.12"/>
+        <circle cx="850" cy="42" r="17" fill="none" stroke="var(--stamp)" stroke-width="2"/>
+        <g stroke="var(--stamp)" stroke-width="2" stroke-linecap="round">
+          <line x1="850" y1="12" x2="850" y2="2"/><line x1="880" y1="42" x2="890" y2="42"/>
+          <line x1="871" y1="21" x2="878" y2="14"/><line x1="829" y1="21" x2="822" y2="14"/>
+        </g>
+        <path d="M0,300 L60,230 L155,205 L250,215 L345,170 L440,185 L535,140 L630,150 L725,95 L820,80 L900,62 L900,320 L0,320 Z" fill="var(--paper-3)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>
+        <polyline points="60,230 155,205 250,215 345,170 440,185 535,140 630,150 725,95 820,80" fill="none" stroke="var(--route)" stroke-width="2" stroke-dasharray="4 4" opacity="0.65"/>
+      </svg>
+
+      <button type="button" class="waypoint align-start" style="left:6.7%; top:71.9%;" aria-label="January 26 checkpoint">
+        <span class="tip">
+          <span class="tip-date">Jan 26</span>
+          <span class="tip-stats">91.2&nbsp;kg <b>·</b> 27%&nbsp;bf</span>
+          <span class="tip-note">"Day one of actually logging this instead of just thinking about it."</span>
+        </span>
+      </button>
+      <button type="button" class="waypoint" style="left:17.2%; top:64.1%;" aria-label="February checkpoint">
+        <span class="tip">
+          <span class="tip-date">Feb</span>
+          <span class="tip-stats">88.6&nbsp;kg <b>·</b> 26%&nbsp;bf</span>
+          <span class="tip-note">"Still hate mornings. Showed up anyway."</span>
+        </span>
+      </button>
+      <button type="button" class="waypoint" style="left:27.8%; top:67.2%;" aria-label="March checkpoint">
+        <span class="tip">
+          <span class="tip-date">Mar</span>
+          <span class="tip-stats">85.9&nbsp;kg <b>·</b> 24%&nbsp;bf</span>
+          <span class="tip-note">"First month running felt like running, not surviving."</span>
+        </span>
+      </button>
+      <button type="button" class="waypoint" style="left:38.3%; top:53.1%;" aria-label="April checkpoint">
+        <span class="tip">
+          <span class="tip-date">Apr</span>
+          <span class="tip-stats">83.4&nbsp;kg <b>·</b> 23%&nbsp;bf</span>
+          <span class="tip-race">race: first 5K — 32:10</span>
+          <span class="tip-note">"Signed up on a whim. Finished upright."</span>
+        </span>
+      </button>
+      <button type="button" class="waypoint" style="left:48.9%; top:57.8%;" aria-label="May checkpoint">
+        <span class="tip">
+          <span class="tip-date">May</span>
+          <span class="tip-stats">81.0&nbsp;kg <b>·</b> 21%&nbsp;bf</span>
+          <span class="tip-note">"Legs finally feel like they belong to a runner."</span>
+        </span>
+      </button>
+      <button type="button" class="waypoint" style="left:59.4%; top:43.8%;" aria-label="June checkpoint">
+        <span class="tip">
+          <span class="tip-date">Jun</span>
+          <span class="tip-stats">79.2&nbsp;kg <b>·</b> 20%&nbsp;bf</span>
+          <span class="tip-race">race: first 10K trail — 58:40</span>
+          <span class="tip-note">"Fell twice on the descent. Finished anyway."</span>
+        </span>
+      </button>
+      <button type="button" class="waypoint" style="left:70.0%; top:46.9%;" aria-label="July checkpoint">
+        <span class="tip">
+          <span class="tip-date">Jul</span>
+          <span class="tip-stats">77.8&nbsp;kg <b>·</b> 19%&nbsp;bf</span>
+          <span class="tip-note">"Sleeping better than I have in years."</span>
+        </span>
+      </button>
+      <button type="button" class="waypoint" style="left:80.6%; top:29.7%;" aria-label="August checkpoint">
+        <span class="tip">
+          <span class="tip-date">Aug</span>
+          <span class="tip-stats">76.5&nbsp;kg <b>·</b> 18%&nbsp;bf</span>
+          <span class="tip-race">race: half marathon — 1:52:04</span>
+          <span class="tip-note">"Negative split by accident. Will take it."</span>
+        </span>
+      </button>
+      <button type="button" class="waypoint align-end active" style="left:91.1%; top:25.0%;" aria-label="September checkpoint, today">
+        <span class="tip">
+          <span class="tip-date">Sep — today</span>
+          <span class="tip-stats">75.9&nbsp;kg <b>·</b> 17%&nbsp;bf</span>
+          <span class="tip-note">"Still logging. Still going."</span>
+        </span>
+      </button>
+    </div>
+    <p class="route-hint">tap a point on mobile ↑</p>
+  </div>
+</section>
+
 <section id="cp02">
   <div class="wrap">
-    <span class="stamp">CHECKPOINT<b>02</b>FIELD NOTES</span>
+    <span class="stamp">CHECKPOINT<b>03</b>FIELD NOTES</span>
     <h2>Why the DNFs get posted too.</h2>
     <div class="report">
       <span class="entry-tag">entry — mile 41, somewhere past the last aid station</span>
@@ -321,7 +459,7 @@
 
 <section id="cp03">
   <div class="wrap">
-    <span class="stamp">CHECKPOINT<b>03</b>THE LOGBOOK</span>
+    <span class="stamp">CHECKPOINT<b>04</b>THE LOGBOOK</span>
     <h2>The tally so far.</h2>
     <p class="lede">Kept like a running log, not a highlight reel — updated after every block.</p>
     <div class="ledger">
@@ -336,7 +474,7 @@
 
 <section id="cp04">
   <div class="wrap">
-    <span class="stamp">CHECKPOINT<b>04</b>ON THIS CHANNEL</span>
+    <span class="stamp">CHECKPOINT<b>05</b>ON THIS CHANNEL</span>
     <h2>Three things live here.</h2>
     <div class="postcards">
       <div class="postcard">
@@ -360,7 +498,7 @@
 
 <section id="cp05" class="next-race">
   <div class="wrap">
-    <span class="stamp">CHECKPOINT<b>05</b>NEXT RACE</span>
+    <span class="stamp">CHECKPOINT<b>06</b>NEXT RACE</span>
     <h2>The next mile is public.</h2>
     <div class="ticket">
       <div class="ticket-info">
@@ -390,6 +528,15 @@
 
 <script>
   (function(){
+    var waypoints = document.querySelectorAll('.waypoint');
+    waypoints.forEach(function(wp){
+      wp.addEventListener('click', function(){
+        var wasActive = wp.classList.contains('active');
+        waypoints.forEach(function(w){ w.classList.remove('active'); });
+        if(!wasActive) wp.classList.add('active');
+      });
+    });
+
     var start = Date.now();
     var clock = document.getElementById('onPageClock');
     setInterval(function(){
