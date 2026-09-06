@@ -171,7 +171,8 @@
   .sun-trigger circle, .sun-trigger line{transition:filter 160ms ease;}
   .sun-trigger:hover circle, .sun-trigger:hover line,
   .sun-trigger:focus-visible circle, .sun-trigger:focus-visible line{filter:brightness(1.25);}
-  .sun-trigger:focus-visible{outline:none;}
+  .sun-trigger:focus{outline:none;}
+  .sun-trigger:focus-visible{outline:2px dashed var(--route); outline-offset:8px;}
   .sun-icon, .moon-icon{transition:opacity 320ms ease;}
   .moon-icon{opacity:0;}
   :root[data-mode="night"] .sun-icon{opacity:0;}
