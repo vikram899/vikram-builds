@@ -355,12 +355,34 @@
   .workout-card--wide{grid-column:1 / -1;}
   .ppl-split{display:grid; grid-template-columns:repeat(3, 1fr); gap:1rem; margin:1rem 0;}
   @media (max-width:700px){ .ppl-split{grid-template-columns:1fr;} }
-  .ppl-day{background:var(--card-bg-2); border:1px dashed rgba(42,33,24,0.25); padding:0.7rem 0.85rem;}
+  .ppl-day{
+    background:var(--card-bg-2); border:1px dashed rgba(42,33,24,0.25); padding:0.7rem 0.85rem;
+    position:relative; z-index:0; cursor:default;
+  }
+  .ppl-day:hover, .ppl-day:focus-within{z-index:5;}
+  .ppl-day:focus{outline:none;}
+  .ppl-day:focus-visible{outline:2px dashed var(--route); outline-offset:3px;}
   .ppl-label{
     display:block; font-family:var(--font-type); font-size:0.72rem; letter-spacing:0.06em;
     text-transform:uppercase; color:var(--stamp); margin-bottom:0.35rem;
   }
   .ppl-desc{display:block; font-family:var(--font-body); font-size:0.85rem; color:var(--ink-soft); font-style:italic; line-height:1.4;}
+  .ppl-list{
+    position:absolute; left:0; right:0; top:100%; margin:0.5rem 0 0; padding:0.7rem 0.9rem;
+    list-style:none; background:var(--card-bg); border:1px solid rgba(42,33,24,0.2);
+    box-shadow:0 10px 22px -8px var(--shadow);
+    opacity:0; visibility:hidden; transform:translateY(-4px);
+    transition:opacity 160ms ease, transform 160ms ease;
+    pointer-events:none; text-align:left;
+  }
+  .ppl-day:hover .ppl-list, .ppl-day:focus-within .ppl-list{
+    opacity:1; visibility:visible; transform:translateY(0);
+  }
+  .ppl-list li{
+    font-family:var(--font-type); font-size:0.78rem; color:var(--ink);
+    padding:0.3rem 0; border-bottom:1px dashed rgba(42,33,24,0.15);
+  }
+  .ppl-list li:last-child{border-bottom:none;}
 
   /* ---------- CP06 tickets ---------- */
   .next-race{border-top:2px solid var(--divider);}
@@ -768,17 +790,38 @@
         <h3>Strength Training</h3>
         <p>The unglamorous work that keeps the rest of it possible — split push / pull / legs.</p>
         <div class="ppl-split">
-          <div class="ppl-day">
+          <div class="ppl-day" tabindex="0">
             <span class="ppl-label">Push</span>
             <span class="ppl-desc">chest, shoulders, triceps — bench, overhead press, dips</span>
+            <ul class="ppl-list">
+              <li>Bench press — 4x8</li>
+              <li>Overhead press — 3x10</li>
+              <li>Incline dumbbell press — 3x10</li>
+              <li>Triceps dips — 3x max reps</li>
+              <li>Lateral raises — 3x12</li>
+            </ul>
           </div>
-          <div class="ppl-day">
+          <div class="ppl-day" tabindex="0">
             <span class="ppl-label">Pull</span>
             <span class="ppl-desc">back, biceps, rear delts — rows, pull-ups, deadlift variations</span>
+            <ul class="ppl-list">
+              <li>Deadlifts — 4x6</li>
+              <li>Barbell rows — 4x8</li>
+              <li>Pull-ups — 3x max reps</li>
+              <li>Face pulls — 3x15</li>
+              <li>Bicep curls — 3x12</li>
+            </ul>
           </div>
-          <div class="ppl-day">
+          <div class="ppl-day" tabindex="0">
             <span class="ppl-label">Legs</span>
             <span class="ppl-desc">quads, hamstrings, glutes, calves — the ones that make stairs a problem the next day</span>
+            <ul class="ppl-list">
+              <li>Back squats — 4x8</li>
+              <li>Romanian deadlifts — 3x10</li>
+              <li>Walking lunges — 3x12/side</li>
+              <li>Leg press — 3x10</li>
+              <li>Calf raises — 4x15</li>
+            </ul>
           </div>
         </div>
         <span class="workout-tag">3x / week</span>
