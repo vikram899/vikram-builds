@@ -20,6 +20,13 @@
     --tape-2:#e3d9a8;
     --shadow:rgba(37,29,18,0.35);
     --divider:rgba(42,33,24,0.15);
+    --card-bg:#e9dfc4;
+    --card-bg-2:#efe6cd;
+    --card-illo-bg:#f1e9d3;
+    --badge-bg:rgba(219,199,160,0.5);
+    --badge-bg-strong:rgba(219,199,160,0.88);
+    --tape-a:rgba(227,217,168,0.85);
+    --tape-b:rgba(210,198,145,0.85);
     --font-display:'Staatliches', 'Arial Narrow', sans-serif;
     --font-body:'Lora', Georgia, serif;
     --font-type:'Special Elite', 'Courier New', monospace;
@@ -36,6 +43,13 @@
     --route:#6fe3b4;
     --shadow:rgba(0,0,0,0.55);
     --divider:rgba(236,231,219,0.14);
+    --card-bg:#1a212b;
+    --card-bg-2:#202836;
+    --card-illo-bg:#141b24;
+    --badge-bg:rgba(20,26,34,0.55);
+    --badge-bg-strong:rgba(15,20,27,0.92);
+    --tape-a:rgba(70,80,95,0.85);
+    --tape-b:rgba(52,60,73,0.85);
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -66,7 +80,7 @@
   .headlamp-toggle{
     position:fixed; top:16px; right:16px; z-index:45;
     display:flex; align-items:center; gap:0.5rem;
-    background:rgba(219,199,160,0.9); border:2px dashed var(--ink); color:var(--ink);
+    background:var(--badge-bg-strong); border:2px dashed var(--ink); color:var(--ink);
     padding:0.42rem 0.85rem 0.42rem 0.55rem; border-radius:999px; cursor:pointer;
     font-family:var(--font-type); font-size:0.66rem; letter-spacing:0.04em; text-transform:uppercase;
     transition:background 220ms ease, color 220ms ease, border-color 220ms ease;
@@ -75,7 +89,7 @@
   .headlamp-toggle svg{flex:none; color:inherit;}
   .headlamp-toggle .beam-lines{opacity:0.4; transition:opacity 220ms ease;}
   :root[data-mode="night"] .headlamp-toggle{
-    background:rgba(15,20,27,0.92); border-color:var(--stamp); color:var(--stamp);
+    border-color:var(--stamp); color:var(--stamp);
   }
   :root[data-mode="night"] .headlamp-toggle .beam-lines{
     opacity:1; filter:drop-shadow(0 0 3px var(--stamp));
@@ -106,7 +120,7 @@
     border:2px dashed var(--stamp); color:var(--stamp);
     font-family:var(--font-type); font-size:0.62rem; letter-spacing:0.05em; text-transform:uppercase;
     transform:rotate(-8deg); position:absolute; top:-18px; right:clamp(0.5rem,3vw,1.5rem);
-    background:rgba(219,199,160,0.5);
+    background:var(--badge-bg);
   }
   .stamp b{font-size:1.05rem; margin:0.15rem 0; font-family:var(--font-display); letter-spacing:0.04em;}
   .stamp::before{
@@ -124,7 +138,7 @@
   .pin{position:absolute; top:-10px; left:50%; transform:translateX(-50%); width:16px; height:16px; z-index:3;}
   .tape{
     position:absolute; width:70px; height:26px; top:-14px;
-    background:repeating-linear-gradient(45deg, rgba(227,217,168,0.85), rgba(227,217,168,0.85) 6px, rgba(210,198,145,0.85) 6px, rgba(210,198,145,0.85) 12px);
+    background:repeating-linear-gradient(45deg, var(--tape-a), var(--tape-a) 6px, var(--tape-b) 6px, var(--tape-b) 12px);
     box-shadow:0 2px 4px rgba(0,0,0,0.18);
     opacity:0.92;
   }
@@ -170,13 +184,13 @@
   .split{display:grid; grid-template-columns:1fr 1fr; gap:2.4rem; margin-top:3rem;}
   @media (max-width:760px){ .split{grid-template-columns:1fr; gap:3.2rem;} }
   .photo-card{
-    background:#e9dfc4; border:1px solid rgba(42,33,24,0.18);
+    background:var(--card-bg); border:1px solid rgba(42,33,24,0.18);
     padding:0.9rem 0.9rem 1.3rem; box-shadow:0 10px 22px -8px var(--shadow);
     position:relative;
   }
   .photo-card.before{transform:rotate(-2.2deg); border-radius:2px 8px 3px 6px;}
   .photo-card.after{transform:rotate(1.8deg); border-radius:6px 3px 8px 2px;}
-  .photo-card svg{width:100%; height:180px; display:block; background:#f1e9d3;}
+  .photo-card svg{width:100%; height:180px; display:block; background:var(--card-illo-bg);}
   .photo-cap{
     font-family:var(--font-hand); font-size:1.25rem; color:var(--ink-soft);
     text-align:center; margin-top:0.9rem;
@@ -191,7 +205,7 @@
   /* ---------- CP02 route profile (hover ridge) ---------- */
   .route-chart{
     position:relative; margin-top:3rem; aspect-ratio:900/320; width:100%;
-    background:#f1e9d3; border:1px solid rgba(42,33,24,0.18); box-shadow:0 10px 22px -8px var(--shadow);
+    background:var(--card-illo-bg); border:1px solid rgba(42,33,24,0.18); box-shadow:0 10px 22px -8px var(--shadow);
   }
   .route-chart svg{position:absolute; inset:0; width:100%; height:100%; display:block;}
   .waypoint{
@@ -206,7 +220,7 @@
   }
   .waypoint .tip{
     position:absolute; bottom:calc(100% + 12px); left:50%; transform:translate(-50%,4px);
-    width:206px; background:#efe6cd; border:1px solid rgba(42,33,24,0.2);
+    width:206px; background:var(--card-bg-2); border:1px solid rgba(42,33,24,0.2);
     box-shadow:0 12px 24px -8px var(--shadow); padding:0.75rem 0.85rem;
     opacity:0; visibility:hidden; transition:opacity 150ms ease, transform 150ms ease;
     pointer-events:none; text-align:left; z-index:10; cursor:default;
@@ -238,7 +252,7 @@
 
   /* ---------- CP03 field report ---------- */
   .report{
-    background:#efe6cd; border:1px solid rgba(42,33,24,0.18);
+    background:var(--card-bg-2); border:1px solid rgba(42,33,24,0.18);
     padding:clamp(1.8rem,4vw,3rem); margin-top:2.6rem; transform:rotate(-0.6deg);
     box-shadow:0 14px 28px -10px var(--shadow); border-radius:2px 10px 2px 10px;
     font-family:var(--font-type);
@@ -249,7 +263,7 @@
 
   /* ---------- CP04 logbook ledger ---------- */
   .ledger{
-    margin-top:2.6rem; background:#e9dfc4; border:1px solid rgba(42,33,24,0.18);
+    margin-top:2.6rem; background:var(--card-bg); border:1px solid rgba(42,33,24,0.18);
     box-shadow:0 10px 22px -8px var(--shadow); padding:clamp(1.2rem,3vw,1.8rem) clamp(1.2rem,3vw,2.2rem);
   }
   .ledger-row{
@@ -264,7 +278,7 @@
   /* ---------- CP05 postcards ---------- */
   .postcards{display:flex; flex-wrap:wrap; gap:2.2rem; margin-top:3rem; justify-content:flex-start;}
   .postcard{
-    background:#efe6cd; border:1px solid rgba(42,33,24,0.18); width:250px;
+    background:var(--card-bg-2); border:1px solid rgba(42,33,24,0.18); width:250px;
     padding:1.5rem 1.4rem; box-shadow:0 10px 20px -9px var(--shadow); position:relative;
   }
   .postcard:nth-child(1){transform:rotate(-2.4deg); margin-top:0.4rem;}
@@ -278,7 +292,7 @@
   .next-race{border-top:2px solid var(--divider);}
   .ticket{
     display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1.5rem;
-    background:#efe6cd; border:2px dashed var(--ink-soft); padding:1.6rem 2rem;
+    background:var(--card-bg-2); border:2px dashed var(--ink-soft); padding:1.6rem 2rem;
     margin-top:2.4rem; transform:rotate(-0.4deg);
   }
   .ticket-info b{font-family:var(--font-display); font-size:1.7rem; text-transform:uppercase; display:block;}
@@ -286,7 +300,7 @@
   .stub-row{display:flex; flex-wrap:wrap; gap:0.9rem; margin-top:1.6rem;}
   .stub{
     font-family:var(--font-type); font-size:0.82rem; text-decoration:none; color:var(--ink);
-    border:1.5px solid var(--ink); padding:0.7rem 1.1rem; background:#efe6cd;
+    border:1.5px solid var(--ink); padding:0.7rem 1.1rem; background:var(--card-bg-2);
     display:inline-flex; align-items:center; gap:0.5rem; transition:transform 140ms ease, background 140ms ease;
   }
   .stub:hover{transform:translateY(-2px); background:var(--tape-2);}
@@ -300,7 +314,7 @@
   /* ---------- postmark clock ---------- */
   .postmark{
     position:fixed; bottom:18px; right:18px; z-index:40; width:74px; height:74px;
-    border-radius:50%; border:2px dashed var(--ink); background:rgba(219,199,160,0.88);
+    border-radius:50%; border:2px dashed var(--ink); background:var(--badge-bg-strong);
     display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px var(--shadow);
   }
   .postmark svg{position:absolute; inset:0; animation:spin 40s linear infinite;}
@@ -384,9 +398,9 @@
     <div class="split">
       <div class="photo-card before">
         <div class="tape" style="left:calc(50% - 35px); transform:rotate(-4deg);"></div>
-        <svg viewBox="0 0 240 180"><rect width="240" height="180" fill="#f1e9d3"/>
+        <svg viewBox="0 0 240 180"><rect width="240" height="180" fill="var(--card-illo-bg)"/>
           <g stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="120" cy="70" r="12" fill="#f1e9d3"/>
+            <circle cx="120" cy="70" r="12" fill="var(--card-illo-bg)"/>
             <path d="M120,82 C118,100 122,112 108,120 M120,95 C130,102 138,112 132,124"/>
             <path d="M108,120 L96,140 M132,124 L142,146"/>
           </g>
@@ -400,14 +414,14 @@
       </div>
       <div class="photo-card after">
         <div class="tape" style="left:calc(50% - 35px); transform:rotate(3deg);"></div>
-        <svg viewBox="0 0 240 180"><rect width="240" height="180" fill="#f1e9d3"/>
+        <svg viewBox="0 0 240 180"><rect width="240" height="180" fill="var(--card-illo-bg)"/>
           <g stroke="var(--stamp)" stroke-width="1.6" opacity="0.5">
             <line x1="60" y1="30" x2="60" y2="8"/><line x1="80" y1="34" x2="92" y2="16"/><line x1="45" y1="45" x2="24" y2="34"/>
           </g>
           <circle cx="60" cy="30" r="15" fill="none" stroke="var(--stamp)" stroke-width="2"/>
           <path d="M20,150 L70,90 L130,150" fill="none" stroke="var(--route)" stroke-width="2.5" opacity="0.6"/>
           <g stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="140" cy="86" r="12" fill="#f1e9d3"/>
+            <circle cx="140" cy="86" r="12" fill="var(--card-illo-bg)"/>
             <path d="M140,98 L130,124 L150,116 M130,124 L112,150 M150,116 L166,146"/>
             <path d="M140,105 L162,96"/>
           </g>
