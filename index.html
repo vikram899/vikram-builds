@@ -296,21 +296,40 @@
   .ledger-row{
     display:flex; justify-content:space-between; align-items:baseline; gap:1rem;
     padding:0.95rem 0; border-bottom:1px dashed rgba(42,33,24,0.3);
-    font-family:var(--font-type);
+    font-family:var(--font-type); position:relative;
   }
   .ledger-row:last-child{border-bottom:none;}
   .ledger-label{color:var(--ink-soft); font-size:0.92rem;}
   .ledger-value{font-size:1.6rem; color:var(--stamp); white-space:nowrap;}
+  .ledger-note{
+    position:absolute; right:0; top:100%; margin-top:-1px;
+    background:var(--card-bg-2); border:1px solid rgba(42,33,24,0.18);
+    box-shadow:0 8px 18px -8px var(--shadow); padding:0.5rem 0.8rem;
+    font-family:var(--font-hand); font-size:1.08rem; color:var(--ink-soft);
+    opacity:0; visibility:hidden; transform:translateY(-4px) rotate(-1deg);
+    transition:opacity 160ms ease, transform 160ms ease;
+    pointer-events:none; z-index:8; max-width:240px; text-align:left; white-space:normal;
+  }
+  .ledger-row:hover .ledger-note{opacity:1; visibility:visible; transform:translateY(0) rotate(-1deg);}
+  @media (max-width:600px){ .ledger-note{display:none;} }
 
   /* ---------- CP05 postcards ---------- */
   .postcards{display:flex; flex-wrap:wrap; gap:2.2rem; margin-top:3rem; justify-content:flex-start;}
   .postcard{
     background:var(--card-bg-2); border:1px solid rgba(42,33,24,0.18); width:250px;
     padding:1.5rem 1.4rem; box-shadow:0 10px 20px -9px var(--shadow); position:relative;
+    --base-rot:0deg; --tilt-x:0deg; --tilt-y:0deg; --tilt-scale:1;
+    transform:rotate(var(--base-rot)) perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(var(--tilt-scale));
+    transition:transform 160ms ease-out, box-shadow 160ms ease-out;
+    will-change:transform;
   }
-  .postcard:nth-child(1){transform:rotate(-2.4deg); margin-top:0.4rem;}
-  .postcard:nth-child(2){transform:rotate(1.6deg); margin-top:-0.6rem;}
-  .postcard:nth-child(3){transform:rotate(-1.1deg); margin-top:0.8rem;}
+  .postcard:hover{box-shadow:0 16px 28px -10px var(--shadow);}
+  .postcard:nth-child(1){--base-rot:-2.4deg; margin-top:0.4rem;}
+  .postcard:nth-child(2){--base-rot:1.6deg; margin-top:-0.6rem;}
+  .postcard:nth-child(3){--base-rot:-1.1deg; margin-top:0.8rem;}
+  @media (prefers-reduced-motion: reduce){
+    .postcard{transition:none;}
+  }
   .postcard svg{margin-bottom:1rem;}
   .postcard h3{font-family:var(--font-display); font-weight:400; text-transform:uppercase; font-size:1.5rem; margin:0 0 0.5rem; letter-spacing:0.02em;}
   .postcard p{margin:0; color:var(--ink-soft); font-size:0.92rem; font-family:var(--font-body); font-style:italic;}
@@ -336,6 +355,46 @@
   footer{
     padding:2rem clamp(1.1rem,5vw,3rem); text-align:center;
     font-family:var(--font-hand); font-size:1.2rem; color:var(--ink-soft);
+    display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+  }
+  .finish-wrap{position:relative; width:150px; height:150px;}
+  .finish-stamp{
+    position:absolute; inset:0; border-radius:50%; border:4px solid var(--stamp); color:var(--stamp);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:var(--font-display); font-size:1.5rem; letter-spacing:0.06em; text-transform:uppercase;
+    background:var(--badge-bg-strong); opacity:0; transform:scale(3) rotate(-16deg);
+  }
+  .finish-stamp::before{content:''; position:absolute; inset:9px; border:1.5px solid var(--stamp); border-radius:50%; opacity:0.6;}
+  .finish-stamp::after{
+    content:''; position:absolute; inset:-4px; border:2px solid var(--stamp); border-radius:50%;
+    opacity:0; transform:scale(1);
+  }
+  .finish-stamp.revealed{animation:stampDown 1100ms cubic-bezier(.22,1.4,.4,1) forwards;}
+  .finish-stamp.revealed::after{animation:stampRing 1100ms ease-out 200ms forwards;}
+  @keyframes stampDown{
+    0%{opacity:0; transform:scale(3) rotate(-16deg);}
+    15%{opacity:0; transform:scale(3) rotate(-16deg);}
+    55%{opacity:1; transform:scale(0.9) rotate(-9deg);}
+    75%{opacity:1; transform:scale(1.06) rotate(-12deg);}
+    100%{opacity:1; transform:scale(1) rotate(-11deg);}
+  }
+  @keyframes stampRing{
+    0%{opacity:0.7; transform:scale(1);}
+    100%{opacity:0; transform:scale(1.9);}
+  }
+  .scrap-burst{position:absolute; inset:0; pointer-events:none;}
+  .scrap{
+    position:absolute; left:50%; top:50%; width:11px; height:16px; margin:-8px 0 0 -5px;
+    opacity:0.95; animation:scrapFall 1800ms ease-in forwards;
+  }
+  @keyframes scrapFall{
+    0%{transform:translate(0,0) rotate(0deg); opacity:1;}
+    100%{transform:translate(var(--dx,0px), 170px) rotate(var(--rot,180deg)); opacity:0;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .finish-stamp.revealed, .finish-stamp.revealed::after{animation:none;}
+    .finish-stamp.revealed{opacity:1; transform:scale(1) rotate(-11deg);}
+    .scrap{display:none;}
   }
 
   /* ---------- postmark clock ---------- */
@@ -615,11 +674,26 @@
     <h2>The tally so far.</h2>
     <p class="lede">Kept like a running log, not a highlight reel — updated after every block.</p>
     <div class="ledger">
-      <div class="ledger-row"><span class="ledger-label">km on the legs</span><span class="ledger-value num" data-count="3412">0</span></div>
-      <div class="ledger-row"><span class="ledger-label">starts</span><span class="ledger-value num" data-count="16">0</span></div>
-      <div class="ledger-row"><span class="ledger-label">finishes</span><span class="ledger-value num" data-count="14">0</span></div>
-      <div class="ledger-row"><span class="ledger-label">DNFs that taught me more than the finishes</span><span class="ledger-value num" data-count="2">0</span></div>
-      <div class="ledger-row"><span class="ledger-label">people reading the log</span><span class="ledger-value num" data-count="40" data-suffix="K+">0</span></div>
+      <div class="ledger-row">
+        <span class="ledger-label">km on the legs</span><span class="ledger-value num" data-count="3412">0</span>
+        <span class="ledger-note">give or take a few Strava GPS glitches</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-label">starts</span><span class="ledger-value num" data-count="16">0</span>
+        <span class="ledger-note">not every one of these felt like a good idea beforehand</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-label">finishes</span><span class="ledger-value num" data-count="14">0</span>
+        <span class="ledger-note">the number people ask about most and the one I care about least</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-label">DNFs that taught me more than the finishes</span><span class="ledger-value num" data-count="2">0</span>
+        <span class="ledger-note">still the two I think about most</span>
+      </div>
+      <div class="ledger-row">
+        <span class="ledger-label">people reading the log</span><span class="ledger-value num" data-count="40" data-suffix="K+">0</span>
+        <span class="ledger-note">hi, by the way</span>
+      </div>
     </div>
   </div>
 </section>
@@ -671,7 +745,13 @@
   </div>
 </section>
 
-<footer>vikram.builds — logged one mile at a time, since 2026</footer>
+<footer>
+  <div class="finish-wrap">
+    <div class="finish-stamp" id="finishStamp" aria-hidden="true">Finisher</div>
+    <div class="scrap-burst" id="scrapBurst" aria-hidden="true"></div>
+  </div>
+  vikram.builds — logged one mile at a time, since 2026
+</footer>
 
 <audio id="bgMusic" src="assets/audio/meditation-music-no-copyright.mp3" loop preload="none"></audio>
 
@@ -952,6 +1032,26 @@
   })();
 
   (function(){
+    var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduceMotion) return;
+    document.querySelectorAll('.postcard').forEach(function(card){
+      card.addEventListener('mousemove', function(e){
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.setProperty('--tilt-x', (-py * 12) + 'deg');
+        card.style.setProperty('--tilt-y', (px * 14) + 'deg');
+        card.style.setProperty('--tilt-scale', '1.04');
+      });
+      card.addEventListener('mouseleave', function(){
+        card.style.setProperty('--tilt-x', '0deg');
+        card.style.setProperty('--tilt-y', '0deg');
+        card.style.setProperty('--tilt-scale', '1');
+      });
+    });
+  })();
+
+  (function(){
     var waypoints = document.querySelectorAll('.waypoint');
     waypoints.forEach(function(wp){
       wp.addEventListener('click', function(){
@@ -993,6 +1093,42 @@
       stats.forEach(function(el){ io.observe(el); });
     } else {
       stats.forEach(countUp);
+    }
+
+    var reduceMotionFinish = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var footerEl = document.querySelector('footer');
+    var finishStamp = document.getElementById('finishStamp');
+    var scrapBurst = document.getElementById('scrapBurst');
+    var finished = false;
+    var scrapColors = ['var(--stamp)', 'var(--route)', 'var(--ink-soft)'];
+    function spawnScraps(){
+      if(reduceMotionFinish) return;
+      for(var i = 0; i < 18; i++){
+        var scrap = document.createElement('div');
+        scrap.className = 'scrap';
+        scrap.style.background = scrapColors[i % scrapColors.length];
+        scrap.style.setProperty('--dx', Math.round((Math.random() - 0.5) * 200) + 'px');
+        scrap.style.setProperty('--rot', Math.round((Math.random() - 0.5) * 620) + 'deg');
+        scrap.style.animationDelay = (Math.random() * 220) + 'ms';
+        scrapBurst.appendChild(scrap);
+        (function(el){ setTimeout(function(){ el.remove(); }, 2100); })(scrap);
+      }
+    }
+    if(footerEl && finishStamp && 'IntersectionObserver' in window){
+      var finishIo = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting && !finished){
+            finished = true;
+            finishIo.disconnect();
+            setTimeout(function(){
+              finishStamp.classList.add('revealed');
+              spawnScraps();
+              VB_AUDIO.playStamp();
+            }, 250);
+          }
+        });
+      }, {threshold:0.3});
+      finishIo.observe(footerEl);
     }
   })();
 </script>
