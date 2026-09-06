@@ -672,6 +672,8 @@
 
 <footer>vikram.builds — logged one mile at a time, since 2026</footer>
 
+<audio id="bgMusic" src="assets/audio/meditation-music-no-copyright.mp3" loop preload="none"></audio>
+
 <div class="postmark" aria-hidden="true">
   <svg viewBox="0 0 74 74"><text font-family="var(--font-type)" font-size="8" letter-spacing="2" fill="var(--ink-soft)"><textPath href="#postmarkCircle" startOffset="0%">FIELD LOG • TIME ON PAGE • FIELD LOG • TIME ON PAGE •</textPath></text></svg>
   <b class="num" id="onPageClock">00:00</b>
@@ -681,7 +683,6 @@
   var VB_AUDIO = (function(){
     var ctx = null, masterGain = null;
     var soundOn = false;
-    var ambient = null;
 
     function ensureCtx(){
       if(!ctx){
@@ -752,50 +753,32 @@
       noise.start(c.currentTime);
     }
 
+    var fadeTimer = null;
+    function fadeVolume(el, target, duration, cb){
+      if(fadeTimer) clearInterval(fadeTimer);
+      var start = el.volume, i = 0;
+      var steps = Math.max(1, Math.round(duration / 50));
+      fadeTimer = setInterval(function(){
+        i++;
+        var p = Math.min(1, i / steps);
+        el.volume = start + (target - start) * p;
+        if(p >= 1){ clearInterval(fadeTimer); fadeTimer = null; if(cb) cb(); }
+      }, 50);
+    }
+
     function startAmbient(){
-      var c = ensureCtx(); if(!c || ambient) return;
-      var bufferSize = 2 * c.sampleRate;
-      var buffer = c.createBuffer(1, bufferSize, c.sampleRate);
-      var data = buffer.getChannelData(0);
-      var last = 0;
-      for(var i = 0; i < bufferSize; i++){
-        var white = Math.random() * 2 - 1;
-        last = (last + 0.02 * white) / 1.02;
-        data[i] = last * 3.5;
-      }
-      var source = c.createBufferSource();
-      source.buffer = buffer;
-      source.loop = true;
-
-      var filter = c.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.value = 500;
-
-      var lfo = c.createOscillator();
-      lfo.frequency.value = 0.07;
-      var lfoGain = c.createGain();
-      lfoGain.gain.value = 240;
-      lfo.connect(lfoGain).connect(filter.frequency);
-      lfo.start();
-
-      var gain = c.createGain();
-      gain.gain.setValueAtTime(0.0001, c.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.1, c.currentTime + 1.4);
-
-      source.connect(filter).connect(gain).connect(masterGain);
-      source.start();
-      ambient = {source: source, lfo: lfo, gain: gain};
+      var el = document.getElementById('bgMusic');
+      if(!el) return;
+      el.volume = 0;
+      var playPromise = el.play();
+      if(playPromise && playPromise.catch) playPromise.catch(function(){});
+      fadeVolume(el, 0.32, 1200);
     }
 
     function stopAmbient(){
-      if(!ambient || !ctx) return;
-      var now = ctx.currentTime;
-      ambient.gain.gain.cancelScheduledValues(now);
-      ambient.gain.gain.setValueAtTime(Math.max(ambient.gain.gain.value, 0.0001), now);
-      ambient.gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
-      var toStop = ambient;
-      ambient = null;
-      setTimeout(function(){ try{ toStop.source.stop(); toStop.lfo.stop(); }catch(e){} }, 700);
+      var el = document.getElementById('bgMusic');
+      if(!el) return;
+      fadeVolume(el, 0, 500, function(){ el.pause(); });
     }
 
     var btn = document.getElementById('soundToggle');
