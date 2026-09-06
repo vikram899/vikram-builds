@@ -403,10 +403,15 @@
   }
   .ppl-list li:last-child{border-bottom:none;}
 
+  .workout-footer{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap;
+    gap:0.7rem; margin-top:1rem;
+  }
+  .workout-footer .workout-tag{margin:0;}
   .alt-split-toggle{
     font-family:var(--font-type); font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;
     color:var(--paper); background:var(--stamp); border:1.5px solid var(--stamp); border-radius:2px;
-    padding:0.55rem 1rem; cursor:pointer; margin:1rem 0 0 auto;
+    padding:0.55rem 1rem; cursor:pointer; margin:0 0 0 auto;
     display:flex; align-items:center; gap:0.4rem;
     box-shadow:0 4px 10px -4px var(--shadow);
     transition:transform 140ms ease, filter 140ms ease;
@@ -866,11 +871,12 @@
             </ul>
           </div>
         </div>
-        <span class="workout-tag">3x / week</span>
-
-        <button type="button" class="alt-split-toggle" id="altSplitToggle" aria-expanded="false" aria-controls="altSplits">
-          other splits I rotate through <span class="toggle-arrow">↓</span>
-        </button>
+        <div class="workout-footer">
+          <span class="workout-tag">3x / week</span>
+          <button type="button" class="alt-split-toggle" id="altSplitToggle" aria-expanded="false" aria-controls="altSplits">
+            other splits I rotate through <span class="toggle-arrow">↓</span>
+          </button>
+        </div>
         <div class="alt-splits" id="altSplits" hidden>
           <div class="alt-split-row">
             <span class="alt-split-name">Push / Pull / Legs</span>
