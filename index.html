@@ -461,7 +461,38 @@
   }
   .alt-split-desc{font-family:var(--font-body); font-size:0.9rem; color:var(--ink-soft); font-style:italic; line-height:1.4;}
 
-  /* ---------- CP06 tickets ---------- */
+  /* ---------- CP06 the kit ---------- */
+  .gear-grid{display:grid; grid-template-columns:repeat(4, 1fr); gap:2.2rem; margin-top:2.6rem;}
+  @media (max-width:900px){ .gear-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:520px){ .gear-grid{grid-template-columns:1fr;} }
+  .gear-group-label{
+    display:block; font-family:var(--font-type); font-size:0.7rem; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--stamp); margin-bottom:1rem; padding-bottom:0.5rem;
+    border-bottom:1px dashed var(--divider);
+  }
+  .gear-tags{display:flex; flex-direction:column; gap:1.1rem;}
+  .gear-tag{
+    background:var(--card-bg); border:1px solid rgba(42,33,24,0.18);
+    padding:1.1rem 0.9rem 1rem; box-shadow:0 8px 16px -8px var(--shadow);
+    position:relative; text-align:center;
+  }
+  .gear-tag::before{
+    content:''; position:absolute; top:-7px; left:50%; transform:translateX(-50%);
+    width:10px; height:10px; border-radius:50%; background:var(--paper); border:1.5px solid var(--ink-soft);
+  }
+  .gear-tags .gear-tag:nth-child(odd){transform:rotate(-1.1deg);}
+  .gear-tags .gear-tag:nth-child(even){transform:rotate(1deg);}
+  .gear-tag svg{display:block; margin:0.2rem auto 0.7rem;}
+  .gear-name{
+    display:block; font-family:var(--font-display); font-weight:400; text-transform:uppercase;
+    font-size:1rem; letter-spacing:0.02em; color:var(--ink);
+  }
+  .gear-note{
+    display:block; font-family:var(--font-hand); font-size:1.05rem; color:var(--ink-soft);
+    margin-top:0.35rem; line-height:1.3;
+  }
+
+  /* ---------- CP07 tickets ---------- */
   .next-race{border-top:2px solid var(--divider);}
   .ticket{
     display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1.5rem;
@@ -1100,9 +1131,80 @@
   </div>
 </section>
 
+<section id="gear">
+  <div class="wrap">
+    <span class="stamp">CHECKPOINT<b>06</b>THE KIT</span>
+    <h2>What actually goes in the bag.</h2>
+    <p class="lede">No sponsor slide, nothing "linked in bio" — just what gets used, run after run.</p>
+
+    <div class="gear-grid">
+      <div class="gear-group">
+        <span class="gear-group-label">Feet</span>
+        <div class="gear-tags">
+          <div class="gear-tag">
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><path d="M4 22c0-3 2-5 5-6l8-3c2-1 4-1 6 0l5 2v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/><path d="M9 16l2 3M15 13l2 4" stroke="var(--stamp)" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <span class="gear-name">Daily trainer</span>
+            <span class="gear-note">on for 80% of the miles, retired every ~500km</span>
+          </div>
+          <div class="gear-tag">
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><path d="M4 21c0-2.4 1.8-4 4.5-4.8l9-2.6c2-.6 4-.4 5.8.6l4.7 2.6v4.2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/><path d="M22 10l4 3M25 8l4 3" stroke="var(--route)" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <span class="gear-name">Race-day flats</span>
+            <span class="gear-note">comes out for races and hard tempo only</span>
+          </div>
+        </div>
+      </div>
+      <div class="gear-group">
+        <span class="gear-group-label">Wrist</span>
+        <div class="gear-tags">
+          <div class="gear-tag">
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><rect x="10" y="4" width="12" height="6" rx="1.5" stroke="var(--ink)" stroke-width="2"/><rect x="10" y="22" width="12" height="6" rx="1.5" stroke="var(--ink)" stroke-width="2"/><circle cx="16" cy="16" r="8" stroke="var(--ink)" stroke-width="2.2"/><path d="M16 12v4l3 2" stroke="var(--stamp)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="gear-name">GPS watch</span>
+            <span class="gear-note">pace, splits, and way too many notifications</span>
+          </div>
+          <div class="gear-tag">
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><path d="M16 26S5 19 5 11.5C5 7.9 7.7 5 11 5c2.1 0 3.9 1.1 5 2.8C17.1 6.1 18.9 5 21 5c3.3 0 6 2.9 6 6.5C27 19 16 26 16 26z" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/><path d="M8 15h4l2-4 3 7 2-5 1.5 2H24" stroke="var(--stamp)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="gear-name">HR chest strap</span>
+            <span class="gear-note">wrist HR lies on hard efforts, this doesn't</span>
+          </div>
+        </div>
+      </div>
+      <div class="gear-group">
+        <span class="gear-group-label">Fuel &amp; Recovery</span>
+        <div class="gear-tags">
+          <div class="gear-tag">
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><path d="M13 4h6v4l2 3v15a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2V11l2-3z" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/><path d="M11 18h10" stroke="var(--route)" stroke-width="1.8"/></svg>
+            <span class="gear-name">Electrolyte mix</span>
+            <span class="gear-note">in the bottle for anything past 90 minutes</span>
+          </div>
+          <div class="gear-tag">
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><rect x="4" y="12" width="24" height="8" rx="4" stroke="var(--ink)" stroke-width="2.2"/><ellipse cx="6.5" cy="16" rx="2.5" ry="4" stroke="var(--stamp)" stroke-width="1.6"/><ellipse cx="25.5" cy="16" rx="2.5" ry="4" stroke="var(--stamp)" stroke-width="1.6"/></svg>
+            <span class="gear-name">Foam roller</span>
+            <span class="gear-note">five minutes a day or the calves file a complaint</span>
+          </div>
+        </div>
+      </div>
+      <div class="gear-group">
+        <span class="gear-group-label">Content Kit</span>
+        <div class="gear-tags">
+          <div class="gear-tag">
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><rect x="9" y="3" width="14" height="26" rx="2.5" stroke="var(--ink)" stroke-width="2"/><circle cx="16" cy="8" r="1.4" fill="var(--stamp)"/><line x1="12" y1="24" x2="20" y2="24" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="gear-name">Phone + tripod</span>
+            <span class="gear-note">shoots most of what ends up online</span>
+          </div>
+          <div class="gear-tag">
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><rect x="5" y="4" width="18" height="24" rx="1.5" stroke="var(--ink)" stroke-width="2"/><line x1="9" y1="11" x2="19" y2="11" stroke="var(--ink)" stroke-width="1.6"/><line x1="9" y1="16" x2="19" y2="16" stroke="var(--ink)" stroke-width="1.6"/><path d="M20 22l6-6 2 2-6 6-3 1z" stroke="var(--stamp)" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            <span class="gear-name">Notebook &amp; pen</span>
+            <span class="gear-note">the actual field journal — splits, meals, how the day felt</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="eat">
   <div class="wrap">
-    <span class="stamp">CHECKPOINT<b>06</b>WHAT I EAT</span>
+    <span class="stamp">CHECKPOINT<b>07</b>WHAT I EAT</span>
     <h2>Fuel, not a diet.</h2>
     <p class="lede">Veg most days, non-veg when the training block calls for it. Hover a plate for the detail.</p>
 
@@ -1174,7 +1276,7 @@
 
 <section id="cp04">
   <div class="wrap">
-    <span class="stamp">CHECKPOINT<b>07</b>ON THIS CHANNEL</span>
+    <span class="stamp">CHECKPOINT<b>08</b>ON THIS CHANNEL</span>
     <h2>Three things live here.</h2>
     <div class="postcards">
       <div class="postcard">
@@ -1198,7 +1300,7 @@
 
 <section id="game">
   <div class="wrap">
-    <span class="stamp">CHECKPOINT<b>08</b>THE GAME</span>
+    <span class="stamp">CHECKPOINT<b>09</b>THE GAME</span>
     <h2>Vikram: The Grind.</h2>
     <p class="lede">Corporate job, a triathlon, and a following to build — all in the same 24 hours. Seven days. Your call.</p>
 
@@ -1263,7 +1365,7 @@
 
 <section id="cp05" class="next-race">
   <div class="wrap">
-    <span class="stamp">CHECKPOINT<b>09</b>NEXT RACE</span>
+    <span class="stamp">CHECKPOINT<b>10</b>NEXT RACE</span>
     <h2>The next mile is public.</h2>
     <div class="ticket">
       <div class="ticket-info">
