@@ -1290,8 +1290,8 @@
     <p class="lede">Kept like a running log, not a highlight reel — updated after every block.</p>
     <div class="ledger">
       <div class="ledger-row">
-        <span class="ledger-label">km on the legs</span><span class="ledger-value num" id="statKmOnLegs" data-count="3412">0</span>
-        <span class="ledger-note" id="statKmOnLegsNote">give or take a few Strava GPS glitches</span>
+        <span class="ledger-label">km on the legs</span><span class="ledger-value num" data-count="3412">0</span>
+        <span class="ledger-note">give or take a few Strava GPS glitches</span>
       </div>
       <div class="ledger-row">
         <span class="ledger-label">starts</span><span class="ledger-value num" data-count="16">0</span>
@@ -1453,29 +1453,6 @@
 </div>
 
 <script>
-  (function(){
-    // Overwrite the Logbook's "km on the legs" figure with real Strava data
-    // once data/strava.json exists (written by the strava-sync GitHub Action).
-    // Falls back silently to the hardcoded value if the file is missing or
-    // the fetch fails, so this never breaks the page.
-    var el = document.getElementById('statKmOnLegs');
-    var noteEl = document.getElementById('statKmOnLegsNote');
-    if(!el) return;
-    fetch('data/strava.json', {cache: 'no-store'})
-      .then(function(res){ return res.ok ? res.json() : null; })
-      .then(function(data){
-        if(!data || !data.allTime || !data.allTime.km) return;
-        el.setAttribute('data-count', String(data.allTime.km));
-        if(noteEl && data.updatedAt){
-          var updated = new Date(data.updatedAt);
-          if(!isNaN(updated)){
-            noteEl.textContent = 'synced from Strava · ' + updated.toLocaleDateString('en-US', {month:'short', day:'numeric'});
-          }
-        }
-      })
-      .catch(function(){ /* keep the hardcoded fallback */ });
-  })();
-
   var VB_AUDIO = (function(){
     var ctx = null, masterGain = null;
     var soundOn = false;
