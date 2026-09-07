@@ -731,9 +731,42 @@
   .gg-best{font-family:var(--font-type); font-size:0.76rem; color:var(--gg-accent); margin-bottom:1rem;}
   .gg-end-actions{display:flex; gap:0.7rem; justify-content:center; flex-wrap:wrap;}
 
+  .gg-leaderboard{margin:1.6rem 0 1.6rem; padding-top:1.4rem; border-top:1px dashed var(--gg-border); text-align:center;}
+  .gg-lb-label{
+    display:block; font-family:var(--font-type); font-size:0.72rem; letter-spacing:0.05em;
+    text-transform:uppercase; color:var(--gg-ink-soft); margin-bottom:0.7rem;
+  }
+  .gg-lb-form{display:flex; gap:0.6rem; max-width:360px; margin:0 auto;}
+  .gg-lb-input{
+    flex:1; min-width:0; background:var(--gg-panel); border:1px solid var(--gg-border); border-radius:3px;
+    padding:0.7rem 0.8rem; color:var(--gg-ink); font-family:var(--font-body); font-size:0.92rem;
+  }
+  .gg-lb-input:focus-visible{outline:2px solid var(--gg-accent); outline-offset:1px;}
+  .gg-lb-form .gg-btn{padding:0.7rem 1.1rem;}
+  .gg-lb-status{font-family:var(--font-type); font-size:0.74rem; color:var(--gg-ink-soft); margin:0.8rem 0 0;}
+  .gg-lb-board{margin-top:1.7rem;}
+  .gg-lb-title{
+    font-family:var(--font-type); font-size:0.72rem; letter-spacing:0.05em;
+    text-transform:uppercase; color:var(--gg-ink-soft); margin:0 0 0.8rem;
+  }
+  .gg-lb-list{
+    list-style:none; margin:0 auto; padding:0; max-width:420px;
+    display:flex; flex-direction:column; gap:0.4rem;
+  }
+  .gg-lb-row{
+    display:grid; grid-template-columns:1.6rem 1fr auto; gap:0.7rem; align-items:baseline;
+    background:var(--gg-panel); border:1px solid var(--gg-border); border-radius:3px;
+    padding:0.55rem 0.85rem; font-family:var(--font-type); font-size:0.82rem;
+  }
+  .gg-lb-rank{color:var(--gg-ink-soft);}
+  .gg-lb-name{color:var(--gg-ink); text-align:left; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .gg-lb-score{color:var(--gg-accent); font-weight:600;}
+  .gg-lb-empty{font-family:var(--font-body); font-style:italic; color:var(--gg-ink-soft); font-size:0.88rem;}
+
   @media (max-width:420px){
     .gg-stat-row{grid-template-columns:82px 1fr 28px; gap:0.4rem;}
     .gg-action{padding:0.65rem 0.55rem;}
+    .gg-lb-form{flex-direction:column;}
   }
   @media (prefers-reduced-motion: reduce){
     .gg-btn, .gg-action{transition:none;}
@@ -1404,6 +1437,22 @@
         <p class="gg-weight-final" id="ggFinalWeight">73.8 KG</p>
         <p class="gg-quote" id="ggEndingQuote">"You didn't become perfect. You became consistent."</p>
         <p class="gg-best" id="ggBest" hidden></p>
+
+        <div class="gg-leaderboard" id="ggLeaderboard">
+          <div id="ggLbSubmit">
+            <label for="ggLbName" class="gg-lb-label">Add your run to the board</label>
+            <div class="gg-lb-form">
+              <input type="text" id="ggLbName" class="gg-lb-input" placeholder="Your name" maxlength="24" autocomplete="off">
+              <button type="button" class="gg-btn gg-btn-primary" id="ggLbSubmitBtn">Submit</button>
+            </div>
+            <p class="gg-lb-status" id="ggLbStatus" hidden></p>
+          </div>
+          <div class="gg-lb-board">
+            <p class="gg-lb-title">Global leaderboard</p>
+            <ol class="gg-lb-list" id="ggLbList"></ol>
+          </div>
+        </div>
+
         <div class="gg-end-actions">
           <button type="button" class="gg-btn gg-btn-primary" id="ggReplayBtn">Play again</button>
           <button type="button" class="gg-btn gg-btn-ghost" id="ggBackBtn">Back to portfolio</button>
@@ -1452,6 +1501,7 @@
   <b class="num" id="onPageClock">00:00</b>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
   var VB_AUDIO = (function(){
     var ctx = null, masterGain = null;
@@ -2149,8 +2199,92 @@
       endingQuote: el('ggEndingQuote'),
       best: el('ggBest'),
       replayBtn: el('ggReplayBtn'),
-      backBtn: el('ggBackBtn')
+      backBtn: el('ggBackBtn'),
+      lbSubmit: el('ggLbSubmit'),
+      lbName: el('ggLbName'),
+      lbSubmitBtn: el('ggLbSubmitBtn'),
+      lbStatus: el('ggLbStatus'),
+      lbList: el('ggLbList')
     };
+
+    /* ================= LEADERBOARD (Supabase) ================= */
+    var sb = (window.supabase && window.supabase.createClient)
+      ? window.supabase.createClient('https://zxpsxykqqmmpdgpqdvje.supabase.co', 'sb_publishable_ePCeV2ri7sXkVdXP9xk-TQ_dCIKVYqK')
+      : null;
+    var lastScore = 0, lastEndingTitle = '';
+
+    function renderLeaderboard(rows){
+      els.lbList.innerHTML = '';
+      if(!rows || !rows.length){
+        var empty = document.createElement('li');
+        empty.className = 'gg-lb-empty';
+        empty.textContent = 'No runs on the board yet — be the first.';
+        els.lbList.appendChild(empty);
+        return;
+      }
+      rows.forEach(function(row, i){
+        var li = document.createElement('li');
+        li.className = 'gg-lb-row';
+        var rank = document.createElement('span');
+        rank.className = 'gg-lb-rank';
+        rank.textContent = '#' + (i + 1);
+        var name = document.createElement('span');
+        name.className = 'gg-lb-name';
+        name.textContent = row.name;
+        var score = document.createElement('span');
+        score.className = 'gg-lb-score';
+        score.textContent = row.score;
+        li.appendChild(rank);
+        li.appendChild(name);
+        li.appendChild(score);
+        els.lbList.appendChild(li);
+      });
+    }
+
+    function refreshLeaderboard(){
+      if(!sb) { renderLeaderboard(null); return; }
+      sb.from('grind_scores').select('name,score,ending').order('score', {ascending: false}).limit(10)
+        .then(function(res){
+          if(res.error){ renderLeaderboard(null); return; }
+          renderLeaderboard(res.data);
+        })
+        .catch(function(){ renderLeaderboard(null); });
+    }
+
+    function submitScore(){
+      var name = (els.lbName.value || '').trim().slice(0, 24);
+      if(!name){
+        els.lbStatus.hidden = false;
+        els.lbStatus.textContent = 'Enter a name first.';
+        return;
+      }
+      if(!sb){
+        els.lbStatus.hidden = false;
+        els.lbStatus.textContent = "Leaderboard isn't reachable right now.";
+        return;
+      }
+      els.lbSubmitBtn.disabled = true;
+      sb.from('grind_scores').insert({name: name, score: lastScore, ending: lastEndingTitle})
+        .then(function(res){
+          els.lbSubmitBtn.disabled = false;
+          if(res.error){
+            els.lbStatus.hidden = false;
+            els.lbStatus.textContent = "Couldn't submit that — try again.";
+            return;
+          }
+          els.lbSubmit.hidden = true;
+          refreshLeaderboard();
+        })
+        .catch(function(){
+          els.lbSubmitBtn.disabled = false;
+          els.lbStatus.hidden = false;
+          els.lbStatus.textContent = "Couldn't submit that — try again.";
+        });
+    }
+    els.lbSubmitBtn.addEventListener('click', submitScore);
+    els.lbName.addEventListener('keydown', function(e){
+      if(e.key === 'Enter') submitScore();
+    });
 
     function renderStats(container, statsObj){
       container.innerHTML = '';
@@ -2243,6 +2377,13 @@
         els.best.hidden = false;
         els.best.textContent = 'Best score so far: ' + best;
       }
+
+      lastScore = score;
+      lastEndingTitle = ending.title;
+      els.lbName.value = '';
+      els.lbStatus.hidden = true;
+      els.lbSubmit.hidden = false;
+      refreshLeaderboard();
     }
 
     /* ================= CONTROLLERS ================= */
