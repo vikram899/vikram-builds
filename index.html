@@ -1822,42 +1822,44 @@
       dot.type = 'button';
       dot.className = 'gear-dot';
       dot.setAttribute('aria-label', 'Go to item ' + (i + 1) + ' of ' + cards.length);
-      dot.addEventListener('click', function(){
-        cards[i].scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', inline: 'start', block: 'nearest'});
-      });
+      dot.addEventListener('click', function(){ goTo(i); });
       dotsWrap.appendChild(dot);
       return dot;
     });
-    dots[0].classList.add('active');
 
-    var activeIndex = 0;
     function setActive(i){
-      if(i === activeIndex) return;
-      activeIndex = i;
       dots.forEach(function(d){ d.classList.remove('active'); });
       dots[i].classList.add('active');
       prevBtn.disabled = i === 0;
       nextBtn.disabled = i === cards.length - 1;
     }
+    setActive(0);
+
+    function currentIndex(){
+      var trackLeft = track.getBoundingClientRect().left;
+      var best = 0, bestDiff = Infinity;
+      cards.forEach(function(c, i){
+        var diff = Math.abs(c.getBoundingClientRect().left - trackLeft);
+        if(diff < bestDiff){ bestDiff = diff; best = i; }
+      });
+      return best;
+    }
+
+    function goTo(i){
+      i = Math.max(0, Math.min(cards.length - 1, i));
+      setActive(i);
+      cards[i].scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', inline: 'start', block: 'nearest'});
+    }
+
     prevBtn.disabled = true;
+    prevBtn.addEventListener('click', function(){ goTo(currentIndex() - 1); });
+    nextBtn.addEventListener('click', function(){ goTo(currentIndex() + 1); });
 
-    if('IntersectionObserver' in window){
-      var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(entry){
-          if(entry.isIntersecting && entry.intersectionRatio > 0.6){
-            setActive(cards.indexOf(entry.target));
-          }
-        });
-      }, {root: track, threshold: [0.6]});
-      cards.forEach(function(c){ io.observe(c); });
-    }
-
-    function step(dir){
-      var next = Math.max(0, Math.min(cards.length - 1, activeIndex + dir));
-      cards[next].scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', inline: 'start', block: 'nearest'});
-    }
-    prevBtn.addEventListener('click', function(){ step(-1); });
-    nextBtn.addEventListener('click', function(){ step(1); });
+    var scrollTimer;
+    track.addEventListener('scroll', function(){
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(function(){ setActive(currentIndex()); }, 120);
+    });
   })();
 
   (function(){
