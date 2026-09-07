@@ -104,6 +104,11 @@
   @media (max-width:600px){
     .headlamp-toggle .headlamp-label, .sound-toggle .sound-label{display:none;}
   }
+  @media (max-width:700px){
+    /* fixed controls overlap body copy on small screens as the page scrolls;
+       scroll them away with the hero instead */
+    .corner-controls{position:absolute;}
+  }
 
   .headlamp-glow{
     position:fixed; inset:0; z-index:6; pointer-events:none;
@@ -134,6 +139,11 @@
   .stamp b{font-size:1.05rem; margin:0.15rem 0; font-family:var(--font-display); letter-spacing:0.04em;}
   .stamp::before{
     content:''; position:absolute; inset:6px; border:1px solid var(--stamp); border-radius:50%; opacity:0.6;
+  }
+  @media (max-width:700px){
+    /* absolutely-positioned stamp sits over the heading text once the h2
+       wraps to fill the narrower width — drop it into normal flow instead */
+    .stamp{position:static; display:inline-flex; margin:0 0 1.1rem; transform:rotate(-4deg);}
   }
 
   h2{
@@ -432,6 +442,25 @@
     padding:0.4rem 0; border-bottom:1px dashed rgba(42,33,24,0.15);
   }
   .ppl-list li:last-child{border-bottom:none;}
+
+  @media (max-width:700px){
+    /* :hover never fires on touch, so the detail list needs a tap-to-open
+       fallback that lives in normal flow instead of an absolute overlay */
+    .ppl-day{cursor:pointer; padding-right:2.2rem;}
+    .ppl-day::after{
+      content:'+'; position:absolute; top:0.68rem; right:0.8rem;
+      font-family:var(--font-type); font-size:1rem; color:var(--ink-soft); line-height:1;
+    }
+    .ppl-day.is-open::after{content:'\2212';}
+    .ppl-list{
+      position:static; opacity:1; visibility:visible; transform:none; pointer-events:auto;
+      box-shadow:none; border:none; width:auto; max-width:none; min-width:0;
+      margin:0; padding:0; max-height:0; overflow:hidden;
+      transition:max-height 220ms ease;
+    }
+    .ppl-day.is-open .ppl-list{max-height:600px; margin-top:0.7rem;}
+    .ppl-list li{padding:0.5rem 0;}
+  }
 
   .workout-footer{
     display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap;
@@ -1805,6 +1834,16 @@
       }, {threshold:0.3});
       finishIo.observe(footerEl);
     }
+  })();
+
+  (function(){
+    // :hover/:focus-within reveal the exercise & meal detail lists on desktop;
+    // touch devices can't hover, so tapping toggles the same panel open instead
+    document.querySelectorAll('.ppl-day').forEach(function(day){
+      day.addEventListener('click', function(){
+        day.classList.toggle('is-open');
+      });
+    });
   })();
 
   (function(){
