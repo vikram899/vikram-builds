@@ -796,7 +796,7 @@
 </nav>
 
 <div class="corner-controls">
-  <button id="soundToggle" class="sound-toggle" type="button" aria-pressed="false" aria-label="Toggle trail ambience and sound effects">
+  <button id="soundToggle" class="sound-toggle" type="button" aria-pressed="false" aria-label="Toggle sound effects">
     <svg viewBox="0 0 40 40" width="20" height="20" aria-hidden="true" fill="none">
       <path d="M7 15h6l9-8v26l-9-8H7z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
       <g class="sound-waves" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none">
@@ -1488,8 +1488,6 @@
   vikram.builds — logged one mile at a time, since 2026
 </footer>
 
-<audio id="bgMusic" src="assets/audio/meditation-music-no-copyright.mp3" loop preload="none"></audio>
-
 <div class="postmark" aria-hidden="true">
   <svg viewBox="0 0 74 74"><text font-family="var(--font-type)" font-size="8" letter-spacing="2" fill="var(--ink-soft)"><textPath href="#postmarkCircle" startOffset="0%">FIELD LOG • TIME ON PAGE • FIELD LOG • TIME ON PAGE •</textPath></text></svg>
   <b class="num" id="onPageClock">00:00</b>
@@ -1598,42 +1596,12 @@
       }, 150);
     }
 
-    var fadeTimer = null;
-    function fadeVolume(el, target, duration, cb){
-      if(fadeTimer) clearInterval(fadeTimer);
-      var start = el.volume, i = 0;
-      var steps = Math.max(1, Math.round(duration / 50));
-      fadeTimer = setInterval(function(){
-        i++;
-        var p = Math.min(1, i / steps);
-        el.volume = start + (target - start) * p;
-        if(p >= 1){ clearInterval(fadeTimer); fadeTimer = null; if(cb) cb(); }
-      }, 50);
-    }
-
-    function startAmbient(){
-      var el = document.getElementById('bgMusic');
-      if(!el) return;
-      el.volume = 0;
-      var playPromise = el.play();
-      if(playPromise && playPromise.catch) playPromise.catch(function(){});
-      fadeVolume(el, 0.32, 1200);
-    }
-
-    function stopAmbient(){
-      var el = document.getElementById('bgMusic');
-      if(!el) return;
-      fadeVolume(el, 0, 500, function(){ el.pause(); });
-    }
-
     var btn = document.getElementById('soundToggle');
     if(btn){
       btn.addEventListener('click', function(){
         soundOn = !soundOn;
         btn.setAttribute('aria-pressed', String(soundOn));
-        var c = ensureCtx();
-        if(!c) return;
-        if(soundOn) startAmbient(); else stopAmbient();
+        ensureCtx();
       });
     }
 
