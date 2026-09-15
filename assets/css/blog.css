@@ -1,0 +1,154 @@
+/* Shared styles for standalone blog post pages under /blog/.
+   Kept separate from index.html's inline styles so new posts don't
+   need to duplicate the whole design system - just link this file. */
+
+:root {
+  --paper: #dbc7a0;
+  --paper-2: #cbb587;
+  --ink: #2a2118;
+  --ink-soft: #5c4d3a;
+  --stamp: #a3372a;
+  --route: #4a5d3a;
+  --shadow: rgba(37, 29, 18, 0.35);
+  --divider: rgba(42, 33, 24, 0.15);
+  --card-bg: #e9dfc4;
+  --badge-bg: rgba(219, 199, 160, 0.5);
+  --tape-a: rgba(227, 217, 168, 0.85);
+  --tape-b: rgba(210, 198, 145, 0.85);
+  --font-display: "Staatliches", "Arial Narrow", sans-serif;
+  --font-body: "Lora", Georgia, serif;
+  --font-type: "Special Elite", "Courier New", monospace;
+  --font-hand: "Caveat", cursive;
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.7;
+}
+a {
+  color: inherit;
+}
+img {
+  max-width: 100%;
+}
+
+.wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: clamp(2.4rem, 6vw, 4.5rem) clamp(1.1rem, 5vw, 1.5rem) 5rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-type);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink-soft);
+  margin-bottom: 2.2rem;
+  transition: color 140ms ease;
+}
+.back-link:hover {
+  color: var(--stamp);
+}
+
+.post-date {
+  display: block;
+  font-family: var(--font-type);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--stamp);
+  margin-bottom: 0.8rem;
+}
+.post-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  margin: 0 0 1rem;
+  text-wrap: balance;
+}
+.post-lede {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  margin: 0 0 2.4rem;
+  padding-bottom: 1.8rem;
+  border-bottom: 1px dashed var(--divider);
+}
+
+.post-body p {
+  font-size: 1.05rem;
+  margin: 0 0 1.4rem;
+}
+.post-body h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  margin: 2.2rem 0 0.9rem;
+}
+.post-body blockquote {
+  margin: 1.8rem 0;
+  padding: 0.2rem 0 0.2rem 1.2rem;
+  border-left: 3px solid var(--stamp);
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.post-footer {
+  margin-top: 3rem;
+  padding-top: 1.6rem;
+  border-top: 1px dashed var(--divider);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.post-tag {
+  display: inline-block;
+  font-family: var(--font-type);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px dashed var(--ink-soft);
+  padding: 0.3rem 0.6rem;
+  color: var(--ink-soft);
+}
+.post-back-cta {
+  font-family: var(--font-type);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  padding: 0.75rem 1.3rem;
+  border: 1.5px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 140ms ease;
+}
+.post-back-cta:hover {
+  transform: translateY(-2px);
+}

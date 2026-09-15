@@ -1324,6 +1324,103 @@
         }
       }
 
+      /* ---------- CP08 the blog ---------- */
+      .blog-carousel-wrap {
+        margin-top: 2.6rem;
+      }
+      .blog-carousel {
+        display: flex;
+        gap: 1.4rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 0.8rem 0.2rem 1rem;
+        margin: 0 -0.2rem;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .blog-carousel::-webkit-scrollbar {
+        display: none;
+      }
+      .blog-card {
+        flex: 0 0 auto;
+        width: 270px;
+        scroll-snap-align: start;
+        background: var(--card-bg);
+        border: 1px solid rgba(42, 33, 24, 0.18);
+        padding: 1.4rem 1.2rem 1.2rem;
+        box-shadow: 0 10px 20px -10px var(--shadow);
+        position: relative;
+        text-align: left;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        transition:
+          transform 160ms ease,
+          box-shadow 160ms ease;
+      }
+      .blog-carousel .blog-card:nth-child(odd) {
+        transform: rotate(-0.8deg);
+      }
+      .blog-carousel .blog-card:nth-child(even) {
+        transform: rotate(0.7deg);
+      }
+      .blog-card:hover,
+      .blog-card:focus-visible {
+        transform: translateY(-4px) rotate(0deg);
+        box-shadow: 0 18px 28px -12px var(--shadow);
+      }
+      .blog-card:focus-visible {
+        outline: 2px dashed var(--route);
+        outline-offset: 3px;
+      }
+      .blog-card-date {
+        display: block;
+        font-family: var(--font-type);
+        font-size: 0.64rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--stamp);
+      }
+      .blog-card-title {
+        font-family: var(--font-display);
+        font-weight: 400;
+        text-transform: uppercase;
+        font-size: 1.28rem;
+        line-height: 1.15;
+        letter-spacing: 0.01em;
+        color: var(--ink);
+        margin: 0;
+      }
+      .blog-card-excerpt {
+        font-family: var(--font-body);
+        font-style: italic;
+        font-size: 0.9rem;
+        color: var(--ink-soft);
+        line-height: 1.5;
+        margin: 0;
+        flex: 1;
+      }
+      .blog-card-cta {
+        font-family: var(--font-type);
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--ink);
+        transition: color 140ms ease;
+      }
+      .blog-card:hover .blog-card-cta,
+      .blog-card:focus-visible .blog-card-cta {
+        color: var(--stamp);
+      }
+      .blog-carousel-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 0.4rem;
+      }
+
       /* ---------- CP07 tickets ---------- */
       .next-race {
         border-top: 2px solid var(--divider);
@@ -3285,9 +3382,94 @@
       </div>
     </section>
 
+    <section id="blog">
+      <div class="wrap">
+        <span class="stamp">CHECKPOINT<b>08</b>THE BLOG</span>
+        <h2>Longer reads, when a caption isn't enough.</h2>
+        <p class="lede">
+          Some of this doesn't fit in a training log or a checkpoint card.
+          Every entry below opens into a full page.
+        </p>
+
+        <div class="blog-carousel-wrap">
+          <div class="blog-carousel" id="blogTrack">
+            <a class="blog-card" href="blog/the-tuesday-that-started-it.html">
+              <div class="tape" style="left: calc(50% - 17px); transform: rotate(-4deg)"></div>
+              <span class="blog-card-date">Sep 2026</span>
+              <h3 class="blog-card-title">The Tuesday That Started It</h3>
+              <p class="blog-card-excerpt">
+                Four years of logs started because I didn't want to quit on
+                an ordinary weekday. The version of that day I don't
+                usually tell.
+              </p>
+              <span class="blog-card-cta">Read the entry →</span>
+            </a>
+            <a class="blog-card" href="blog/what-a-dnf-actually-teaches-you.html">
+              <div class="tape" style="left: calc(50% - 17px); transform: rotate(3deg)"></div>
+              <span class="blog-card-date">Sep 2026</span>
+              <h3 class="blog-card-title">What a DNF Actually Teaches You</h3>
+              <p class="blog-card-excerpt">
+                Everyone wants to hear about the finish. Almost nobody
+                asks about mile 41 — which is exactly why it's worth
+                writing down.
+              </p>
+              <span class="blog-card-cta">Read the entry →</span>
+            </a>
+            <a class="blog-card" href="blog/four-years-of-logging-everything.html">
+              <div class="tape" style="left: calc(50% - 17px); transform: rotate(-3deg)"></div>
+              <span class="blog-card-date">Sep 2026</span>
+              <h3 class="blog-card-title">Four Years of Logging Everything</h3>
+              <p class="blog-card-excerpt">
+                Every kilometer, meal, and DNF kept in the same log for
+                four years. Here's what that habit actually bought me.
+              </p>
+              <span class="blog-card-cta">Read the entry →</span>
+            </a>
+          </div>
+          <div class="blog-carousel-nav">
+            <div class="gear-dots" id="blogDots"></div>
+            <div class="gear-arrows">
+              <button
+                type="button"
+                class="gear-arrow"
+                id="blogPrev"
+                aria-label="Previous post"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path
+                    d="M10 3 5 8l5 5"
+                    stroke="var(--ink)"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="gear-arrow"
+                id="blogNext"
+                aria-label="Next post"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path
+                    d="M6 3l5 5-5 5"
+                    stroke="var(--ink)"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="cp04">
       <div class="wrap">
-        <span class="stamp">CHECKPOINT<b>08</b>ON THIS CHANNEL</span>
+        <span class="stamp">CHECKPOINT<b>09</b>ON THIS CHANNEL</span>
         <h2>Three things live here.</h2>
         <div class="postcards">
           <div class="postcard">
@@ -3361,7 +3543,7 @@
 
     <section id="game" hidden>
       <div class="wrap">
-        <span class="stamp">CHECKPOINT<b>09</b>THE GAME</span>
+        <span class="stamp">CHECKPOINT<b>10</b>THE GAME</span>
         <h2>Vikram: The Grind.</h2>
         <p class="lede">
           Corporate job, a triathlon, and a following to build — all in the same
@@ -3441,7 +3623,7 @@
 
     <section id="cp05" class="next-race">
       <div class="wrap">
-        <span class="stamp">CHECKPOINT<b>09</b>NEXT RACE</span>
+        <span class="stamp">CHECKPOINT<b>10</b>NEXT RACE</span>
         <h2>The next mile is public.</h2>
         <div class="ticket">
           <div class="ticket-info">
@@ -4050,11 +4232,11 @@
         });
       })();
 
-      (function () {
-        var track = document.getElementById("gearTrack");
-        var dotsWrap = document.getElementById("gearDots");
-        var prevBtn = document.getElementById("gearPrev");
-        var nextBtn = document.getElementById("gearNext");
+      function initCarousel(trackId, dotsId, prevId, nextId, dotClass) {
+        var track = document.getElementById(trackId);
+        var dotsWrap = document.getElementById(dotsId);
+        var prevBtn = document.getElementById(prevId);
+        var nextBtn = document.getElementById(nextId);
         if (!track || !dotsWrap || !prevBtn || !nextBtn) return;
 
         var cards = Array.prototype.slice.call(track.children);
@@ -4065,7 +4247,7 @@
         var dots = cards.map(function (_, i) {
           var dot = document.createElement("button");
           dot.type = "button";
-          dot.className = "gear-dot";
+          dot.className = dotClass;
           dot.setAttribute(
             "aria-label",
             "Go to item " + (i + 1) + " of " + cards.length
@@ -4126,7 +4308,9 @@
             setActive(currentIndex());
           }, 120);
         });
-      })();
+      }
+      initCarousel("gearTrack", "gearDots", "gearPrev", "gearNext", "gear-dot");
+      initCarousel("blogTrack", "blogDots", "blogPrev", "blogNext", "gear-dot");
 
       (function () {
         var root = document.getElementById("grindGame");
