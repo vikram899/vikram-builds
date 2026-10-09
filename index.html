@@ -615,9 +615,14 @@
       .route-event-string {
         position: absolute;
         z-index: 6;
-        width: 0;
+        width: 2px;
+        margin-left: -1px;
         height: var(--drop);
-        border-left: 1.5px dashed var(--ink);
+        background: repeating-linear-gradient(
+          to bottom,
+          var(--ink) 0 4px,
+          transparent 4px 8px
+        );
         pointer-events: none;
       }
       .route-bib {
@@ -816,38 +821,37 @@
           width: 64px;
           height: 86px;
         }
+        /* compact bib: date strip + one short "first Olympic Triathlon" line */
         .route-chart {
           --drop: 36px;
         }
-        .route-bib-legs {
-          display: none;
-        }
         .route-bib {
           right: 4px;
-          width: 120px;
+          width: 112px;
         }
-        .route-bib-head {
-          padding: 0.2rem 0.4rem;
-          font-size: 0.52rem;
-        }
+        .route-bib-legs,
+        .route-bib-cta,
         .route-bib-kind,
         .route-bib-dist {
           display: none;
         }
         .route-bib-head {
           justify-content: center;
+          padding: 0.15rem 0.35rem;
+          font-size: 0.5rem;
         }
         .route-bib-body {
-          padding: 0.3rem 0.45rem 0.45rem;
+          padding: 0.25rem 0.4rem 0.35rem;
         }
         .route-bib-first {
-          font-size: 1.05rem;
+          display: inline;
+          font-size: 0.95rem;
+          margin-right: 0.2rem;
         }
         .route-bib-title {
-          font-size: 0.95rem;
-        }
-        .route-bib-cta {
-          font-size: 0.55rem;
+          display: inline;
+          font-size: 0.8rem;
+          line-height: 1.1;
         }
         .route-axis {
           padding: 0.15rem 0.4rem;
