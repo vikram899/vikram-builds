@@ -437,10 +437,12 @@
         transform: rotate(1.8deg);
         border-radius: 6px 3px 8px 2px;
       }
-      .photo-card svg {
+      .photo-img {
         width: 100%;
-        height: 180px;
+        aspect-ratio: 4 / 5;
         display: block;
+        object-fit: cover;
+        object-position: 50% var(--focus-y, 20%);
         background: var(--card-illo-bg);
       }
       .photo-cap {
@@ -483,44 +485,80 @@
         height: 100%;
         display: block;
       }
+      /* Each waypoint is a polaroid-style photo pin standing on its data
+         point (the pin's bottom-center sits on the ridge vertex). */
       .waypoint {
         appearance: none;
         -webkit-appearance: none;
         font: inherit;
         position: absolute;
-        width: 18px;
-        height: 18px;
-        margin: -9px 0 0 -9px;
-        border-radius: 50%;
-        background: var(--paper);
-        border: 2.5px solid var(--route);
+        width: 46px;
+        height: 62px;
+        margin: -62px 0 0 -23px;
+        padding: 3px;
+        border-radius: 2px;
+        background: var(--card-bg-2);
+        border: 1.5px solid var(--route);
+        box-shadow: 0 6px 12px -5px var(--shadow);
         cursor: pointer;
-        z-index: 3;
-        padding: 0;
+        z-index: 7;
+        transform: rotate(var(--tilt, 0deg));
         -webkit-tap-highlight-color: transparent;
         transition:
-          background 140ms ease,
           border-color 140ms ease,
           transform 140ms ease;
+      }
+      .waypoint::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -7px;
+        width: 9px;
+        height: 9px;
+        margin-left: -4.5px;
+        border-radius: 50%;
+        background: var(--route);
+        border: 2px solid var(--paper);
+        transition: background 140ms ease;
+      }
+      .waypoint-photo {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 20%;
       }
       .waypoint:hover,
       .waypoint:focus-visible,
       .waypoint.active {
-        background: var(--stamp);
         border-color: var(--stamp);
-        transform: scale(1.25);
+        transform: rotate(0deg) scale(1.08);
         outline: none;
+        z-index: 8;
+      }
+      .waypoint:hover,
+      .waypoint:focus-visible {
+        z-index: 9;
+      }
+      .waypoint:hover::after,
+      .waypoint:focus-visible::after,
+      .waypoint.active::after {
+        background: var(--stamp);
       }
       .waypoint .tip {
+        --tx: -50%;
+        --ty: 4px;
         position: absolute;
-        bottom: calc(100% + 12px);
+        bottom: calc(100% + 14px);
         left: 50%;
-        transform: translate(-50%, 4px);
-        width: 206px;
+        transform: translate(var(--tx), var(--ty));
+        width: 236px;
+        display: flex;
+        gap: 0.75rem;
         background: var(--card-bg-2);
         border: 1px solid rgba(42, 33, 24, 0.2);
         box-shadow: 0 12px 24px -8px var(--shadow);
-        padding: 0.75rem 0.85rem;
+        padding: 0.75rem;
         opacity: 0;
         visibility: hidden;
         transition:
@@ -531,31 +569,196 @@
         z-index: 10;
         cursor: default;
       }
+      .waypoint.tip-below .tip {
+        --ty: -4px;
+        bottom: auto;
+        top: calc(100% + 14px);
+      }
       .waypoint.align-start .tip {
+        --tx: 0;
         left: 0;
-        transform: translate(0, 4px);
       }
       .waypoint.align-end .tip {
+        --tx: 0;
         left: auto;
         right: 0;
-        transform: translate(0, 4px);
       }
       .waypoint:hover .tip,
       .waypoint:focus-visible .tip,
       .waypoint.active .tip {
+        --ty: 0px;
         opacity: 1;
         visibility: visible;
-        transform: translate(-50%, 0);
       }
-      .waypoint.align-start:hover .tip,
-      .waypoint.align-start:focus-visible .tip,
-      .waypoint.align-start.active .tip {
-        transform: translate(0, 0);
+      /* The triathlon is an event, not a body measurement: a drawn finish line
+         with a checkered flag, labelled along the line instead of in a card. */
+      .route-chart {
+        --drop: 22px;
       }
-      .waypoint.align-end:hover .tip,
-      .waypoint.align-end:focus-visible .tip,
-      .waypoint.align-end.active .tip {
-        transform: translate(0, 0);
+      @media (max-width: 1000px) {
+        .route-chart {
+          --drop: 34px;
+        }
+      }
+      .route-event-dot,
+      .route-event-pin {
+        position: absolute;
+        z-index: 8;
+        width: 10px;
+        height: 10px;
+        margin: -5px 0 0 -5px;
+        border-radius: 50%;
+        background: var(--stamp);
+        border: 2px solid var(--paper);
+        pointer-events: none;
+      }
+      .route-event-string {
+        position: absolute;
+        z-index: 6;
+        width: 0;
+        height: var(--drop);
+        border-left: 1.5px dashed var(--ink);
+        pointer-events: none;
+      }
+      .route-bib {
+        position: absolute;
+        right: 22px;
+        z-index: 7;
+        width: 172px;
+        display: block;
+        background: var(--card-bg-2);
+        border: 1.5px solid var(--ink);
+        box-shadow: 0 10px 18px -8px var(--shadow);
+        color: var(--ink);
+        text-decoration: none;
+        transform: rotate(2deg);
+        -webkit-tap-highlight-color: transparent;
+        transition:
+          transform 160ms ease,
+          box-shadow 160ms ease;
+      }
+      .route-bib:hover,
+      .route-bib:focus-visible {
+        transform: rotate(0deg) translateY(2px);
+        box-shadow: 0 16px 24px -10px var(--shadow);
+        outline: none;
+      }
+      .route-bib:focus-visible {
+        outline: 2px dashed var(--route);
+        outline-offset: 3px;
+      }
+      .route-bib-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        padding: 0.28rem 0.55rem;
+        background: var(--stamp);
+        color: var(--paper);
+        font-family: var(--font-type);
+        font-size: 0.62rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .route-bib-body {
+        display: block;
+        padding: 0.35rem 0.6rem 0.55rem;
+      }
+      .route-bib-first {
+        display: block;
+        font-family: var(--font-hand);
+        font-size: 1.3rem;
+        line-height: 1;
+        color: var(--stamp);
+        transform: rotate(-3deg);
+        transform-origin: left center;
+      }
+      .route-bib-title {
+        display: block;
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        line-height: 1.05;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+      .route-bib-legs {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin-top: 0.4rem;
+        color: var(--ink);
+      }
+      .route-chart .route-bib-legs svg {
+        position: static;
+        inset: auto;
+        width: 17px;
+        height: 17px;
+        flex: none;
+      }
+      .route-bib-dist {
+        margin-left: 0.2rem;
+        font-family: var(--font-type);
+        font-size: 0.62rem;
+        letter-spacing: 0.03em;
+        color: var(--ink-soft);
+        white-space: nowrap;
+      }
+      .route-bib-cta {
+        display: block;
+        margin-top: 0.4rem;
+        font-family: var(--font-type);
+        font-size: 0.64rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--stamp);
+      }
+      .route-bib:hover .route-bib-cta,
+      .route-bib:focus-visible .route-bib-cta {
+        text-decoration: underline;
+      }
+      .tip-kind {
+        display: inline-block;
+        margin-bottom: 0.4rem;
+        padding: 0.05rem 0.4rem;
+        border: 1px solid var(--route);
+        font-family: var(--font-type);
+        font-size: 0.62rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--route);
+      }
+      .route-axis--event {
+        border-color: var(--stamp);
+        color: var(--stamp);
+      }
+      .tip-photo {
+        flex: none;
+        width: 88px;
+        height: 118px;
+        object-fit: cover;
+        object-position: 50% 20%;
+        border: 1px solid rgba(42, 33, 24, 0.2);
+        background: var(--paper-2);
+      }
+      .tip-info {
+        display: block;
+        min-width: 0;
+      }
+      .route-axis {
+        position: absolute;
+        bottom: 4%;
+        transform: translateX(-50%);
+        padding: 0.2rem 0.55rem;
+        background: var(--card-bg-2);
+        border: 1px solid rgba(42, 33, 24, 0.35);
+        font-family: var(--font-type);
+        font-size: 0.85rem;
+        line-height: 1.2;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--ink);
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 2;
       }
       .tip-date {
         font-family: var(--font-type);
@@ -566,20 +769,19 @@
         display: block;
         margin-bottom: 0.4rem;
       }
-      .tip-stats {
+      .tip-when {
+        display: block;
+        margin: -0.2rem 0 0.45rem;
         font-family: var(--font-type);
-        font-size: 0.8rem;
-        color: var(--ink);
-        line-height: 1.7;
-      }
-      .tip-race {
-        display: inline-block;
-        margin-top: 0.35rem;
-        font-family: var(--font-type);
-        font-size: 0.68rem;
-        border: 1px dashed var(--ink-soft);
-        padding: 0.15rem 0.45rem;
+        font-size: 0.78rem;
         color: var(--ink-soft);
+      }
+      .tip-stats {
+        display: block;
+        font-family: var(--font-type);
+        font-size: 0.9rem;
+        color: var(--ink);
+        line-height: 1.55;
       }
       .tip-note {
         font-family: var(--font-hand);
@@ -599,8 +801,60 @@
         .route-chart {
           aspect-ratio: 600/420;
         }
+        .waypoint {
+          width: 34px;
+          height: 46px;
+          margin: -46px 0 0 -17px;
+          padding: 2px;
+        }
         .waypoint .tip {
-          width: 172px;
+          width: 204px;
+          gap: 0.6rem;
+          padding: 0.6rem;
+        }
+        .tip-photo {
+          width: 64px;
+          height: 86px;
+        }
+        .route-chart {
+          --drop: 36px;
+        }
+        .route-bib-legs {
+          display: none;
+        }
+        .route-bib {
+          right: 4px;
+          width: 120px;
+        }
+        .route-bib-head {
+          padding: 0.2rem 0.4rem;
+          font-size: 0.52rem;
+        }
+        .route-bib-kind,
+        .route-bib-dist {
+          display: none;
+        }
+        .route-bib-head {
+          justify-content: center;
+        }
+        .route-bib-body {
+          padding: 0.3rem 0.45rem 0.45rem;
+        }
+        .route-bib-first {
+          font-size: 1.05rem;
+        }
+        .route-bib-title {
+          font-size: 0.95rem;
+        }
+        .route-bib-cta {
+          font-size: 0.55rem;
+        }
+        .route-axis {
+          padding: 0.15rem 0.4rem;
+          font-size: 0.78rem;
+        }
+        .route-axis-word {
+          display: none;
         }
       }
 
@@ -1436,6 +1690,27 @@
         padding: 1.6rem 2rem;
         margin-top: 2.4rem;
         transform: rotate(-0.4deg);
+      }
+      .ticket + .ticket {
+        margin-top: 1.2rem;
+        transform: rotate(0.3deg);
+      }
+      .ticket-done {
+        border-style: solid;
+        border-color: var(--route);
+      }
+      .ticket-info .kind-tag {
+        display: inline-block;
+        margin-bottom: 0.35rem;
+        padding: 0.1rem 0.5rem;
+        border: 1px solid currentColor;
+        font-size: 0.68rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--stamp);
+      }
+      .ticket-done .kind-tag {
+        color: var(--route);
       }
       .ticket-info b {
         font-family: var(--font-display);
@@ -2279,9 +2554,10 @@
     <section id="cp01">
       <div class="wrap">
         <span class="stamp">CHECKPOINT<b>01</b>THE CLIMB</span>
-        <h2>Same legs, four years apart.</h2>
+        <h2>Same body, 6 months apart.</h2>
         <p class="lede">
-          Same name on the bib. Different person underneath it.
+          26 January to 3 August 2026: 12.9&nbsp;kg lighter and 11.6% less body
+          fat. Same name on the bib, different build underneath it.
         </p>
 
         <div class="split">
@@ -2290,98 +2566,29 @@
               class="tape"
               style="left: calc(50% - 35px); transform: rotate(-4deg)"
             ></div>
-            <svg viewBox="0 0 240 180">
-              <rect width="240" height="180" fill="var(--card-illo-bg)" />
-              <g
-                stroke="var(--ink)"
-                stroke-width="3"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="120" cy="70" r="12" fill="var(--card-illo-bg)" />
-                <path
-                  d="M120,82 C118,100 122,112 108,120 M120,95 C130,102 138,112 132,124"
-                />
-                <path d="M108,120 L96,140 M132,124 L142,146" />
-              </g>
-              <g
-                stroke="var(--stamp)"
-                stroke-width="2"
-                opacity="0.55"
-                stroke-linecap="round"
-              >
-                <path
-                  d="M60,50 l10,14 M170,44 l-9,15 M55,110 l14,6 M180,120 l-15,4"
-                />
-              </g>
-              <text
-                x="120"
-                y="164"
-                text-anchor="middle"
-                font-family="var(--font-hand)"
-                font-size="15"
-                fill="var(--stamp)"
-              >
-                one loop of the block. barely.
-              </text>
-            </svg>
-            <p class="photo-cap">"couldn't finish the block"</p>
-            <p class="photo-tab">mile 1 — 2021</p>
+            <img
+              class="photo-img"
+              style="--focus-y: 63%"
+              src="assets/img/physique/kg83-l.jpg"
+              alt="Front-facing photo of Vikram at 83 kg and 33% body fat, 26 January 2026"
+              loading="lazy"
+            />
+            <p class="photo-cap">83 kg · 33% body fat</p>
+            <p class="photo-tab">week 0 — 26 Jan 2026</p>
           </div>
           <div class="photo-card after">
             <div
               class="tape"
               style="left: calc(50% - 35px); transform: rotate(3deg)"
             ></div>
-            <svg viewBox="0 0 240 180">
-              <rect width="240" height="180" fill="var(--card-illo-bg)" />
-              <g stroke="var(--stamp)" stroke-width="1.6" opacity="0.5">
-                <line x1="60" y1="30" x2="60" y2="8" />
-                <line x1="80" y1="34" x2="92" y2="16" />
-                <line x1="45" y1="45" x2="24" y2="34" />
-              </g>
-              <circle
-                cx="60"
-                cy="30"
-                r="15"
-                fill="none"
-                stroke="var(--stamp)"
-                stroke-width="2"
-              />
-              <path
-                d="M20,150 L70,90 L130,150"
-                fill="none"
-                stroke="var(--route)"
-                stroke-width="2.5"
-                opacity="0.6"
-              />
-              <g
-                stroke="var(--ink)"
-                stroke-width="3"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="140" cy="86" r="12" fill="var(--card-illo-bg)" />
-                <path
-                  d="M140,98 L130,124 L150,116 M130,124 L112,150 M150,116 L166,146"
-                />
-                <path d="M140,105 L162,96" />
-              </g>
-              <text
-                x="120"
-                y="170"
-                text-anchor="middle"
-                font-family="var(--font-hand)"
-                font-size="15"
-                fill="var(--route)"
-              >
-                same lungs, different mile marker.
-              </text>
-            </svg>
-            <p class="photo-cap">"crested the ridge before sunrise"</p>
-            <p class="photo-tab">mile 100 — today</p>
+            <img
+              class="photo-img"
+              src="assets/img/physique/kg70-l.jpg"
+              alt="Front-facing photo of Vikram at 70.1 kg and 21.4% body fat, 3 August 2026"
+              loading="lazy"
+            />
+            <p class="photo-cap">70.1 kg · 21.4% body fat</p>
+            <p class="photo-tab">week 27 — 3 Aug 2026</p>
           </div>
         </div>
       </div>
@@ -2392,8 +2599,10 @@
         <span class="stamp">CHECKPOINT<b>02</b>THE ROUTE</span>
         <h2>Hover the ridge to read the log.</h2>
         <p class="lede">
-          Nine months, drawn like an elevation profile — the stretches that felt
-          like climbing were, literally, the ones where the numbers moved.
+          Twenty-seven weeks from 26 January 2026, drawn like an elevation
+          profile — the stretches that felt like climbing were, literally, the
+          ones where the numbers moved. The photos are the body; the race bib is
+          race day. Click it for the story.
         </p>
 
         <div class="route-chart">
@@ -2401,7 +2610,7 @@
             viewBox="0 0 900 320"
             preserveAspectRatio="none"
             role="img"
-            aria-label="Elevation-style chart of monthly training progress from January to September"
+            aria-label="Elevation-style chart of body transformation from week 0 at 83 kg to week 27 at 70 kg, ending at a triathlon on 4 October 2026"
           >
             <path
               d="M0,150 Q225,130 450,150 T900,150"
@@ -2418,7 +2627,7 @@
               opacity="0.12"
             />
             <circle
-              cx="850"
+              cx="70"
               cy="42"
               r="17"
               fill="none"
@@ -2426,20 +2635,21 @@
               stroke-width="2"
             />
             <g stroke="var(--stamp)" stroke-width="2" stroke-linecap="round">
-              <line x1="850" y1="12" x2="850" y2="2" />
-              <line x1="880" y1="42" x2="890" y2="42" />
-              <line x1="871" y1="21" x2="878" y2="14" />
-              <line x1="829" y1="21" x2="822" y2="14" />
+              <line x1="70" y1="12" x2="70" y2="2" />
+              <line x1="100" y1="42" x2="109" y2="42" />
+              <line x1="91" y1="21" x2="98" y2="14" />
+              <line x1="49" y1="21" x2="42" y2="14" />
+              <line x1="40" y1="42" x2="31" y2="42" />
             </g>
             <path
-              d="M0,300 L60,230 L155,205 L250,215 L345,170 L440,185 L535,140 L630,150 L725,95 L820,80 L900,62 L900,320 L0,320 Z"
+              d="M0,300 L63,249.6 L115.9,248.9 L189,200.4 L258.3,204.1 L315,163.4 L371.7,170.4 L441,138.8 L514.1,146.6 L567,114.2 L625,121.9 L693,89.6 L758.5,90 L819,57.6 L900,48 L900,320 L0,320 Z"
               fill="var(--paper-3)"
               stroke="var(--ink)"
               stroke-width="2.5"
               stroke-linejoin="round"
             />
             <polyline
-              points="60,230 155,205 250,215 345,170 440,185 535,140 630,150 725,95 820,80"
+              points="63,249.6 115.9,248.9 189,200.4 258.3,204.1 315,163.4 371.7,170.4 441,138.8 514.1,146.6 567,114.2 625,121.9 693,89.6 758.5,90 819,57.6"
               fill="none"
               stroke="var(--route)"
               stroke-width="2"
@@ -2448,134 +2658,205 @@
             />
           </svg>
 
+          <span class="route-axis" style="left: 7%" aria-hidden="true"><span class="route-axis-word">week </span>0</span>
+          <span class="route-axis" style="left: 21%" aria-hidden="true"><span class="route-axis-word">week </span>10</span>
+          <span class="route-axis" style="left: 35%" aria-hidden="true"><span class="route-axis-word">week </span>15</span>
+          <span class="route-axis" style="left: 49%" aria-hidden="true"><span class="route-axis-word">week </span>19</span>
+          <span class="route-axis" style="left: 63%" aria-hidden="true"><span class="route-axis-word">week </span>23</span>
+          <span class="route-axis" style="left: 77%" aria-hidden="true"><span class="route-axis-word">week </span>27</span>
+          <span class="route-axis route-axis--event" style="left: 91%" aria-hidden="true"><span class="route-axis-word">race </span>4 Oct</span>
+
           <button
             type="button"
             class="waypoint align-start"
-            style="left: 6.7%; top: 71.9%"
-            aria-label="January 26 checkpoint"
+            style="left: 7%; top: 78%; --tilt: -3deg"
+            aria-label="Body, Week 0, 26 Jan 2026: 83 kg, 33% body fat"
           >
+            <img
+              class="waypoint-photo"
+              src="assets/img/physique/kg83-s.jpg"
+              alt=""
+              loading="lazy"
+            />
             <span class="tip">
-              <span class="tip-date">Jan 26</span>
-              <span class="tip-stats">91.2&nbsp;kg <b>·</b> 27%&nbsp;bf</span>
-              <span class="tip-note"
-                >"Day one of actually logging this instead of just thinking
-                about it."</span
-              >
+              <img
+                class="tip-photo"
+                src="assets/img/physique/kg83-m.jpg"
+                alt="Front-facing physique photo at 83 kg"
+                loading="lazy"
+              />
+              <span class="tip-info">
+                <span class="tip-kind">Body</span>
+                <span class="tip-date">Week 0</span>
+                <span class="tip-when">26 Jan 2026</span>
+                <span class="tip-stats">83&nbsp;kg<br />33%&nbsp;bf</span>
+                <span class="tip-note">Starting point.</span>
+              </span>
             </span>
           </button>
           <button
             type="button"
-            class="waypoint"
-            style="left: 17.2%; top: 64.1%"
-            aria-label="February checkpoint"
+            class="waypoint tip-below"
+            style="left: 21%; top: 62.6%; --tilt: 2deg"
+            aria-label="Body, Week 10, 6 Apr 2026: 79 kg, 30% body fat"
           >
+            <img
+              class="waypoint-photo"
+              src="assets/img/physique/kg79-s.jpg"
+              alt=""
+              loading="lazy"
+            />
             <span class="tip">
-              <span class="tip-date">Feb</span>
-              <span class="tip-stats">88.6&nbsp;kg <b>·</b> 26%&nbsp;bf</span>
-              <span class="tip-note"
-                >"Still hate mornings. Showed up anyway."</span
-              >
+              <img
+                class="tip-photo"
+                src="assets/img/physique/kg79-m.jpg"
+                alt="Front-facing physique photo at 79 kg"
+                loading="lazy"
+              />
+              <span class="tip-info">
+                <span class="tip-kind">Body</span>
+                <span class="tip-date">Week 10</span>
+                <span class="tip-when">6 Apr 2026</span>
+                <span class="tip-stats">79&nbsp;kg<br />30%&nbsp;bf</span>
+                <span class="tip-note">−4 kg since week 0</span>
+              </span>
             </span>
           </button>
           <button
             type="button"
-            class="waypoint"
-            style="left: 27.8%; top: 67.2%"
-            aria-label="March checkpoint"
+            class="waypoint tip-below"
+            style="left: 35%; top: 51.1%; --tilt: -2deg"
+            aria-label="Body, Week 15, 11 May 2026: 76 kg, 27% body fat"
           >
+            <img
+              class="waypoint-photo"
+              src="assets/img/physique/kg76-s.jpg"
+              alt=""
+              loading="lazy"
+            />
             <span class="tip">
-              <span class="tip-date">Mar</span>
-              <span class="tip-stats">85.9&nbsp;kg <b>·</b> 24%&nbsp;bf</span>
-              <span class="tip-note"
-                >"First month running felt like running, not surviving."</span
-              >
+              <img
+                class="tip-photo"
+                src="assets/img/physique/kg76-m.jpg"
+                alt="Front-facing physique photo at 76 kg"
+                loading="lazy"
+              />
+              <span class="tip-info">
+                <span class="tip-kind">Body</span>
+                <span class="tip-date">Week 15</span>
+                <span class="tip-when">11 May 2026</span>
+                <span class="tip-stats">76&nbsp;kg<br />27%&nbsp;bf</span>
+                <span class="tip-note">−7 kg since week 0</span>
+              </span>
             </span>
           </button>
           <button
             type="button"
-            class="waypoint"
-            style="left: 38.3%; top: 53.1%"
-            aria-label="April checkpoint"
+            class="waypoint tip-below"
+            style="left: 49%; top: 43.4%; --tilt: 3deg"
+            aria-label="Body, Week 19 (est.), 8 Jun 2026: 74 kg, about 25% body fat"
           >
+            <img
+              class="waypoint-photo"
+              src="assets/img/physique/kg74-s.jpg"
+              alt=""
+              loading="lazy"
+            />
             <span class="tip">
-              <span class="tip-date">Apr</span>
-              <span class="tip-stats">83.4&nbsp;kg <b>·</b> 23%&nbsp;bf</span>
-              <span class="tip-race">race: first 5K — 32:10</span>
-              <span class="tip-note"
-                >"Signed up on a whim. Finished upright."</span
-              >
+              <img
+                class="tip-photo"
+                src="assets/img/physique/kg74-m.jpg"
+                alt="Front-facing physique photo at 74 kg"
+                loading="lazy"
+              />
+              <span class="tip-info">
+                <span class="tip-kind">Body</span>
+                <span class="tip-date">Week 19 (est.)</span>
+                <span class="tip-when">8 Jun 2026</span>
+                <span class="tip-stats">74&nbsp;kg<br />~25%&nbsp;bf</span>
+                <span class="tip-note">−9 kg since week 0</span>
+              </span>
             </span>
           </button>
           <button
             type="button"
-            class="waypoint"
-            style="left: 48.9%; top: 57.8%"
-            aria-label="May checkpoint"
+            class="waypoint tip-below"
+            style="left: 63%; top: 35.7%; --tilt: -2deg"
+            aria-label="Body, Week 23, 6 Jul 2026: 72 kg, 23.5% body fat"
           >
+            <img
+              class="waypoint-photo"
+              src="assets/img/physique/kg72-s.jpg"
+              alt=""
+              loading="lazy"
+            />
             <span class="tip">
-              <span class="tip-date">May</span>
-              <span class="tip-stats">81.0&nbsp;kg <b>·</b> 21%&nbsp;bf</span>
-              <span class="tip-note"
-                >"Legs finally feel like they belong to a runner."</span
-              >
+              <img
+                class="tip-photo"
+                src="assets/img/physique/kg72-m.jpg"
+                alt="Front-facing physique photo at 72 kg"
+                loading="lazy"
+              />
+              <span class="tip-info">
+                <span class="tip-kind">Body</span>
+                <span class="tip-date">Week 23</span>
+                <span class="tip-when">6 Jul 2026</span>
+                <span class="tip-stats">72&nbsp;kg<br />23.5%&nbsp;bf</span>
+                <span class="tip-note">−11 kg since week 0</span>
+              </span>
             </span>
           </button>
           <button
             type="button"
-            class="waypoint"
-            style="left: 59.4%; top: 43.8%"
-            aria-label="June checkpoint"
+            class="waypoint tip-below"
+            style="left: 77%; top: 28%; --tilt: 2deg"
+            aria-label="Body, Week 27, 3 Aug 2026: 70 kg, 21.4% body fat"
           >
+            <img
+              class="waypoint-photo"
+              src="assets/img/physique/kg70-s.jpg"
+              alt=""
+              loading="lazy"
+            />
             <span class="tip">
-              <span class="tip-date">Jun</span>
-              <span class="tip-stats">79.2&nbsp;kg <b>·</b> 20%&nbsp;bf</span>
-              <span class="tip-race">race: first 10K trail — 58:40</span>
-              <span class="tip-note"
-                >"Fell twice on the descent. Finished anyway."</span
-              >
+              <img
+                class="tip-photo"
+                src="assets/img/physique/kg70-m.jpg"
+                alt="Front-facing physique photo at 70 kg"
+                loading="lazy"
+              />
+              <span class="tip-info">
+                <span class="tip-kind">Body</span>
+                <span class="tip-date">Week 27</span>
+                <span class="tip-when">3 Aug 2026</span>
+                <span class="tip-stats">70&nbsp;kg<br />21.4%&nbsp;bf</span>
+                <span class="tip-note">−13 kg since week 0</span>
+              </span>
             </span>
           </button>
-          <button
-            type="button"
-            class="waypoint"
-            style="left: 70%; top: 46.9%"
-            aria-label="July checkpoint"
+
+          <span class="route-event-dot" style="left: 91%; top: 18%" aria-hidden="true"></span>
+          <span class="route-event-string" style="left: 91%; top: 18%" aria-hidden="true"></span>
+          <a
+            class="route-bib"
+            href="blog/triathlon-4-oct-2026.html"
+            style="top: calc(18% + var(--drop))"
+            aria-label="First Olympic triathlon, 4 October 2026: read the race story"
           >
-            <span class="tip">
-              <span class="tip-date">Jul</span>
-              <span class="tip-stats">77.8&nbsp;kg <b>·</b> 19%&nbsp;bf</span>
-              <span class="tip-note"
-                >"Sleeping better than I have in years."</span
-              >
+            <span class="route-bib-head"><span class="route-bib-kind">Race day</span><span>4 Oct 2026</span></span>
+            <span class="route-bib-body">
+              <span class="route-bib-first">first</span>
+              <span class="route-bib-title">Olympic Triathlon</span>
+              <span class="route-bib-legs" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0" /><path d="M2 15c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0" /></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="16" r="3.5" /><circle cx="18.5" cy="16" r="3.5" /><path d="M5.5 16l4-8h5l4 8M9.5 8h-2M14.5 8l-3 8" /></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="4.5" r="2" /><path d="M13 8.5l-3 4 4 2.5 1 5M10 12.5l-3.5 1M14 8.5l3 3 3-.5" /></svg>
+                <span class="route-bib-dist">1.5 · 40 · 10 km</span>
+              </span>
+              <span class="route-bib-cta">read the story →</span>
             </span>
-          </button>
-          <button
-            type="button"
-            class="waypoint"
-            style="left: 80.6%; top: 29.7%"
-            aria-label="August checkpoint"
-          >
-            <span class="tip">
-              <span class="tip-date">Aug</span>
-              <span class="tip-stats">76.5&nbsp;kg <b>·</b> 18%&nbsp;bf</span>
-              <span class="tip-race">race: half marathon — 1:52:04</span>
-              <span class="tip-note"
-                >"Negative split by accident. Will take it."</span
-              >
-            </span>
-          </button>
-          <button
-            type="button"
-            class="waypoint align-end active"
-            style="left: 91.1%; top: 25%"
-            aria-label="September checkpoint, today"
-          >
-            <span class="tip">
-              <span class="tip-date">Sep — today</span>
-              <span class="tip-stats">75.9&nbsp;kg <b>·</b> 17%&nbsp;bf</span>
-              <span class="tip-note">"Still logging. Still going."</span>
-            </span>
-          </button>
+          </a>
+          <span class="route-event-pin" style="left: 91%; top: calc(18% + var(--drop))" aria-hidden="true"></span>
         </div>
         <p class="route-hint">tap a point on mobile ↑</p>
       </div>
@@ -3623,11 +3904,26 @@
 
     <section id="cp05" class="next-race">
       <div class="wrap">
-        <span class="stamp">CHECKPOINT<b>10</b>NEXT RACE</span>
-        <h2>The next mile is public.</h2>
-        <div class="ticket">
+        <span class="stamp">CHECKPOINT<b>10</b>RACE DAY</span>
+        <h2>Race days get their own log.</h2>
+        <p class="lede">
+          The Route above is the body. This is the event: what that body did on
+          the day.
+        </p>
+        <div class="ticket ticket-done">
           <div class="ticket-info">
-            <span>next start line</span>
+            <span class="kind-tag">event · done</span>
+            <b>Triathlon</b>
+            <span>4 October 2026 · distance and result to add</span>
+          </div>
+          <div class="ticket-info" style="text-align: right">
+            <span>about 36 weeks after week 0</span>
+            <b>raced</b>
+          </div>
+        </div>
+        <div class="ticket ticket-next">
+          <div class="ticket-info">
+            <span class="kind-tag">event · next</span>
             <b>Race name — TBD</b>
             <span>date TBD · distance TBD</span>
           </div>
