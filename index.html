@@ -1460,7 +1460,7 @@
       }
       .gear-tag {
         flex: 0 0 auto;
-        width: 190px;
+        width: 220px;
         scroll-snap-align: start;
         background: var(--card-bg);
         border: 1px solid rgba(42, 33, 24, 0.18);
@@ -1496,9 +1496,13 @@
         color: var(--stamp);
         margin-bottom: 0.6rem;
       }
-      .gear-tag svg {
+      .gear-photo {
         display: block;
-        margin: 0.2rem auto 0.7rem;
+        width: 100%;
+        height: 150px;
+        object-fit: contain;
+        margin: 0.2rem 0 1rem;
+        filter: drop-shadow(0 9px 7px rgba(37, 29, 18, 0.32));
       }
       .gear-name {
         display: block;
@@ -1752,9 +1756,21 @@
         transform: translateY(-2px);
         background: var(--tape-2);
       }
-      .stub::before {
-        content: "\2022";
-        color: var(--stamp);
+      .stub svg {
+        width: 20px;
+        height: 20px;
+        flex: none;
+        fill: currentColor;
+      }
+      .stub .icon-outline {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+      }
+      .stub .icon-outline circle[stroke=none],
+      .stub .icon-outline .dot {
+        fill: currentColor;
+        stroke: none;
       }
 
       footer {
@@ -2546,7 +2562,7 @@
         </p>
         <div class="cta-row">
           <a class="btn btn-solid" href="#cp02">read the field notes ↓</a>
-          <a class="btn btn-outline" href="#" rel="noopener"
+          <a class="btn btn-outline" href="https://www.youtube.com/@vikram.builds_07" target="_blank" rel="noopener noreferrer"
             >watch the journey ↗</a
           >
         </div>
@@ -3331,226 +3347,59 @@
         <div class="gear-carousel-wrap">
           <div class="gear-carousel" id="gearTrack">
             <div class="gear-tag">
-              <span class="gear-category">Feet</span>
-              <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
-                <path
-                  d="M4 22c0-3 2-5 5-6l8-3c2-1 4-1 6 0l5 2v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"
-                  stroke="var(--ink)"
-                  stroke-width="2"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M9 16l2 3M15 13l2 4"
-                  stroke="var(--stamp)"
-                  stroke-width="1.6"
-                  stroke-linecap="round"
-                />
-              </svg>
-              <span class="gear-name">Daily trainer</span>
-              <span class="gear-note"
-                >on for 80% of the miles, retired every ~500km</span
-              >
+              <span class="gear-category">Watch</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/coros-pace-3.webp"
+                alt="Coros Pace 3 GPS watch with a black nylon band"
+                loading="lazy"
+              />
+              <span class="gear-name">Coros Pace 3</span>
+              <span class="gear-note">light GPS watch on a nylon band</span>
             </div>
             <div class="gear-tag">
-              <span class="gear-category">Feet</span>
-              <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
-                <path
-                  d="M4 21c0-2.4 1.8-4 4.5-4.8l9-2.6c2-.6 4-.4 5.8.6l4.7 2.6v4.2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"
-                  stroke="var(--ink)"
-                  stroke-width="2"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M22 10l4 3M25 8l4 3"
-                  stroke="var(--route)"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                />
-              </svg>
-              <span class="gear-name">Race-day flats</span>
-              <span class="gear-note"
-                >comes out for races and hard tempo only</span
-              >
+              <span class="gear-category">Running shoes</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/asics-gel-nimbus-26.webp"
+                alt="ASICS Gel-Nimbus 26 running shoe in navy and light blue"
+                loading="lazy"
+              />
+              <span class="gear-name">ASICS Gel-Nimbus 26</span>
+              <span class="gear-note">the max-cushion one</span>
             </div>
             <div class="gear-tag">
-              <span class="gear-category">Wrist</span>
-              <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
-                <rect
-                  x="10"
-                  y="4"
-                  width="12"
-                  height="6"
-                  rx="1.5"
-                  stroke="var(--ink)"
-                  stroke-width="2"
-                />
-                <rect
-                  x="10"
-                  y="22"
-                  width="12"
-                  height="6"
-                  rx="1.5"
-                  stroke="var(--ink)"
-                  stroke-width="2"
-                />
-                <circle
-                  cx="16"
-                  cy="16"
-                  r="8"
-                  stroke="var(--ink)"
-                  stroke-width="2.2"
-                />
-                <path
-                  d="M16 12v4l3 2"
-                  stroke="var(--stamp)"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <span class="gear-name">GPS watch</span>
-              <span class="gear-note"
-                >pace, splits, and way too many notifications</span
-              >
+              <span class="gear-category">Running shoes</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/asics-superblast-2.webp"
+                alt="Pair of ASICS Superblast 2 running shoes in blue"
+                loading="lazy"
+              />
+              <span class="gear-name">ASICS Superblast 2</span>
+              <span class="gear-note">the light, bouncy one</span>
             </div>
             <div class="gear-tag">
-              <span class="gear-category">Wrist</span>
-              <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
-                <path
-                  d="M16 26S5 19 5 11.5C5 7.9 7.7 5 11 5c2.1 0 3.9 1.1 5 2.8C17.1 6.1 18.9 5 21 5c3.3 0 6 2.9 6 6.5C27 19 16 26 16 26z"
-                  stroke="var(--ink)"
-                  stroke-width="2"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M8 15h4l2-4 3 7 2-5 1.5 2H24"
-                  stroke="var(--stamp)"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <span class="gear-name">HR chest strap</span>
-              <span class="gear-note"
-                >wrist HR lies on hard efforts, this doesn't</span
-              >
+              <span class="gear-category">Earphones</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/shokz-openrun-pro-2.webp"
+                alt="Shokz OpenRun Pro 2 bone-conduction earphones in grey"
+                loading="lazy"
+              />
+              <span class="gear-name">Shokz OpenRun Pro 2</span>
+              <span class="gear-note">bone conduction, ears stay open</span>
             </div>
             <div class="gear-tag">
-              <span class="gear-category">Fuel &amp; Recovery</span>
-              <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
-                <path
-                  d="M13 4h6v4l2 3v15a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2V11l2-3z"
-                  stroke="var(--ink)"
-                  stroke-width="2"
-                  stroke-linejoin="round"
-                />
-                <path d="M11 18h10" stroke="var(--route)" stroke-width="1.8" />
-              </svg>
-              <span class="gear-name">Electrolyte mix</span>
-              <span class="gear-note"
-                >in the bottle for anything past 90 minutes</span
-              >
-            </div>
-            <div class="gear-tag">
-              <span class="gear-category">Fuel &amp; Recovery</span>
-              <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
-                <rect
-                  x="4"
-                  y="12"
-                  width="24"
-                  height="8"
-                  rx="4"
-                  stroke="var(--ink)"
-                  stroke-width="2.2"
-                />
-                <ellipse
-                  cx="6.5"
-                  cy="16"
-                  rx="2.5"
-                  ry="4"
-                  stroke="var(--stamp)"
-                  stroke-width="1.6"
-                />
-                <ellipse
-                  cx="25.5"
-                  cy="16"
-                  rx="2.5"
-                  ry="4"
-                  stroke="var(--stamp)"
-                  stroke-width="1.6"
-                />
-              </svg>
-              <span class="gear-name">Foam roller</span>
-              <span class="gear-note"
-                >five minutes a day or the calves file a complaint</span
-              >
-            </div>
-            <div class="gear-tag">
-              <span class="gear-category">Content Kit</span>
-              <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
-                <rect
-                  x="9"
-                  y="3"
-                  width="14"
-                  height="26"
-                  rx="2.5"
-                  stroke="var(--ink)"
-                  stroke-width="2"
-                />
-                <circle cx="16" cy="8" r="1.4" fill="var(--stamp)" />
-                <line
-                  x1="12"
-                  y1="24"
-                  x2="20"
-                  y2="24"
-                  stroke="var(--ink)"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-              </svg>
-              <span class="gear-name">Phone + tripod</span>
-              <span class="gear-note">shoots most of what ends up online</span>
-            </div>
-            <div class="gear-tag">
-              <span class="gear-category">Content Kit</span>
-              <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
-                <rect
-                  x="5"
-                  y="4"
-                  width="18"
-                  height="24"
-                  rx="1.5"
-                  stroke="var(--ink)"
-                  stroke-width="2"
-                />
-                <line
-                  x1="9"
-                  y1="11"
-                  x2="19"
-                  y2="11"
-                  stroke="var(--ink)"
-                  stroke-width="1.6"
-                />
-                <line
-                  x1="9"
-                  y1="16"
-                  x2="19"
-                  y2="16"
-                  stroke="var(--ink)"
-                  stroke-width="1.6"
-                />
-                <path
-                  d="M20 22l6-6 2 2-6 6-3 1z"
-                  stroke="var(--stamp)"
-                  stroke-width="1.8"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <span class="gear-name">Notebook &amp; pen</span>
-              <span class="gear-note"
-                >the actual field journal — splits, meals, how the day
-                felt</span
-              >
+              <span class="gear-category">Eyewear</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/craycol-running-glasses.webp"
+                alt="Craycol running glasses with black frame and orange mirrored lens"
+                loading="lazy"
+              />
+              <span class="gear-name">Craycol running glasses</span>
+              <span class="gear-note">orange mirrored, wraparound</span>
             </div>
           </div>
           <div class="gear-carousel-nav">
@@ -3937,9 +3786,9 @@
           </div>
         </div>
         <div class="stub-row">
-          <a class="stub" href="#" rel="noopener">youtube / vikram.builds</a>
-          <a class="stub" href="#" rel="noopener">instagram / vikram.builds</a>
-          <a class="stub" href="#" rel="noopener">strava / vikram.builds</a>
+          <a class="stub" href="https://www.youtube.com/@vikram.builds_07" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M4 5h16a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3zM10 9.2v5.6l5-2.8z"/></svg>youtube / vikram.builds_07</a>
+          <a class="stub" href="https://www.instagram.com/vikram.builds" target="_blank" rel="noopener noreferrer"><svg class="icon-outline" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle class="dot" cx="17.4" cy="6.6" r="1.1"/></svg>instagram / vikram.builds</a>
+          <a class="stub" href="https://strava.app.link/bp4R28xW66b" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>strava / follow along</a>
         </div>
       </div>
     </section>
@@ -4336,6 +4185,19 @@
           });
         });
 
+        // clicking anywhere else (or pressing Esc) closes the open checkpoint
+        function closeWaypoints() {
+          waypoints.forEach(function (w) {
+            w.classList.remove("active");
+          });
+        }
+        document.addEventListener("click", function (e) {
+          if (!e.target.closest(".waypoint")) closeWaypoints();
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") closeWaypoints();
+        });
+
         var start = Date.now();
         var clock = document.getElementById("onPageClock");
         setInterval(function () {
@@ -4600,6 +4462,15 @@
         nextBtn.addEventListener("click", function () {
           goTo(currentIndex() + 1);
         });
+
+        // dots/arrows are pointless when every card already fits on screen
+        var nav = dotsWrap.parentElement;
+        function syncNav() {
+          nav.style.display =
+            track.scrollWidth <= track.clientWidth + 1 ? "none" : "";
+        }
+        syncNav();
+        window.addEventListener("resize", syncNav);
 
         var scrollTimer;
         track.addEventListener("scroll", function () {
