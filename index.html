@@ -1496,6 +1496,35 @@
         color: var(--stamp);
         margin-bottom: 0.6rem;
       }
+      .gear-tag {
+        display: flex;
+        flex-direction: column;
+      }
+      .gear-buy {
+        align-self: center;
+        margin-top: auto;
+        padding: 0.32rem 0.7rem;
+        border: 1.5px solid var(--ink);
+        background: var(--card-bg-2);
+        color: var(--ink);
+        font-family: var(--font-type);
+        font-size: 0.68rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition:
+          transform 140ms ease,
+          background 140ms ease;
+      }
+      .gear-buy:hover,
+      .gear-buy:focus-visible {
+        transform: translateY(-2px);
+        background: var(--tape-2);
+        outline: none;
+      }
+      .gear-tag .gear-note {
+        margin-bottom: 0.9rem;
+      }
       .gear-photo {
         display: block;
         width: 100%;
@@ -2396,7 +2425,7 @@
       <div class="wrap">
         <div class="hero-top">
           <div class="wordmark">vikram<span>.</span>builds</div>
-          <div class="bib-tag">BIB NO. 1187</div>
+          <div class="bib-tag">BIB NO. 0211</div>
         </div>
 
         <div class="hero-illo-wrap">
@@ -3354,6 +3383,14 @@
               />
               <span class="gear-name">Coros Pace 3</span>
               <span class="gear-note">light GPS watch on a nylon band</span>
+              <a
+                class="gear-buy"
+                href="https://www.amazon.in/dp/B0CFQQ9FDL"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Buy Coros Pace 3 at Amazon (opens in a new tab)"
+                >Buy at Amazon &#8599;</a
+              >
             </div>
             <div class="gear-tag">
               <span class="gear-category">Running shoes</span>
@@ -3387,17 +3424,234 @@
               />
               <span class="gear-name">Shokz OpenRun Pro 2</span>
               <span class="gear-note">bone conduction, ears stay open</span>
+              <a
+                class="gear-buy"
+                href="https://www.amazon.in/dp/B0D2HKCMBP"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Buy Shokz OpenRun Pro 2 at Amazon (opens in a new tab)"
+                >Buy at Amazon &#8599;</a
+              >
             </div>
             <div class="gear-tag">
               <span class="gear-category">Eyewear</span>
               <img
                 class="gear-photo"
                 src="assets/img/gear/craycol-running-glasses.webp"
-                alt="Craycol running glasses with black frame and orange mirrored lens"
+                alt="Craycol Burnout Beast running glasses with black frame and orange mirrored lens"
                 loading="lazy"
               />
-              <span class="gear-name">Craycol running glasses</span>
+              <span class="gear-name">Craycol Burnout Beast</span>
               <span class="gear-note">orange mirrored, wraparound</span>
+              <a
+                class="gear-buy"
+                href="https://www.craycol.com/products/burnout-beast"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Buy Craycol Burnout Beast at Craycol (opens in a new tab)"
+                >Buy at Craycol &#8599;</a
+              >
+            </div>
+            <div class="gear-tag">
+              <span class="gear-category">Swim bag</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/swim-dry-bag.webp"
+                alt="Black roll-top waterproof dry bag with a shoulder strap"
+                loading="lazy"
+              />
+              <span class="gear-name">Waterproof dry bag, 10 L</span>
+              <span class="gear-note">floats, rolls shut</span>
+              <a
+                class="gear-buy"
+                href="https://www.amazon.in/dp/B0DRVWNPQ1"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Buy Waterproof dry bag, 10 L at Amazon (opens in a new tab)"
+                >Buy at Amazon &#8599;</a
+              >
+            </div>
+            <div class="gear-tag">
+              <span class="gear-category">Swim bag</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/swim-pouch.webp"
+                alt="White and navy waterproof swim pouch with a carry loop"
+                loading="lazy"
+              />
+              <span class="gear-name">Waterproof swim pouch</span>
+              <span class="gear-note">packs small, keeps it dry</span>
+              <a
+                class="gear-buy"
+                href="https://www.decathlon.in/p/8926874/swimming-waterproof-pouch-7l-wave-secure-fit-lightweight-blue"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Buy Waterproof swim pouch at Decathlon (opens in a new tab)"
+                >Buy at Decathlon &#8599;</a
+              >
+            </div>
+            <div class="gear-tag">
+              <span class="gear-category">Swim pants</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/swim-jammer.webp"
+                alt="Black Nabaiji swim jammer shorts"
+                loading="lazy"
+              />
+              <span class="gear-name">Nabaiji swim jammer</span>
+              <span class="gear-note">inner mesh lining</span>
+              <a
+                class="gear-buy"
+                href="https://www.decathlon.in/p/8756984/men-swimming-jammer-with-inner-mesh-lining-100-basic-black"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Buy Nabaiji swim jammer at Decathlon (opens in a new tab)"
+                >Buy at Decathlon &#8599;</a
+              >
+            </div>
+            <div class="gear-tag">
+              <span class="gear-category">Swim cap</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/swim-cap.webp"
+                alt="Black silicone swim cap"
+                loading="lazy"
+              />
+              <span class="gear-name">Silicone swim cap</span>
+              <span class="gear-note">one size, fits 50-64 cm</span>
+              <a
+                class="gear-buy"
+                href="https://www.decathlon.in/p/8926566/silicone-swim-cap-for-kids-adults-one-size-50-64-cm-black"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Buy Silicone swim cap at Decathlon (opens in a new tab)"
+                >Buy at Decathlon &#8599;</a
+              >
+            </div>
+            <div class="gear-tag">
+              <span class="gear-category">Swim goggles</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/swim-goggles.webp"
+                alt="Blue and white swim goggles with tinted lenses"
+                loading="lazy"
+              />
+              <span class="gear-name">Spirit swim goggles</span>
+              <span class="gear-note">tinted lenses</span>
+              <a
+                class="gear-buy"
+                href="https://www.decathlon.in/p/8927118/swimming-goggles-spirit-tinted-lenses-secure-fit-durable-large"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Buy Spirit swim goggles at Decathlon (opens in a new tab)"
+                >Buy at Decathlon &#8599;</a
+              >
+            </div>
+            <div class="gear-tag">
+              <span class="gear-category">Cycling helmet</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/bike-helmet.webp"
+                alt="Black Van Rysel RoadR 500 MIPS road cycling helmet"
+                loading="lazy"
+              />
+              <span class="gear-name">Van Rysel RoadR 500 MIPS</span>
+              <span class="gear-note">MIPS protection built in</span>
+              <a
+                class="gear-buy"
+                href="https://www.decathlon.in/p/8669933/road-cycling-helmet-roadr-500-mips-black"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Buy Van Rysel RoadR 500 MIPS at Decathlon (opens in a new tab)"
+                >Buy at Decathlon &#8599;</a
+              >
+            </div>
+            <div class="gear-tag">
+              <span class="gear-category">Aerobars</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/bike-aerobars.webp"
+                alt="Black Van Rysel cycling and triathlon aerobars"
+                loading="lazy"
+              />
+              <span class="gear-name">Van Rysel aerobars</span>
+              <span class="gear-note">for cycling and triathlon</span>
+              <a
+                class="gear-buy"
+                href="https://www.decathlon.in/p/8515713/cycling-triathlon-aerobars"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Buy Van Rysel aerobars at Decathlon (opens in a new tab)"
+                >Buy at Decathlon &#8599;</a
+              >
+            </div>
+            <div class="gear-tag">
+              <span class="gear-category">Bike bag</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/bike-frame-bag.webp"
+                alt="Black 1.5 litre bicycle frame bag"
+                loading="lazy"
+              />
+              <span class="gear-name">ACTV 100 frame bag, 1.5 L</span>
+              <span class="gear-note">rides on the frame</span>
+              <a
+                class="gear-buy"
+                href="https://www.decathlon.in/p/8801441/1-5-l-frame-bag-actv-100-black"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Buy ACTV 100 frame bag, 1.5 L at Decathlon (opens in a new tab)"
+                >Buy at Decathlon &#8599;</a
+              >
+            </div>
+            <div class="gear-tag">
+              <span class="gear-category">Bottle cage</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/bike-bottle-cage.webp"
+                alt="Black bicycle bottle cage"
+                loading="lazy"
+              />
+              <span class="gear-name">500 bike bottle cage</span>
+              <span class="gear-note">holds the bottle on the bike</span>
+              <a
+                class="gear-buy"
+                href="https://www.decathlon.in/p/8826618/500-bike-bottle-cage-black"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Buy 500 bike bottle cage at Decathlon (opens in a new tab)"
+                >Buy at Decathlon &#8599;</a
+              >
+            </div>
+            <div class="gear-tag">
+              <span class="gear-category">Road bike</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/road-bike.webp"
+                alt="Black Triban road bike with drop handlebars and disc brakes"
+                loading="lazy"
+              />
+              <span class="gear-name">Triban road bike</span>
+              <span class="gear-note">discontinued, so no link</span>
+            </div>
+            <div class="gear-tag">
+              <span class="gear-category">Tri suit</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/drft-trisuit.webp"
+                alt="DRFT Performance Trisuit in blue gradient with black shorts"
+                loading="lazy"
+              />
+              <span class="gear-name">DRFT Performance Trisuit</span>
+              <span class="gear-note">swim, bike, run in one</span>
+              <a
+                class="gear-buy"
+                href="https://www.drftclub.com/products/drft-performance-trisuit"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Buy DRFT Performance Trisuit at DRFT (opens in a new tab)"
+                >Buy at DRFT &#8599;</a
+              >
             </div>
           </div>
           <div class="gear-carousel-nav">
