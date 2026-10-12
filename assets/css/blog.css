@@ -296,3 +296,52 @@ img {
 .post-body ul li {
   margin-bottom: 0.3rem;
 }
+
+/* product shots in the training sections */
+.gear-strip {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  justify-content: center;
+  margin: 1.4rem 0 1.8rem;
+  padding: 1rem;
+  background: var(--card-bg);
+  border: 1px dashed var(--divider);
+}
+.gear-strip figure {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  text-align: center;
+}
+.gear-strip img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 150px;
+  margin: 0 auto 0.5rem;
+  object-fit: contain;
+}
+.gear-strip figcaption {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+/* icons in front of the training sub-headings */
+.post-body h4.with-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.post-body h4 .h-icon {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
