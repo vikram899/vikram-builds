@@ -315,9 +315,15 @@
         stroke: none;
       }
       @media (max-width: 600px) {
+        .hero-top {
+          flex-wrap: nowrap;
+          align-items: center;
+        }
         .hero-top-right {
-          width: 100%;
-          justify-content: space-between;
+          flex: none;
+        }
+        .hero-socials {
+          gap: 0.4rem;
         }
         .social-label {
           display: none;
