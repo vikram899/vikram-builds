@@ -287,3 +287,12 @@ img {
 .cost td:last-child {
   font-variant-numeric: tabular-nums;
 }
+
+.post-body ul {
+  margin: 0 0 1.4rem;
+  padding-left: 1.3rem;
+  font-size: 1.05rem;
+}
+.post-body ul li {
+  margin-bottom: 0.3rem;
+}
