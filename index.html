@@ -862,34 +862,6 @@
         }
       }
 
-      /* ---------- CP03 field report ---------- */
-      .report {
-        background: var(--card-bg-2);
-        border: 1px solid rgba(42, 33, 24, 0.18);
-        padding: clamp(1.8rem, 4vw, 3rem);
-        margin-top: 2.6rem;
-        transform: rotate(-0.6deg);
-        box-shadow: 0 14px 28px -10px var(--shadow);
-        border-radius: 2px 10px 2px 10px;
-        font-family: var(--font-type);
-      }
-      .report p {
-        max-width: 64ch;
-        font-size: 0.98rem;
-        line-height: 1.85;
-        color: var(--ink);
-        margin: 0;
-      }
-      .report p + p {
-        margin-top: 1.3rem;
-      }
-      .report .entry-tag {
-        font-size: 0.78rem;
-        color: var(--stamp);
-        margin-bottom: 1rem;
-        display: block;
-      }
-
       /* ---------- CP04 logbook ledger ---------- */
       .ledger {
         margin-top: 2.6rem;
@@ -914,6 +886,18 @@
       .ledger-label {
         color: var(--ink-soft);
         font-size: 0.92rem;
+      }
+      .ledger-label small {
+        display: block;
+        margin-top: 0.2rem;
+        font-size: 0.72rem;
+        letter-spacing: 0.03em;
+        color: var(--ink-soft);
+        opacity: 0.85;
+      }
+      .ledger-value.pb-empty {
+        letter-spacing: 0.06em;
+        opacity: 0.55;
       }
       .ledger-value {
         font-size: 1.6rem;
@@ -3635,6 +3619,17 @@
               <span class="gear-note">discontinued, so no link</span>
             </div>
             <div class="gear-tag">
+              <span class="gear-category">Indoor trainer</span>
+              <img
+                class="gear-photo"
+                src="assets/img/gear/indoor-trainer.webp"
+                alt="Black direct-drive indoor bike trainer"
+                loading="lazy"
+              />
+              <span class="gear-name">Indoor trainer</span>
+              <span class="gear-note">rides when the weather says no</span>
+            </div>
+            <div class="gear-tag">
               <span class="gear-category">Tri suit</span>
               <img
                 class="gear-photo"
@@ -3698,79 +3693,43 @@
     <section id="cp03">
       <div class="wrap">
         <span class="stamp">CHECKPOINT<b>06</b>THE LOGBOOK</span>
-        <h2>The tally so far.</h2>
+        <h2>Personal bests.</h2>
         <p class="lede">
-          Kept like a running log, not a highlight reel — updated after every
-          block.
+          One line per distance. Kept like a running log, not a highlight reel
+          &mdash; updated after every race.
         </p>
         <div class="ledger">
           <div class="ledger-row">
-            <span class="ledger-label">km on the legs</span
-            ><span class="ledger-value num" data-count="3412">0</span>
-            <span class="ledger-note"
-              >give or take a few Strava GPS glitches</span
+            <span class="ledger-label">Triathlon<small>Olympic distance · 4 Oct 2026</small></span
+            ><span class="ledger-value num pb-empty" aria-label="personal best time to add"
+              >&ndash;:&ndash;&ndash;:&ndash;&ndash;</span
             >
           </div>
           <div class="ledger-row">
-            <span class="ledger-label">starts</span
-            ><span class="ledger-value num" data-count="16">0</span>
-            <span class="ledger-note"
-              >not every one of these felt like a good idea beforehand</span
+            <span class="ledger-label">Marathon<small>42.2 km</small></span
+            ><span class="ledger-value num pb-empty" aria-label="personal best time to add"
+              >&ndash;:&ndash;&ndash;:&ndash;&ndash;</span
             >
           </div>
           <div class="ledger-row">
-            <span class="ledger-label">finishes</span
-            ><span class="ledger-value num" data-count="14">0</span>
-            <span class="ledger-note"
-              >the number people ask about most and the one I care about
-              least</span
+            <span class="ledger-label">Half marathon<small>21.1 km</small></span
+            ><span class="ledger-value num pb-empty" aria-label="personal best time to add"
+              >&ndash;:&ndash;&ndash;:&ndash;&ndash;</span
             >
           </div>
           <div class="ledger-row">
-            <span class="ledger-label"
-              >DNFs that taught me more than the finishes</span
-            ><span class="ledger-value num" data-count="2">0</span>
-            <span class="ledger-note">still the two I think about most</span>
-          </div>
-          <div class="ledger-row">
-            <span class="ledger-label">people reading the log</span
-            ><span class="ledger-value num" data-count="40" data-suffix="K+"
-              >0</span
+            <span class="ledger-label">10K<small>10 km</small></span
+            ><span class="ledger-value num pb-empty" aria-label="personal best time to add"
+              >&ndash;:&ndash;&ndash;:&ndash;&ndash;</span
             >
-            <span class="ledger-note">hi, by the way</span>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="cp02">
-      <div class="wrap">
-        <span class="stamp">CHECKPOINT<b>07</b>FIELD NOTES</span>
-        <h2>Why the DNFs get posted too.</h2>
-        <div class="report">
-          <span class="entry-tag"
-            >entry — mile 41, somewhere past the last aid station</span
-          >
-          <p>
-            Legs stopped negotiating around hour six. The watch died, the
-            headlamp battery followed it, and the only thing still running was
-            stubbornness. That's the part that doesn't make the reel — not the
-            finish chute, the part where you're doing math on how many miles are
-            left in the dark and deciding it doesn't matter.
-          </p>
-          <p>
-            Everything on this page comes out of logs like that one. Not
-            polished recaps — actual field notes, written slower than they
-            happened, about what fitness and endurance sport keep teaching me
-            about showing up anyway.
-          </p>
         </div>
       </div>
     </section>
 
     <section id="blog">
       <div class="wrap">
-        <span class="stamp">CHECKPOINT<b>08</b>THE BLOG</span>
+        <span class="stamp">CHECKPOINT<b>07</b>THE BLOG</span>
         <h2>Longer reads, when a caption isn't enough.</h2>
         <p class="lede">
           Some of this doesn't fit in a training log or a checkpoint card.
@@ -3855,7 +3814,7 @@
 
     <section id="cp04">
       <div class="wrap">
-        <span class="stamp">CHECKPOINT<b>09</b>ON THIS CHANNEL</span>
+        <span class="stamp">CHECKPOINT<b>08</b>ON THIS CHANNEL</span>
         <h2>Three things live here.</h2>
         <div class="postcards">
           <div class="postcard">
@@ -3929,7 +3888,7 @@
 
     <section id="game" hidden>
       <div class="wrap">
-        <span class="stamp">CHECKPOINT<b>10</b>THE GAME</span>
+        <span class="stamp">CHECKPOINT<b>09</b>THE GAME</span>
         <h2>Vikram: The Grind.</h2>
         <p class="lede">
           Corporate job, a triathlon, and a following to build — all in the same
@@ -4009,7 +3968,7 @@
 
     <section id="cp05" class="next-race">
       <div class="wrap">
-        <span class="stamp">CHECKPOINT<b>10</b>RACE DAY</span>
+        <span class="stamp">CHECKPOINT<b>09</b>RACE DAY</span>
         <h2>Race days get their own log.</h2>
         <p class="lede">
           The Route above is the body. This is the event: what that body did on
@@ -4477,7 +4436,7 @@
           }
           requestAnimationFrame(tick);
         }
-        var stats = document.querySelectorAll(".ledger-value");
+        var stats = document.querySelectorAll(".ledger-value[data-count]");
         if ("IntersectionObserver" in window) {
           var io = new IntersectionObserver(
             function (entries) {
