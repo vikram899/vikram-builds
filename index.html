@@ -887,30 +887,16 @@
         color: var(--ink-soft);
         font-size: 0.92rem;
       }
-      .ledger-result {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 0.2rem;
-        text-align: right;
-      }
-      .ledger-pb {
-        font-family: var(--font-type);
-        font-size: 0.82rem;
+      .ledger-label small {
+        display: block;
+        margin-top: 0.25rem;
+        font-size: 0.8rem;
         letter-spacing: 0.04em;
         color: var(--ink-soft);
       }
-      .ledger-pb b {
+      .ledger-label small b {
         font-weight: 400;
         color: var(--ink);
-      }
-      .ledger-label small {
-        display: block;
-        margin-top: 0.2rem;
-        font-size: 0.72rem;
-        letter-spacing: 0.03em;
-        color: var(--ink-soft);
-        opacity: 0.85;
       }
       .ledger-value.pb-empty {
         letter-spacing: 0.06em;
@@ -3717,32 +3703,40 @@
         </p>
         <div class="ledger">
           <div class="ledger-row">
-            <span class="ledger-label">Triathlon<small>Olympic distance · 4 Oct 2026</small></span>
-            <span class="ledger-result">
-              <span class="ledger-value num">1 race</span>
-              <span class="ledger-pb" aria-label="personal best time to add">PB <b>&ndash;:&ndash;&ndash;:&ndash;&ndash;</b></span>
-            </span>
+            <span class="ledger-label"
+              >Olympic triathlon<small aria-label="personal best time to add">PB <b>&ndash;:&ndash;&ndash;:&ndash;&ndash;</b></small></span
+            >
+            <span class="ledger-value num">1 race</span>
           </div>
           <div class="ledger-row">
-            <span class="ledger-label">Marathon<small>42.2 km</small></span>
-            <span class="ledger-result">
-              <span class="ledger-value num pb-empty" aria-label="race count to add">&ndash;</span>
-              <span class="ledger-pb" aria-label="personal best time to add">PB <b>&ndash;:&ndash;&ndash;:&ndash;&ndash;</b></span>
-            </span>
+            <span class="ledger-label"
+              >Ironman 70.3<small aria-label="personal best time to add">PB <b>&ndash;:&ndash;&ndash;:&ndash;&ndash;</b></small></span
+            >
+            <span class="ledger-value num pb-empty" aria-label="race count to add">&ndash;</span>
           </div>
           <div class="ledger-row">
-            <span class="ledger-label">Half marathon<small>21.1 km</small></span>
-            <span class="ledger-result">
-              <span class="ledger-value num pb-empty" aria-label="race count to add">&ndash;</span>
-              <span class="ledger-pb" aria-label="personal best time to add">PB <b>&ndash;:&ndash;&ndash;:&ndash;&ndash;</b></span>
-            </span>
+            <span class="ledger-label"
+              >Ironman<small aria-label="personal best time to add">PB <b>&ndash;:&ndash;&ndash;:&ndash;&ndash;</b></small></span
+            >
+            <span class="ledger-value num pb-empty" aria-label="race count to add">&ndash;</span>
           </div>
           <div class="ledger-row">
-            <span class="ledger-label">10K<small>10 km</small></span>
-            <span class="ledger-result">
-              <span class="ledger-value num pb-empty" aria-label="race count to add">&ndash;</span>
-              <span class="ledger-pb" aria-label="personal best time to add">PB <b>&ndash;:&ndash;&ndash;:&ndash;&ndash;</b></span>
-            </span>
+            <span class="ledger-label"
+              >Half marathon<small aria-label="personal best time to add">PB <b>&ndash;:&ndash;&ndash;:&ndash;&ndash;</b></small></span
+            >
+            <span class="ledger-value num pb-empty" aria-label="race count to add">&ndash;</span>
+          </div>
+          <div class="ledger-row">
+            <span class="ledger-label"
+              >Full marathon<small aria-label="personal best time to add">PB <b>&ndash;:&ndash;&ndash;:&ndash;&ndash;</b></small></span
+            >
+            <span class="ledger-value num pb-empty" aria-label="race count to add">&ndash;</span>
+          </div>
+          <div class="ledger-row">
+            <span class="ledger-label"
+              >10K<small aria-label="personal best time to add">PB <b>&ndash;:&ndash;&ndash;:&ndash;&ndash;</b></small></span
+            >
+            <span class="ledger-value num pb-empty" aria-label="race count to add">&ndash;</span>
           </div>
         </div>
       </div>
