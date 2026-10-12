@@ -1816,16 +1816,13 @@
         margin-top: 1.2rem;
         transform: rotate(0.3deg);
       }
-      .ticket-id {
-        display: flex;
-        align-items: center;
-        gap: 1.1rem;
+      .ticket-result {
+        margin-left: auto;
+        text-align: right;
       }
       @media (max-width: 600px) {
-        .ticket-id {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 0.9rem;
+        .ticket-logo {
+          margin-left: auto;
         }
       }
       .ticket-logo {
@@ -3905,18 +3902,16 @@
           the day.
         </p>
         <div class="ticket ticket-done">
-          <div class="ticket-id">
-            <img class="ticket-logo" src="assets/img/bergman-triathlon-logo.webp" alt="Bergman Triathlon logo" width="520" height="163" loading="lazy" />
-            <div class="ticket-info">
-              <span class="kind-tag">event · done</span>
-              <b>Bergman Triathlon</b>
-              <span>Ozar, Pune · 4 October 2026 · result to add</span>
-            </div>
+          <div class="ticket-info">
+            <span class="kind-tag">event · done</span>
+            <b>Bergman Triathlon</b>
+            <span>Ozar, Pune · 4 October 2026 · result to add</span>
           </div>
-          <div class="ticket-info" style="text-align: right">
+          <div class="ticket-info ticket-result">
             <span>about 36 weeks after week 0</span>
             <b>raced</b>
           </div>
+          <img class="ticket-logo" src="assets/img/bergman-triathlon-logo.webp" alt="Bergman Triathlon logo" width="520" height="163" loading="lazy" />
         </div>
         <div class="ticket ticket-next">
           <div class="ticket-info">
