@@ -345,3 +345,25 @@ img {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+.post-body a.download {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.6rem;
+  padding: 0.7rem 1.2rem;
+  border: 1.5px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-type);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: transform 140ms ease;
+}
+.post-body a.download::before {
+  content: "↓";
+}
+.post-body a.download:hover {
+  transform: translateY(-2px);
+}
