@@ -811,6 +811,9 @@
         display: block;
         min-width: 0;
       }
+      .route-axis-short {
+        display: none;
+      }
       .route-axis {
         position: absolute;
         bottom: 4%;
@@ -917,11 +920,15 @@
           line-height: 1.1;
         }
         .route-axis {
-          padding: 0.15rem 0.4rem;
-          font-size: 0.78rem;
+          padding: 0.15rem 0.3rem;
+          font-size: 0.66rem;
+          letter-spacing: 0.02em;
         }
         .route-axis-word {
           display: none;
+        }
+        .route-axis-short {
+          display: inline;
         }
       }
 
@@ -2822,10 +2829,15 @@
         <span class="stamp">CHECKPOINT<b>02</b>THE ROUTE</span>
         <h2>Hover the ridge to read the log.</h2>
         <p class="lede">
-          Twenty-seven weeks from 26 January 2026, drawn like an elevation
-          profile — the stretches that felt like climbing were, literally, the
-          ones where the numbers moved. The photos are the body; the race bib is
-          race day. Click it for the story.
+          Honestly, I was tired of seeing myself as unhealthy, and I wanted to
+          change that. So I started with the most basic thing: what I ate. Then
+          I started working out at home, in a small home gym of my own with a
+          bench, a pull-up bar, dumbbells and a set of adjustable dumbbells.
+          Nothing fancy. I kept it simple and just showed up, again and again. I
+          also have a corporate job, so managing all of this is a little hectic,
+          but you have to do it if you want to achieve something big. This is
+          what 27 weeks from 26 January 2026 looked like. The photos are my
+          body; the race bib is race day, and you can click it for the story.
         </p>
 
         <div class="route-chart">
@@ -2881,13 +2893,13 @@
             />
           </svg>
 
-          <span class="route-axis" style="left: 7%" aria-hidden="true"><span class="route-axis-word">week </span>0</span>
-          <span class="route-axis" style="left: 21%" aria-hidden="true"><span class="route-axis-word">week </span>10</span>
-          <span class="route-axis" style="left: 35%" aria-hidden="true"><span class="route-axis-word">week </span>15</span>
-          <span class="route-axis" style="left: 49%" aria-hidden="true"><span class="route-axis-word">week </span>19</span>
-          <span class="route-axis" style="left: 63%" aria-hidden="true"><span class="route-axis-word">week </span>23</span>
-          <span class="route-axis" style="left: 77%" aria-hidden="true"><span class="route-axis-word">week </span>27</span>
-          <span class="route-axis route-axis--event" style="left: 91%" aria-hidden="true"><span class="route-axis-word">race </span>4 Oct</span>
+          <span class="route-axis" style="left: 7%" aria-hidden="true"><span class="route-axis-word">week </span><span class="route-axis-short">wk </span>0</span>
+          <span class="route-axis" style="left: 21%" aria-hidden="true"><span class="route-axis-word">week </span><span class="route-axis-short">wk </span>10</span>
+          <span class="route-axis" style="left: 35%" aria-hidden="true"><span class="route-axis-word">week </span><span class="route-axis-short">wk </span>15</span>
+          <span class="route-axis" style="left: 49%" aria-hidden="true"><span class="route-axis-word">week </span><span class="route-axis-short">wk </span>19</span>
+          <span class="route-axis" style="left: 63%" aria-hidden="true"><span class="route-axis-word">week </span><span class="route-axis-short">wk </span>23</span>
+          <span class="route-axis" style="left: 77%" aria-hidden="true"><span class="route-axis-word">week </span><span class="route-axis-short">wk </span>27</span>
+          <span class="route-axis route-axis--event" style="left: 91%" aria-hidden="true">race</span>
 
           <button
             type="button"
@@ -3120,7 +3132,7 @@
                 <div class="meal-total">
                   <span
                     class="ledger-value meal-total-value num"
-                    data-count="1650"
+                    data-count="2200"
                     data-suffix=" kcal"
                     >0</span
                   >
@@ -3129,7 +3141,7 @@
                 <div class="meal-total">
                   <span
                     class="ledger-value meal-total-value num"
-                    data-count="95"
+                    data-count="120"
                     data-suffix="g"
                     >0</span
                   >
